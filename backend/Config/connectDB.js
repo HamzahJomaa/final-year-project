@@ -3,6 +3,7 @@ require("dotenv").config()
 
 exports.connectDb = (callback) => {
     const dbUrl = process.env.DB_URL || "mongodb://localhost:27017/finalyearproject"
+    console.log(dbUrl)
     mongoose.connect(`${dbUrl}`).then(() => {
             console.log("Database connected")
             callback()
