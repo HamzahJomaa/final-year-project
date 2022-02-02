@@ -16,7 +16,7 @@ app.use(express.json({ limit: "20mb" }))
 app.use(express.urlencoded({ extended: false }))
 
 app.get("/",(req,res)=>{
-    res.send("Connected")
+    res.send("Rafik El Hariri University Final Year Project Group")
 })
 Router(app)
 
