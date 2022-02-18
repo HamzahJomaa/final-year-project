@@ -15,6 +15,7 @@ from surprise import Reader, Dataset, SVD
 import mongodb as md
 from flask_jsonpify import jsonpify
 
+
 # Flask constructor takes the name of
 # current module (__name__) as argument
 app = Flask(__name__)
