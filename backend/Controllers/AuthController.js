@@ -3,6 +3,11 @@ const {UserExists, InternalServerError, DynamicMessage} = require("../Constants/
 const {generateSignUpToken, generateNewToken} = require("../Helpers/AuthHelper");
 const {sendConfirmation,sendReset} = require("../Helpers/Emails");
 const bcrypt = require("bcryptjs")
+var recombee = require('recombee-api-client');
+var rqs = recombee.requests;
+
+
+
 
 exports.resetPassword = async (req,res) =>{
     let {password} = req.body
@@ -45,17 +50,16 @@ exports.requestReset = async (req,res) => {
 
 exports.SignIn = async (req,res) =>{
     let {username,password} = req.body
-
     try{
         let user = await  User.findOne({username})
 
         if (!user)
-            return res.status(404).json(DynamicMessage(404,"User Not Found"))
+            return res.status(200).json(DynamicMessage(404,"User Not Found"))
 
         const passCheck = await bcrypt.compare(password,user.password)
 
         if (!passCheck)
-            return res.status(401).json(DynamicMessage(401,"Wrong Password"))
+            return res.status(200).json(DynamicMessage(401,"Wrong Password"))
 
         const token = generateNewToken({username}, "24h")
         await User.updateOne({id:user.id},{token,lastSignIn:new Date()})
@@ -83,6 +87,8 @@ exports.Confirmation = async (req,res) =>{
 }
 
 exports.SignUp = async (req,res) =>{
+    var client = new recombee.ApiClient('rhu-dev', "MjYXwZePh5D7275IAiDrivUSFsIMIS6YwMVMwgOhrJ2J9D89k1zEnPmt7GBDZcNg");
+
     let {user} = req.body
 
     let checkUser = await User.find({$or:[{username:user.username},{email:user.email}]})
@@ -98,6 +104,7 @@ exports.SignUp = async (req,res) =>{
         addedUser.token = token
         await addedUser.save()
         sendConfirmation({user:addedUser})
+        client.send(new rqs.AddUser(addedUser._id))
         return res.status(200).json(addedUser)
     }catch(e){
         console.error(e)

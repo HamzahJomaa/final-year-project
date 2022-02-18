@@ -1,10 +1,29 @@
 const axios = require("axios")
 const Movie = require("../Models/Movies")
 const Series = require("../Models/Series")
+const Genres = require("../Models/Genre")
+var recombee = require('recombee-api-client');
+var rqs = recombee.requests;
+
+var client = new recombee.ApiClient('rhu-dev', "MjYXwZePh5D7275IAiDrivUSFsIMIS6YwMVMwgOhrJ2J9D89k1zEnPmt7GBDZcNg");
+
+
+exports.UpdateGenres = async () => {
+    let movies = await Movie.aggregate().limit(1)
+    movies.map(movie=>{
+        let newGenreId = Array()
+        movie.genre_ids.map(async genre=>{
+            let getGenre = await Genres.findOne({tmdb:parseInt(genre)})
+            console.log(getGenre)
+            newGenreId.push(getGenre)
+        })
+        console.log(newGenreId)
+    })
+}
 
 
 exports.ImportMovies = async () =>{
-    for (let page = 500 ; page <= 5000 ; page++) {
+    for (let page = 1 ; page <= 501 ; page++) {
         try{
             let tmdbResult = await axios.get("https://api.themoviedb.org/3/movie/top_rated?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
             tmdbResult.data.results.map( async element=>{
@@ -30,6 +49,34 @@ exports.ImportMovies = async () =>{
                 }else{
                     console.log("Already Added")
                 }
+
+                try{
+                    const addedItem = await client.send(new rqs.AddItem(element.id))
+                    if (addedItem === "ok"){
+                        const genres = await Genres.find({tmdb:element.genre_ids})
+
+                        const itemValues = await client.send(new rqs.SetItemValues(movie.tmdb, {
+                            title:element.title,
+                            vote_count: element.vote_count,
+                            vote_average: element.vote_average,
+                            overview: element.overview,
+                            genre: genres.map(e=>{return e.name})
+                        }, {timestamp: new Date(), cascadeCreate: true}));
+                    }
+                }catch(e){
+                    console.log("Item Exists on Recombee")
+                    if (e.statusCode === 409){
+                        const genres = await Genres.find({tmdb:element.genre_ids})
+                        const itemValues = await client.send(new rqs.SetItemValues(movie.tmdb, {
+                            title:element.title,
+                            vote_count: element.vote_count,
+                            vote_average: element.vote_average,
+                            overview: element.overview,
+                            genre: genres.map(e=>{return e.name})
+                        }, {timestamp: new Date(), cascadeCreate: true}));
+                    }
+                }
+
             })
         }catch(e){
             console.error(e)
@@ -37,6 +84,8 @@ exports.ImportMovies = async () =>{
             console.log("Done: " +  page)
         }
     }
+
+    return "Done"
 }
 
 
@@ -57,9 +106,9 @@ exports.ImportCast = async () =>{
 
 
 exports.ImportSeries = async () =>{
-    for (let page = 422 ; page <= 6180 ; page++) {
+    for (let page = 1 ; page <= 1000 ; page++) {
         try{
-            let tmdbResult = await axios.get("https://api.themoviedb.org/3/tv/popular?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
+            let tmdbResult = await axios.get("https://api.themoviedb.org/3/tv/top_rated?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
             tmdbResult.data.results.map( async element=>{
                 let series = await Series.findOne({tmdb:element.id})
                 if (!series){
