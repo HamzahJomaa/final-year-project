@@ -10,6 +10,8 @@ exports.Movie = async (req,res) =>{
         return res.json(movies)
     }catch(e){
         console.error(e)
+        return res.status(500).send("Internal Server Error")
+
     }
 }
 
@@ -23,5 +25,6 @@ exports.Genre = async (req,res) =>{
         return res.json(movies)
     }catch(e){
         console.error(e)
+        return res.status(500).send("Internal Server Error")
     }
 }
