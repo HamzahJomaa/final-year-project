@@ -20,6 +20,11 @@ from flask_jsonpify import jsonpify
 # current module (__name__) as argument
 app = Flask(__name__)
 
+
+@app.route("/api/python/")
+def Main():
+    return "Main"
+
 @app.route("/api/python/movie/<string:title>")
 def Get_Movie_Recommendation(title):
     movies = ""
