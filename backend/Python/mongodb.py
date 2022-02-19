@@ -1,17 +1,21 @@
 import pandas as pd
 from pymongo import MongoClient
+import certifi
 
-def _connect_mongo(host, port, username, password, db):
+def _connect_mongo(db,prod=False):
     """ A util for making a connection to mongo """
-    conn = MongoClient("mongodb://fyp:fyp_admin@cluster0-shard-00-02.p0vx1.mongodb.net:27017/?ssl=true&replicaSet=atlas-iixcb4-shard-0&authSource=admin&retryWrites=true&w=majority")
+    if (prod):
+        conn = MongoClient("mongodb://fyp:fyp_admin@cluster0-shard-00-02.p0vx1.mongodb.net:27017/?ssl=true&replicaSet=atlas-iixcb4-shard-0&authSource=admin&retryWrites=true&w=majority", tlsCAFile=certifi.where())
+    else:
+        conn = MongoClient("mongodb://localhost:27017/?readPreference=primary&appname=MongoDB%20Compass&directConnection=true&ssl=false")
     return conn[db]
 
-def read_mongo(db, collection, query={}, host='localhost', port=27017, username=None, password=None, no_id=True):
+def read_mongo(db, collection,prod=False):
     """ Read from Mongo and Store into DataFrame """
 
 
     # Connect to MongoDB
-    db = _connect_mongo(host=host, port=port, username=username, password=password, db=db)
+    db = _connect_mongo(db,prod)
 
     # Make a query to the specific DB and Collection
     if (collection == "movies" or collection == "series"):
