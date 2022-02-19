@@ -3,14 +3,7 @@ from pymongo import MongoClient
 
 def _connect_mongo(host, port, username, password, db):
     """ A util for making a connection to mongo """
-
-    if username and password:
-        mongo_uri = 'mongodb://%s:%s@%s:%s/%s' % (username, password, host, port, db)
-        conn = MongoClient(mongo_uri)
-    else:
-        conn = MongoClient(host, port)
-
-
+    conn = MongoClient("mongodb://fyp:fyp_admin@cluster0-shard-00-02.p0vx1.mongodb.net:27017/?ssl=true&replicaSet=atlas-iixcb4-shard-0&authSource=admin&retryWrites=true&w=majority")
     return conn[db]
 
 def read_mongo(db, collection, query={}, host='localhost', port=27017, username=None, password=None, no_id=True):
