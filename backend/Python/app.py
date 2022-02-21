@@ -23,8 +23,8 @@ app = Flask(__name__)
 
 @app.route("/api/python/")
 def Main():
-    user = md.read_mongo("finalyearproject","users",True)
-    JSONP_data = jsonpify(list(user["email"]))
+    user = md.read_mongo("finalyearproject","movies",True)
+    JSONP_data = jsonpify(list(user["title"]))
     return JSONP_data
 
 @app.route("/api/python/movie/<string:title>")

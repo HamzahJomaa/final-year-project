@@ -21,11 +21,12 @@ def read_mongo(db, collection,prod=False):
     if (collection == "movies" or collection == "series"):
         pipeline = [
             {"$lookup":{"from": 'genres',"localField": 'genre_ids',"foreignField": 'tmdb',"as": 'genres'}},
-            {"$project":{"_id":"$_id","tmdb":"$tmdb","title": "$title","overview": "$overview","genres":"$genres.name","vote_count":"$vote_count","vote_average":"$vote_average","popularity": "$popularity","release_date": "$release_date",}}
+            {"$limit":500},
+            {"$project":{"_id":"$_id","tmdb":"$tmdb","title": "$title","overview": "$overview","genres":"$genres.name","vote_count":"$vote_count","vote_average":"$vote_average","popularity": "$popularity","release_date": "$release_date",}},
         ]
         cursor = db[collection].aggregate(pipeline)
     else:
-        cursor = db[collection].find({})
+        cursor = db[collection].find({}).limit(500)
 
     # Expand the cursor and construct the DataFrame
     df =  pd.DataFrame(list(cursor))
