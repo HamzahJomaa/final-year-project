@@ -50,6 +50,19 @@ router.get("/tmdb/genres",async (req,res)=>{
 })
 
 
+router.get("/delete/:table", async (req,res) =>{
+    let {table} = req.params
+
+    if (table === "movie"){
+        let movie = await Movie.deleteMany()
+        res.json(movie)
+    }else if (table === "series"){
+        let series = await Series.deleteMany()
+        res.json(series)
+    }
+})
+
+
 
 router.get("/movies/votes", async (req,res)=>{
     let movie = await Movie.updateMany({},{vote_count:0,vote_average:0})

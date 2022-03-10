@@ -7,7 +7,6 @@ const Mongoose = require("mongoose")
 exports.deleteReview = async (req, res) => {
     let {id} = req.params
     try {
-
         const deletedReview = await Review.findByIdAndDelete(id)
         if (deletedReview) {
             const avg_review = await Review.aggregate().match({on: Mongoose.Types.ObjectId(deletedReview.on)}).group({

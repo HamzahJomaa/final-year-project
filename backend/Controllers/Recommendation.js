@@ -17,7 +17,6 @@ exports.Movie = async (req,res) =>{
 
 exports.Genre = async (req,res) =>{
     let {genre} = req.params
-    console.log(genre)
     try{
         let recommendation_movie = await axios.get(`http://127.0.0.1:5000/api/python/movie/genre/${genre}`)
         let movies = await Movies.find({tmdb:recommendation_movie.data})

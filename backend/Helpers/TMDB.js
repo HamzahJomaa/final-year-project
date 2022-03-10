@@ -23,7 +23,7 @@ exports.UpdateGenres = async () => {
 
 
 exports.ImportMovies = async () =>{
-    for (let page = 1 ; page <= 501 ; page++) {
+    for (let page = 1 ; page <= 20 ; page++) {
         try{
             let tmdbResult = await axios.get("https://api.themoviedb.org/3/movie/top_rated?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
             tmdbResult.data.results.map( async element=>{
@@ -49,34 +49,6 @@ exports.ImportMovies = async () =>{
                 }else{
                     console.log("Already Added")
                 }
-
-                try{
-                    const addedItem = await client.send(new rqs.AddItem(element.id))
-                    if (addedItem === "ok"){
-                        const genres = await Genres.find({tmdb:element.genre_ids})
-
-                        const itemValues = await client.send(new rqs.SetItemValues(movie.tmdb, {
-                            title:element.title,
-                            vote_count: element.vote_count,
-                            vote_average: element.vote_average,
-                            overview: element.overview,
-                            genre: genres.map(e=>{return e.name})
-                        }, {timestamp: new Date(), cascadeCreate: true}));
-                    }
-                }catch(e){
-                    console.log("Item Exists on Recombee")
-                    if (e.statusCode === 409){
-                        const genres = await Genres.find({tmdb:element.genre_ids})
-                        const itemValues = await client.send(new rqs.SetItemValues(movie.tmdb, {
-                            title:element.title,
-                            vote_count: element.vote_count,
-                            vote_average: element.vote_average,
-                            overview: element.overview,
-                            genre: genres.map(e=>{return e.name})
-                        }, {timestamp: new Date(), cascadeCreate: true}));
-                    }
-                }
-
             })
         }catch(e){
             console.error(e)
@@ -106,9 +78,9 @@ exports.ImportCast = async () =>{
 
 
 exports.ImportSeries = async () =>{
-    for (let page = 1 ; page <= 1000 ; page++) {
+    for (let page = 1 ; page <= 30 ; page++) {
         try{
-            let tmdbResult = await axios.get("https://api.themoviedb.org/3/tv/top_rated?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
+            let tmdbResult = await axios.get("https://api.themoviedb.org/3/tv/popular?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
             tmdbResult.data.results.map( async element=>{
                 let series = await Series.findOne({tmdb:element.id})
                 if (!series){
