@@ -64,7 +64,13 @@ exports.SignIn = async (req,res) =>{
         const token = generateNewToken({username}, "24h")
         await User.updateOne({id:user.id},{token,lastSignIn:new Date()})
 
-        return res.status(200).json(DynamicMessage(200,"Signed In"))
+        return res.status(200).json(DynamicMessage(200,{
+            statusMessage:"Signed In",
+            user:{
+                id:user.id,
+                token
+            }
+        }))
     }catch(e){
         console.error(e)
         return res.status(500).json(InternalServerError)

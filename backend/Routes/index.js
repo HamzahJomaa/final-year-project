@@ -1,6 +1,6 @@
 const auth = require("./Auth")
 const helper = require("./helper")
-const movies = require("./Movie")
+const stream = require("./Stream")
 const review = require("./Review")
 const watchlist = require("./watchlist")
 const profile = require("./profile")
@@ -10,7 +10,7 @@ module.exports.Router = (app) => {
     app.use("/api/profile",profile)
     app.use("/api/watchlist",watchlist)
     app.use("/api/review",review)
-    app.use("/api/movie",movies)
+    app.use("/api/stream",stream)
     app.use("/helper",helper)
     app.use("/api/auth",auth)
 }

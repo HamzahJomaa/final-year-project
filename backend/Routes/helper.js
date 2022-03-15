@@ -65,7 +65,7 @@ router.get("/delete/:table", async (req,res) =>{
 
 
 router.get("/movies/votes", async (req,res)=>{
-    let movie = await Movie.updateMany({},{vote_count:0,vote_average:0})
+    let movie = await Series.updateMany({},{vote_count:0,vote_average:0})
     res.json(movie)
 })
 
