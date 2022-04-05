@@ -5,6 +5,8 @@ const review = require("./Review")
 const watchlist = require("./watchlist")
 const profile = require("./profile")
 const recommendation = require("./recommendation")
+const main = require("./main")
+
 module.exports.Router = (app) => {
     app.use("/api/recommendation",recommendation)
     app.use("/api/profile",profile)
@@ -13,4 +15,5 @@ module.exports.Router = (app) => {
     app.use("/api/stream",stream)
     app.use("/helper",helper)
     app.use("/api/auth",auth)
+    app.use("/api/",main)
 }

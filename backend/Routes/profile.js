@@ -5,8 +5,8 @@ const Auth = require("../Helpers/Middleware/Authenticated")
 
 const ProfileController = require("../Controllers/ProfileController.js")
 
+router.patch("/resetpassword",Auth,ProfileController.ResetPassword)
 router.get("/visited/:stream/:user",ProfileController.getProfileStream)
-router.post("/visit",ProfileController.saveUserFlow)
 router.patch("/update",Auth,ProfileController.updateProfile)
 router.get("/:userId",ProfileController.getProfile)
 

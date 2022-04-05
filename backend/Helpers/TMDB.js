@@ -3,6 +3,7 @@ const Movie = require("../Models/Movies")
 const Series = require("../Models/Series")
 const Genres = require("../Models/Genre")
 var recombee = require('recombee-api-client');
+const {InternalServerError} = require("../Constants/statusCodes");
 var rqs = recombee.requests;
 
 var client = new recombee.ApiClient('rhu-dev', "MjYXwZePh5D7275IAiDrivUSFsIMIS6YwMVMwgOhrJ2J9D89k1zEnPmt7GBDZcNg");
@@ -110,4 +111,10 @@ exports.ImportSeries = async () =>{
             console.log("Done: " +  page)
         }
     }
+}
+
+exports.getTMDB = async (stream,id,type) =>{
+    //credits
+    //images
+    return await axios.get(`https://api.themoviedb.org/3/${stream === "movie" ? "movie" : "tv"}/${id}/${type}?api_key=01a1a82396f4e0f7423e9a45bac71390`)
 }

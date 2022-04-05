@@ -2,18 +2,25 @@ import React, {useEffect, useState} from "react";
 
 import styles from '../styles/Home.module.css'
 import {GetHomePage} from "../api/Main"
+import Login from "../components/Login"
+import { Swiper, SwiperSlide } from 'swiper/react';
 
+import 'swiper/css';
+import Header from "../components/Header";
 
 
 export default function Home() {
 
-  const [movies,setMovies] = useState({})
+  const [movies,setMovies] = useState([])
+  const [series,setSeries] = useState([])
+
 
   useEffect(async ()=>{
     try {
       let data = await GetHomePage()
-      setMovies(data?.data?.data)
-      console.log(data.data.data)
+      setMovies(data?.data?.data.movies)
+      setSeries(data?.data?.data.series)
+
     }catch (e) {
       console.error(e)
     }
@@ -22,232 +29,13 @@ export default function Home() {
   return (
     <div className={styles.container}>
 
-      <div className="loading">
-        <div className="loading-inner">
-          <div className="loading-effect">
-            <div className="object"></div>
-          </div>
-        </div>
-      </div>
 
       <nav id="main-mobile-nav"></nav>
 
       <div className="wrapper">
 
 
-        <header className="header header-fixed header-transparent text-white">
-          <div className="container-fluid">
-
-
-            <nav className="navbar navbar-expand-lg">
-
-              <a className="navbar-brand" href="index-2.html">
-                <img src="assets/images/logo.svg" alt="logo" width="150" className="logo"/>
-                  <img src="assets/images/logo-white.svg" alt="white logo" width="150" className="logo-white" />
-              </a>
-
-              <button id="mobile-nav-toggler" className="hamburger hamburger--collapse" type="button">
-                       <span className="hamburger-box">
-                          <span className="hamburger-inner"></span>
-                       </span>
-              </button>
-
-
-              <div className="navbar-collapse" id="main-nav">
-
-
-                <ul className="navbar-nav mx-auto" id="main-menu">
-
-                  <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">Home</a>
-
-
-                    <ul className="dropdown-menu">
-
-                      <li>
-                        <a className="dropdown-item" href="index-2.html">Home Version 1</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="index2.html">Home Version 2</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="index3.html">Home Version 3</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="index4.html">Home Version 4</a>
-                      </li>
-
-                    </ul>
-                  </li>
-
-                  <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">Pages</a>
-
-                    <ul className="dropdown-menu">
-
-                      <li>
-                        <a className="dropdown-item" href="404.html">404 Page</a>
-                      </li>
-
-
-                      <li className="divider" role="separator"></li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="celebrities-list.html">celebrities list</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="celebrities-grid.html">celebrities grid</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="celebrity-detail.html">celebrity detail</a>
-                      </li>
-
-                      <li className="divider" role="separator"></li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="contact-us.html">Contact us</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="coming-soon.html">Coming soon</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="pricing.html">Pricing Plan</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="login-register.html">Login - Register</a>
-                      </li>
-
-
-                      <li>
-                        <a className="dropdown-item" href="testimonials.html">Testimonials</a>
-                      </li>
-                    </ul>
-                  </li>
-
-
-                  <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">Movies & TV Shows</a>
-
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a className="dropdown-item" href="movie-list.html">Movie List 1</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="movie-list2.html">Movie List 2</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="movie-grid.html">Movie Grid 1</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="movie-grid2.html">Movie Grid 2</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="movie-grid3.html">Movie Grid 3</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="movie-grid4.html">Movie Grid 4</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="movie-detail.html">Movie Detail</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="movie-detail2.html">Movie Detail 2</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="watch-later.html">Watch Later</a>
-                      </li>
-                    </ul>
-                  </li>
-
-                  <li className="nav-item dropdown">
-                    <a className="nav-link dropdown-toggle" href="#" data-toggle="dropdown" aria-haspopup="true"
-                       aria-expanded="false">Blog</a>
-
-                    <ul className="dropdown-menu">
-                      <li>
-                        <a className="dropdown-item" href="blog-list.html">Blog List</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="blog-list-fullwidth.html">Blog List Fullwidth</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="blog-post-detail.html">Blog Detail</a>
-                      </li>
-
-                      <li>
-                        <a className="dropdown-item" href="blog-post-detail-fullwidth.html">Blog Detail Fullwidth</a>
-                      </li>
-
-                    </ul>
-                  </li>
-
-                  <li className="nav-item">
-                    <a className="nav-link" href="contact-us.html">Contact us</a>
-                  </li>
-
-                </ul>
-
-
-                <ul className="navbar-nav extra-nav">
-
-                  <li className="nav-item">
-                    <a className="nav-link toggle-search" href="#">
-                      <i className="fa fa-search"></i>
-                    </a>
-                  </li>
-
-                  <li className="nav-item notification-wrapper">
-                    <a className="nav-link notification" href="#">
-                      <i className="fa fa-globe"></i>
-                      <span className="notification-count">2</span>
-                    </a>
-                  </li>
-
-                  <li className="nav-item m-auto">
-                    <a href="#login-register-popup" className="btn btn-main btn-effect login-btn popup-with-zoom-anim">
-                      <i className="icon-user"></i>login
-                    </a>
-                  </li>
-                </ul>
-
-              </div>
-            </nav>
-
-          </div>
-        </header>
-
-
+        <Header/>
         <section id="slider" className="full-slider">
           <div className="rev-slider-wrapper fullscreen-container overlay-gradient">
             <div id="fullscreen-slider" className="rev_slider fullscreenbanner" style={{display:"none"}}
@@ -378,53 +166,58 @@ export default function Home() {
                 </a>
               </div>
             </div>
+            <div className="mt20">
+              <Swiper
+                  spaceBetween={50}
+                  slidesPerView={3}
+                  onSlideChange={() => console.log('slide change')}
+                  onSwiper={(swiper) => console.log(swiper)}
+              >
+                {movies.length > 0 ? movies.map(element=>{
+                  return(
+                      <SwiperSlide>
+                        <div className="item">
+                          <div className="movie-box-1">
 
+                            <div className="poster">
+                              <img src={`https://image.tmdb.org/t/p/w185/${element.poster_path}`} alt=""/>
+                            </div>
 
-            <div className="owl-carousel latest-movies-slider mt20">
+                            <div className="buttons">
+                              <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
+                                <i className="fa fa-play"></i>
+                              </a>
+                            </div>
 
-              {movies.length > 0 ? movies.map(element=>{
-                return(
-                    <div className="item">
-                      <div className="movie-box-1">
+                            <div className="movie-details">
+                              <h4 className="movie-title">
+                                <a href={`/movies/${element.tmdb}/${element.title}`}>{element.title}</a>
+                              </h4>
+                              <span className="released">{element.release_date}</span>
+                            </div>
 
-                        <div className="poster">
-                          <img src="assets/images/posters/poster-1.jpg" alt=""/>
-                        </div>
-
-                        <div className="buttons">
-                          <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
-                            <i className="fa fa-play"></i>
-                          </a>
-                        </div>
-
-                        <div className="movie-details">
-                          <h4 className="movie-title">
-                            <a href="movie-detail.html">Star Wars</a>
-                          </h4>
-                          <span className="released">14 Dec 2017</span>
-                        </div>
-
-                        <div className="stars">
-                          <div className="rating">
-                            <i className="fa fa-star"></i>
-                            <i className="fa fa-star"></i>
-                            <i className="fa fa-star"></i>
-                            <i className="fa fa-star"></i>
-                            <i className="fa fa-star-o"></i>
+                            <div className="stars">
+                              <div className="rating">
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star-o"></i>
+                              </div>
+                              <span>{element.vote_average} / 5</span>
+                            </div>
                           </div>
-                          <span>7.5 / 10</span>
                         </div>
-
-                      </div>
-                    </div>
-                )
-              }):""}
+                      </SwiperSlide>
+                  )
+                }):""}
+              </Swiper>
             </div>
+
 
 
           </div>
         </section>
-
 
         <section className="upcoming-movies parallax ptb100"
                  data-background="assets/images/posters/movie-collection.jpg" data-color="#3e4555"
@@ -514,7 +307,6 @@ export default function Home() {
           </div>
         </section>
 
-
         <section className="latest-tvshows ptb100">
           <div className="container">
 
@@ -533,216 +325,53 @@ export default function Home() {
             </div>
 
 
-            <div className="owl-carousel latest-tvshows-slider mt20">
+            <div className="mt20">
 
-              <div className="item">
-                <div className="movie-box-1">
+              <Swiper
+                  spaceBetween={50}
+                  slidesPerView={3}
+                  onSlideChange={() => console.log('slide change')}
+                  onSwiper={(swiper) => console.log(swiper)}
+              >
+                {series.length > 0 ? series.map(element=>{
+                  return(
+                      <SwiperSlide>
+                        <div className="item">
+                          <div className="movie-box-1">
 
-                  <div className="poster">
-                    <img src="assets/images/posters/poster-5.jpg" alt="" />
-                  </div>
+                            <div className="poster">
+                              <img src={`https://image.tmdb.org/t/p/w185/${element.poster_path}`} alt=""/>
+                            </div>
 
-                  <div className="buttons">
-                    <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
-                      <i className="fa fa-play"></i>
-                    </a>
-                  </div>
+                            <div className="buttons">
+                              <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
+                                <i className="fa fa-play"></i>
+                              </a>
+                            </div>
 
-                  <div className="movie-details">
-                    <h4 className="movie-title">
-                      <a href="movie-detail.html">Daredevil</a>
-                    </h4>
-                    <span className="released">19 Apr 2015</span>
-                  </div>
+                            <div className="movie-details">
+                              <h4 className="movie-title">
+                                <a href="movie-detail.html">{element.title}</a>
+                              </h4>
+                              <span className="released">{element.release_date}</span>
+                            </div>
 
-                  <div className="stars">
-                    <div className="rating">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star-half-o"></i>
-                    </div>
-                    <span>8.7 / 10</span>
-                  </div>
-
-                </div>
-              </div>
-
-
-              <div className="item">
-                <div className="movie-box-1">
-
-                  <div className="poster">
-                    <img src="assets/images/posters/poster-6.jpg" alt="" />
-                  </div>
-
-                  <div className="buttons">
-                    <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
-                      <i className="fa fa-play"></i>
-                    </a>
-                  </div>
-
-                  <div className="movie-details">
-                    <h4 className="movie-title">
-                      <a href="movie-detail.html">Stranger Things</a>
-                    </h4>
-                    <span className="released">15 Jul 2016</span>
-                  </div>
-
-                  <div className="stars">
-                    <div className="rating">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star-half-o"></i>
-                    </div>
-                    <span>9 / 10</span>
-                  </div>
-
-                </div>
-              </div>
-
-
-              <div className="item">
-                <div className="movie-box-1">
-
-                  <div className="poster">
-                    <img src="assets/images/posters/poster-7.jpg" alt="" />
-                  </div>
-
-                  <div className="buttons">
-                    <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
-                      <i className="fa fa-play"></i>
-                    </a>
-                  </div>
-
-                  <div className="movie-details">
-                    <h4 className="movie-title">
-                      <a href="movie-detail.html">Luke Cage</a>
-                    </h4>
-                    <span className="released">30 Sep 2016</span>
-                  </div>
-
-                  <div className="stars">
-                    <div className="rating">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star-half-o"></i>
-                      <i className="fa fa-star-o"></i>
-                    </div>
-                    <span>7.6 / 10</span>
-                  </div>
-
-                </div>
-              </div>
-
-
-              <div className="item">
-                <div className="movie-box-1">
-
-                  <div className="poster">
-                    <img src="assets/images/posters/poster-8.jpg" alt="" />
-                  </div>
-
-                  <div className="buttons">
-                    <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
-                      <i className="fa fa-play"></i>
-                    </a>
-                  </div>
-
-                  <div className="movie-details">
-                    <h4 className="movie-title">
-                      <a href="movie-detail.html">The Flash</a>
-                    </h4>
-                    <span className="released">7 Oct 2014</span>
-                  </div>
-
-                  <div className="stars">
-                    <div className="rating">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star-o"></i>
-                    </div>
-                    <span>8 / 10</span>
-                  </div>
-
-                </div>
-              </div>
-
-
-              <div className="item">
-                <div className="movie-box-1">
-
-                  <div className="poster">
-                    <img src="assets/images/posters/poster-5.jpg" alt="" />
-                  </div>
-
-                  <div className="buttons">
-                    <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
-                      <i className="fa fa-play"></i>
-                    </a>
-                  </div>
-
-                  <div className="movie-details">
-                    <h4 className="movie-title">
-                      <a href="movie-detail.html">Daredevil</a>
-                    </h4>
-                    <span className="released">19 Apr 2015</span>
-                  </div>
-
-                  <div className="stars">
-                    <div className="rating">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star-half-o"></i>
-                    </div>
-                    <span>8.7 / 10</span>
-                  </div>
-
-                </div>
-              </div>
-
-
-              <div className="item">
-                <div className="movie-box-1">
-
-                  <div className="poster">
-                    <img src="assets/images/posters/poster-6.jpg" alt=""/>
-                  </div>
-
-                  <div className="buttons">
-                    <a href="https://www.youtube.com/watch?v=Q0CbN8sfihY" className="play-video">
-                      <i className="fa fa-play"></i>
-                    </a>
-                  </div>
-
-                  <div className="movie-details">
-                    <h4 className="movie-title">
-                      <a href="movie-detail.html">Stranger Things</a>
-                    </h4>
-                    <span className="released">15 Jul 2016</span>
-                  </div>
-
-                  <div className="stars">
-                    <div className="rating">
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star"></i>
-                      <i className="fa fa-star-half-o"></i>
-                    </div>
-                    <span>9 / 10</span>
-                  </div>
-
-                </div>
-              </div>
+                            <div className="stars">
+                              <div className="rating">
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star"></i>
+                                <i className="fa fa-star-o"></i>
+                              </div>
+                              <span>{element.vote_average} / 5</span>
+                            </div>
+                          </div>
+                        </div>
+                      </SwiperSlide>
+                  )
+                }):""}
+              </Swiper>
 
             </div>
 
@@ -1262,136 +891,6 @@ export default function Home() {
           <input type="text" placeholder="Type and hit enter..." />
             <span id="general-search-close" className="ti-close toggle-search"></span>
         </form>
-      </div>
-
-      <div id="login-register-popup" className="small-dialog zoom-anim-dialog mfp-hide">
-
-        <div className="signin-wrapper">
-          <div className="small-dialog-headline">
-            <h4 className="text-center">Sign in</h4>
-          </div>
-
-
-          <div className="small-dialog-content">
-
-            <form id="cariera_login" method="post">
-              <p className="status"></p>
-
-              <div className="form-group">
-                <label htmlFor="username">Username or Email *</label>
-                <input type="text" className="form-control" id="username" name="username"
-                       placeholder="Your Username or Email *"/>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password *</label>
-                <input type="password" className="form-control" id="password" name="password"
-                       placeholder="Your Password *"/>
-              </div>
-
-              <div className="form-group">
-                <div className="checkbox pad-bottom-10">
-                  <input id="check1" type="checkbox" name="remember" value="yes"/>
-                    <label htmlFor="check1">Keep me signed in</label>
-                </div>
-              </div>
-
-              <div className="form-group">
-                <input type="submit" value="Sign in" className="btn btn-main btn-effect nomargin"/>
-              </div>
-            </form>
-
-            <div className="bottom-links">
-                    <span>
-                        Not a member?
-                        <a className="signUpClick">Sign up</a>
-                    </span>
-              <a className="forgetPasswordClick pull-right">Forgot Password</a>
-            </div>
-          </div>
-
-        </div>
-
-        <div className="signup-wrapper">
-          <div className="small-dialog-headline">
-            <h4 className="text-center">Sign Up</h4>
-          </div>
-
-          <div className="small-dialog-content">
-
-            <form id="cariera_registration" action="#" method="POST">
-              <p className="status"></p>
-
-              <div className="form-group">
-                <label htmlFor="movify_user_login">Username</label>
-                <input name="movify_user_login" id="movify_user_login" className="form-control" type="text"/>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="movify_user_email">Email</label>
-                <input name="movify_user_email" id="movify_user_email" className="form-control" type="email"/>
-              </div>
-
-              <div className="form-group">
-                <label htmlFor="password">Password</label>
-                <input name="movify_user_pass" id="movify_password" className="form-control" type="password"/>
-              </div>
-
-              <div className="form-group">
-                <input type="submit" className="btn btn-main btn-effect nomargin" value="Register"/>
-              </div>
-            </form>
-
-            <div className="bottom-links">
-                    <span>
-                        Already have an account?
-                        <a className="signInClick">Sign in</a>
-                    </span>
-
-              <a className="forgetPasswordClick pull-right">Forgot Password</a>
-            </div>
-
-
-          </div>
-
-
-          <div className="forgetpassword-wrapper">
-            <div className="small-dialog-headline">
-              <h4 className="text-center">Forgotten Password</h4>
-            </div>
-
-            <div className="small-dialog-content">
-
-              <form readonly id="forget_pass_form" action="#" method="post">
-                <p className="status"></p>
-
-                <div className="form-group">
-                  <label htmlFor="password">Email Address *</label>
-                  <input type="email" name="user_login" className="form-control" id="email3"
-                         placeholder="Email Address *"/>
-                </div>
-
-                <div className="form-group">
-                  <input type="submit" name="submit" value="Get New Password"
-                         className="btn btn-main btn-effect nomargin"/>
-                </div>
-              </form>
-
-              <div className="bottom-links">
-                <a className="cancelClick">Cancel</a>
-              </div>
-
-
-            </div>
-
-          </div>
-
-
-          <div id="backtotop">
-            <a href="#"></a>
-          </div>
-
-        </div>
       </div>
     </div>
   )

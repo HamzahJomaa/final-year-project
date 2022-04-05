@@ -64,13 +64,10 @@ exports.SignIn = async (req,res) =>{
         const token = generateNewToken({username}, "24h")
         await User.updateOne({id:user.id},{token,lastSignIn:new Date()})
 
-        return res.status(200).json(DynamicMessage(200,{
-            statusMessage:"Signed In",
-            user:{
+        return res.status(200).json({statusCode: 200, statusMessage:"Logged In", user:{
                 id:user.id,
                 token
-            }
-        }))
+            }})
     }catch(e){
         console.error(e)
         return res.status(500).json(InternalServerError)
@@ -93,10 +90,8 @@ exports.Confirmation = async (req,res) =>{
 }
 
 exports.SignUp = async (req,res) =>{
-    var client = new recombee.ApiClient('rhu-dev', "MjYXwZePh5D7275IAiDrivUSFsIMIS6YwMVMwgOhrJ2J9D89k1zEnPmt7GBDZcNg");
 
     let {user} = req.body
-
     let checkUser = await User.find({$or:[{username:user.username},{email:user.email}]})
 
     if (checkUser.length > 0){
@@ -109,8 +104,7 @@ exports.SignUp = async (req,res) =>{
         let token = generateSignUpToken({username: user.username})
         addedUser.token = token
         await addedUser.save()
-        sendConfirmation({user:addedUser})
-        client.send(new rqs.AddUser(addedUser._id))
+        // sendConfirmation({user:addedUser})
         return res.status(200).json(addedUser)
     }catch(e){
         console.error(e)
@@ -119,8 +113,8 @@ exports.SignUp = async (req,res) =>{
         }
         return res.status(500).json(InternalServerError)
     }
-
 }
+
 
 
 

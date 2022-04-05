@@ -2,18 +2,296 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="a1cba557-7b46-4879-a634-864794cba92d" name="Changes" comment="">
-      <change afterPath="$PROJECT_DIR$/assets/css/custom.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../backend/Routes/main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/.idea/modules.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/api/Auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/api/Main.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/api/config.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/components/HeaderComponent.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/components/LoginComponent.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/components/Script.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/pages/movie.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/ajax-loader.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/fancybox_loading.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/fancybox_loading@2x.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/fancybox_overlay.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/fancybox_sprite.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/fancybox_sprite@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/logo1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/close.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/close@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/default.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/loading.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/loading@2x.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/next.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/next@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/prev.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/nivo/prev@2x.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/owl.video.play.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/triangle.gif" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ads1.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ads2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/author.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/author2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/author3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/author4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ava1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ava2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ava3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ava4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blog-detail.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blog-detail2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blog-it1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blog-it2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blog26.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blog27.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blog29.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/bloglist-it1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/bloglist-it2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/bloglist-it3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/bloglist-it4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/bloglist-it5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/bloglist-it6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blogv21.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blogv22.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blogv23.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blogv24.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blogv25.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/blogv29.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cast9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb21.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb22.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb23.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb24.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb25.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb26.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb27.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb28.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb29.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceb9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ceblist8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cebsingle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cebsingle2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/celeb-hero-single.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/celebsingle.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/cm-img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/drop-icon.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/err-img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/error-bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/film8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/ft-bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/heart-ico.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/hero-bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/hero-bg2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/hero-bg3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image1-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image101.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image111.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image121.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image131.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image14.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image141.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image15.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image151.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image16.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image161.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image17.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image171.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image18.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image181.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image19.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image191.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image2-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image20.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image201.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image21.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image211.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image31.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image41.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image51.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image61.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image71.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image81.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/image91.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/media-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/media-2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/media-3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/movie-single.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-it9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv-item9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/mv5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/play-btn.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/play-vd.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/poster1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt10.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt11.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt12.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt13.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt14.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt15.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/pt9.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/search-bg.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/search-bgsb.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/season.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/series-img.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/share-ico.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/slider-bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/slider-bg2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/slider-rate.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/slider1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/slider2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/slider3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/slider4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/sr-single-1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/sr-single-2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/sr-single-3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/sr-single.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/topsearch.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/trailer2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/trailer2.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/trailer3.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/trailer4.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/trailer5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/trailer6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/trailer7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/user-hero-bg.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/user-img.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/user-img.png" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/userava1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/userava2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/userava3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/userava4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/userava5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item3.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item4.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item5.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item6.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item7.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-item8.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-itme1.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/images/uploads/vd-itme2.jpg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/js/custom.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/js/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/js/plugins.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/js/plugins2.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/plugins.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/public/style.css" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/redux/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/redux/reducers/Profile.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/FontAwesome.otf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/fontawesome-webfont.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/fontawesome-webfont.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/fontawesome-webfont.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/fontawesome-webfont.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/fontawesome-webfont.woff2" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/ionicons.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/ionicons.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/ionicons.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/slick.eot" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/slick.svg" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/slick.ttf" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../frontend-new/styles/fonts/slick.woff" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/movie-detail.html" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/api/Auth.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/components/FooterComponent.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/components/Header.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/components/Login.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/pages/login.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/pages/movies/[id]/[title].jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/public/assets/js/jquery.js" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/redux/index.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/redux/reducers/Profile.jsx" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/../nextjs/styles/css/custom.module.scss" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../Application" beforeDir="false" afterPath="$PROJECT_DIR$/../Application" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/.env" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/.env" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/Controllers/RefController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Controllers/StreamController.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/Routes/Movie.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Routes/Stream.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/../backend/Routes/helper.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Routes/helper.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/Controllers/AuthController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Controllers/AuthController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/Controllers/IndexController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Controllers/IndexController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/Controllers/StreamController.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Controllers/StreamController.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../backend/Routes/Auth.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Routes/Auth.js" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/../backend/Routes/index.js" beforeDir="false" afterPath="$PROJECT_DIR$/../backend/Routes/index.js" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie-detail.html" beforeDir="false" afterPath="$PROJECT_DIR$/movie-detail.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie-grid.html" beforeDir="false" afterPath="$PROJECT_DIR$/movies.html" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie-grid2.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie-grid3.html" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/movie-grid4.html" beforeDir="false" afterPath="$PROJECT_DIR$/series.html" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nextjs/api/Main.js" beforeDir="false" afterPath="$PROJECT_DIR$/../nextjs/api/Main.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nextjs/components/HeadComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nextjs/components/HeadComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nextjs/components/ScriptComponent.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nextjs/components/ScriptComponent.jsx" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nextjs/package-lock.json" beforeDir="false" afterPath="$PROJECT_DIR$/../nextjs/package-lock.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nextjs/package.json" beforeDir="false" afterPath="$PROJECT_DIR$/../nextjs/package.json" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nextjs/pages/_app.js" beforeDir="false" afterPath="$PROJECT_DIR$/../nextjs/pages/_app.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/../nextjs/pages/index.jsx" beforeDir="false" afterPath="$PROJECT_DIR$/../nextjs/pages/index.jsx" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -47,6 +325,7 @@
       <option name="presentableId" value="Default" />
       <updated>1646955825014</updated>
       <workItem from="1646955826269" duration="2000" />
+      <workItem from="1647961999261" duration="30000" />
     </task>
     <servers />
   </component>

@@ -1,10 +1,27 @@
 const User = require("../Models/User")
+const bcrypt = require("bcryptjs")
 const {InternalServerError, RetrievedData, NoContent, UserExists} = require("../Constants/statusCodes");
+const jwt = require("jsonwebtoken")
 
 const StreamUser = require("../Models/StreamUser")
 const {mongo} = require("mongoose");
 
-
+exports.ResetPassword = async (req,res) =>{
+    const {oldpassword,newpassword,userId} = req.body
+    try{
+        const user = await User.findById(userId)
+        const checkPassword = await bcrypt.compare(oldpassword,user.password)
+        if (checkPassword){
+            let hashedPassword = await bcrypt.hash(newpassword,12)
+            user.password = hashedPassword
+            await user.save()
+        }
+        console.log(checkPassword)
+    }catch(e){
+        console.error(e)
+        return res.status(500).json(InternalServerError)
+    }
+}
 
 
 exports.getTopMoviesUponVisit = async (req,res) =>{
@@ -45,20 +62,7 @@ exports.getProfileStream = async (req,res) =>{
 
 }
 
-exports.saveUserFlow = async (req,res) =>{
-    let {visit} = req.body
 
-    try{
-        let added = await StreamUser.create(visit)
-        if (added){
-            return res.status(200).json(RetrievedData(200,added))
-        }
-        return res.status(204).json(NoContent)
-    }catch(e){
-        console.error(e)
-        return res.status(500).json(InternalServerError)
-    }
-}
 
 exports.updateProfile = async (req,res) =>{
     let {profile} = req.body
@@ -67,6 +71,7 @@ exports.updateProfile = async (req,res) =>{
         if (checkUser.length !== 0){
             return res.status(UserExists.statusCode).json(UserExists)
         }
+        console.log(req.body)
         let updatedUser = await User.updateOne({_id:profile.id},{...profile})
         if (updatedUser.modifiedCount === 1 &&  updatedUser.matchedCount === 1){
             return res.status(200).json(RetrievedData(200,profile))
@@ -80,8 +85,7 @@ exports.updateProfile = async (req,res) =>{
 
 exports.getProfile = async (req,res) =>{
     let {userId} = req.params
-
-
+    
     try{
         let user = await User.findById(userId)
         if (user){

@@ -7,12 +7,13 @@ exports.sendConfirmation = ({user}) => {
         to: `${user.email}`,
         subject: `FYP Confirmation Email`,
         template: "confirmationemail",
-        'v:fullname': user.firstName + " " + user.lastName,
+        'v:fullname': user.username,
         'v:confrimationLink': `${process.env.ENVIROMENT === "dev" ? process.env.HOST_DEV : process.env.HOST_PROD}/login?userid=${user.token}`,
     };
     return mg.messages()
         .send(data)
         .then(res => {
+            console.log(res)
             return true
         })
         .catch(err => {

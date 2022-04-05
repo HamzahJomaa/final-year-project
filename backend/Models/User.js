@@ -1,14 +1,16 @@
 const {Schema, model} = require("mongoose")
 const Nationality = require("./Nationality")
+const Movies = require("./Movies")
+const Series = require("./Series")
 
 const UserSchema = new Schema({
     firstName: {
         type: String,
-        required: [true, "First Name is Required"]
+        required: [false, "First Name is Required"]
     },
     lastName: {
         type: String,
-        required: [true, "Last Name is Required"]
+        required: [false, "Last Name is Required"]
     },
     username: {
         type: String,
@@ -25,13 +27,13 @@ const UserSchema = new Schema({
     phoneNumber: {
         type: String,
     },
-    DOB: {
+    dob: {
         type: Date,
-        required: [true, "Last Name is Required"]
+        required: [false, "Last Name is Required"]
     },
     email: {
         type: String,
-        required: [true, "Last Name is Required"]
+        required: [false, "Last Name is Required"]
     },
     status: {
         type: Boolean,
@@ -52,7 +54,15 @@ const UserSchema = new Schema({
     },
     resetToken:{
         type: String
-    }
+    },
+    movies_watched:[{
+        ref: Movies,
+        type: Schema.Types.ObjectId,
+    }],
+    series_watched:[{
+        ref: Series,
+        type: Schema.Types.ObjectId,
+    }],
 },{ timestamps: true })
 
 module.exports = model("Users", UserSchema)
