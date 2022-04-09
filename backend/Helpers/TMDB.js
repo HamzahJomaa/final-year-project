@@ -24,9 +24,9 @@ exports.UpdateGenres = async () => {
 
 
 exports.ImportMovies = async () =>{
-    for (let page = 1 ; page <= 20 ; page++) {
+    for (let page = 1 ; page <= 40 ; page++) {
         try{
-            let tmdbResult = await axios.get("https://api.themoviedb.org/3/movie/top_rated?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
+            let tmdbResult = await axios.get("https://api.themoviedb.org/3/movie/popular?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
             tmdbResult.data.results.map( async element=>{
                 let movie = await Movie.findOne({tmdb:element.id})
                 if (!movie){

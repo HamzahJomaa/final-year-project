@@ -1,12 +1,13 @@
 import React, {useEffect, useState} from 'react';
 import HeroComponent from "../components/HeroComponent";
 import {ListStream} from "../api/Main";
-import Pagination from '@mui/material/Pagination';
 import {to_slug} from "../helpers/contenthelper"
+import Pagination from '@mui/material/Pagination';
+import Image from "next/image"
 import ImageComponent from "../helpers/ImageComponent";
 
-const Series = () => {
-    const [series,setSeries] = useState([])
+const SearchComponent = ({data}) => {
+    const [movies,setMovies] = useState([])
     const [metadata,setMetaData] = useState([])
     const [perPage,setPerPage] = useState(20)
     const [page,setPage] = useState(1)
@@ -18,15 +19,14 @@ const Series = () => {
     const pageHandler = (event, value) => {
         setPage(value);
     };
-
     const [loading,setLoading] = useState(false)
 
     useEffect(async ()=>{
         setLoading(true)
         try {
-            let series = await ListStream("series",page,perPage)
-            setMetaData(series?.data?.metadata)
-            setSeries(series?.data?.data)
+            let movies = await ListStream("movie",page,perPage)
+            setMetaData(movies?.data?.metadata)
+            setMovies(movies?.data?.data)
         }catch (e) {
             console.error(e)
         }finally {
@@ -35,13 +35,13 @@ const Series = () => {
     },[perPage,page])
     return (
         <div>
-            <HeroComponent type={"common-hero"} title={"Tv Shows Listing"} location={["home","tv show"]} />
+            <HeroComponent type={"common-hero"} title={"Movie Listing"} location={["home","movies"]} />
             <div className="page-single">
                 <div className="container">
                     <div className="row ipad-width">
                         <div className="col-md-8 col-sm-12 col-xs-12">
                             <div className="topbar-filter">
-                                <p>Found <span>{metadata[0]?.total} series</span> in total</p>
+                                <p>Found <span>{metadata[0]?.total} movies</span> in total</p>
                                 <label>Sort by:</label>
                                 <select>
                                     <option value="popularity">Popularity Descending</option>
@@ -55,20 +55,20 @@ const Series = () => {
                                 <a href="moviegrid.html" className="grid"><i className="ion-grid active"></i></a>
                             </div>
                             <div className="flex-wrap-movielist">
-                                {series.length > 0 && !loading ? series.map((item,index)=>(
+                                {movies.length > 0 && !loading ? movies.map((item,index)=>(
                                     <div key={index} className="movie-item-style-2 movie-item-style-1">
-                                        <ImageComponent src={`https://image.tmdb.org/t/p/w342/${item.poster_path}`} alt="I'm a lazy image"
+                                        <ImageComponent src={`https://image.tmdb.org/t/p/w342/${item?.poster_path}`} alt="I'm a lazy image"
                                                         width="600"
                                                         loading={"eager"}
                                                         height="800"
                                                         placeholder="blur" blurDataURL="/images/owl.video.play.png"  />
                                         <div className="hvr-inner">
-                                            <a href={`./series/${item?.tmdb}/${to_slug(item?.title)}`}> Read more <i
+                                            <a href={`./movie/${item?.tmdb}/${to_slug(item?.title)}`}> Read more <i
                                                 className="ion-android-arrow-dropright"></i> </a>
                                         </div>
                                         <div className="mv-item-infor">
-                                            <h6><a href="#">{item.title}</a></h6>
-                                            <p className="rate"><i className="ion-android-star"></i><span>{item.vote_average.toFixed(1)}</span> /5
+                                            <h6><a href="#">{item?.title}</a></h6>
+                                            <p className="rate"><i className="ion-android-star"></i><span>{item?.vote_average.toFixed(1)}</span> /5
                                             </p>
                                         </div>
                                     </div>
@@ -76,16 +76,15 @@ const Series = () => {
 
                             </div>
                             <div className="topbar-filter">
-                                <label>series per page:</label>
+                                <label>Movies per page:</label>
                                 <select onChange={perPageHandler}>
-                                    <option value="5">5 series</option>
-                                    <option value="10">10 series</option>
-                                    <option value="15">15 series</option>
-                                    <option selected value="20">20 series</option>
-                                    <option value="25">25 series</option>
-                                    <option value="50">50 series</option>
-                                    <option value="100">100 series</option>
-
+                                    <option value="5">5 Movies</option>
+                                    <option value="10">10 Movies</option>
+                                    <option value="15">15 Movies</option>
+                                    <option selected value="20">20 Movies</option>
+                                    <option value="25">25 Movies</option>
+                                    <option value="50">50 Movies</option>
+                                    <option value="100">100 Movies</option>
                                 </select>
 
                                 <div className="pagination2">
@@ -175,4 +174,4 @@ const Series = () => {
     );
 };
 
-export default Series;
+export default SearchComponent;

@@ -45,6 +45,15 @@ const theme = createTheme({
                     fontWeight: 600
                 }
             }
+        },
+        MuiButtonBase:{
+            styleOverrides:{
+                root:{
+                    "&:hover":{
+                        backgroundColor: "#020d18 !important" 
+                    }
+                }
+            }
         }
     },
 })

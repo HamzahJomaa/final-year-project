@@ -9,7 +9,7 @@ import LoginComponent from "../components/LoginComponent";
 import HeaderComponent from "../components/HeaderComponent";
 import HeadComponent from "../components/HeadComponent";
 
-
+import SwiperSlider from "../components/SwiperSlider";
 
 import {useState,useEffect} from "react";
 import SwiperComponent from "../components/Swiper";
@@ -23,7 +23,7 @@ export default function Home() {
     useEffect(async ()=>{
         try {
             let data = await GetHomePage()
-            setMovies(data?.data?.data.movies)
+            setMovies(data?.data?.data?.movies)
             setSeries(data?.data?.data.series)
             console.log(data)
         }catch (e) {
@@ -33,20 +33,8 @@ export default function Home() {
 
     return (
         <div className={styles.container}>
-
-            <div className="slider movie-items">
-                <div className="container">
-                    <div className="row">
-                        <div className="social-link">
-                            <p>Follow us: </p>
-                            <a href="#"><i className="ion-social-facebook"></i></a>
-                            <a href="#"><i className="ion-social-twitter"></i></a>
-                            <a href="#"><i className="ion-social-googleplus"></i></a>
-                            <a href="#"><i className="ion-social-youtube"></i></a>
-                        </div>
-                        <SwiperComponent slidePerView={4} spaceBetween={50} items={movies} />
-                    </div>
-                </div>
+            <div className="slider sliderv2">
+                <SwiperSlider items={movies} />
             </div>
             <div className="movie-items">
                 <div className="container">

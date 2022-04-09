@@ -7,9 +7,9 @@ import ReviewsComponent from "../../../components/ReviewsComponent";
 import RecommendationComponent from '../../../components/RecommendationSection';
 import LastReview from '../../../components/LastReview';
 
-const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review_count,trailer}) => {
+const MoviePage = ({ id, series, recommendation, cast, images, last_review,review_count}) => {
     const router = useRouter()
-    const [release, setRelease] = useState(new Date(movie.date))
+    const [release, setRelease] = useState(new Date(series.date))
     const [director, setDirector] = useState(...cast.crew.filter(e => e.job === "Director"))
     const [writer, setWriter] = useState(...cast.crew.filter(e => e.job === "Writer"))
     const [reviews, setReviews] = useState([])
@@ -24,7 +24,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
 
     const handleTicket = async () => {
         try {
-            let result = await BuyTicket({ StreamModel: "Movies", Stream: movie._id, userId: profile, token })
+            let result = await BuyTicket({ StreamModel: "Movies", Stream: series._id, userId: profile, token })
             console.log(result)
         } catch (e) {
             console.error(e)
@@ -34,8 +34,8 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
     useEffect(async () => {
         try {
             if (profile) {
-                await VisitedStream({ StreamModel: "Movies", Stream: movie._id, userId: profile, token })
-                let watched = await CheckWatched({profile,ref:movie._id,token})
+                await VisitedStream({ StreamModel: "Series", Stream: series._id, userId: profile, token })
+                let watched = await CheckWatched({profile,ref:series._id,token})
                 setIsWatched(watched.data)
             }
         } catch (error) {
@@ -48,18 +48,18 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
 
     return (
         <>
-            <HeroComponent type={"mv-single-hero"} bgimg={movie?.backdrop_path} />
+            <HeroComponent type={"mv-single-hero"} bgimg={series?.backdrop_path} />
             <div className="page-single movie-single movie_single">
                 <div className="container">
                     <div className="row ipad-width2">
                         <div className="col-md-4 col-sm-12 col-xs-12">
                             <div className="movie-img sticky-sb">
-                                <img src={`https://image.tmdb.org/t/p/w342/${movie?.poster_path}`} alt="" />
+                                <img src={`https://image.tmdb.org/t/p/w342/${series?.poster_path}`} alt="" />
                                 <div className="movie-btn">
                                     <div className="btn-transform transform-vertical red">
                                         <div><a href="#" className="item item-1 redbtn"> <i
                                             className="ion-play"></i> Watch Trailer</a></div>
-                                        <div><a href={`https://www.youtube.com/embed/${trailer}?&autoplay=1`}
+                                        <div><a href="https://www.youtube.com/embed/o-0hcF97wy0"
                                             className="item item-2 redbtn fancybox-media hvr-grow"><i
                                                 className="ion-play"></i></a></div>
                                     </div>
@@ -74,7 +74,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                         </div>
                         <div className="col-md-8 col-sm-12 col-xs-12">
                             <div className="movie-single-ct main-content">
-                                <h1 className="bd-hd">{movie?.title} <span>{release.getFullYear()}</span></h1>
+                                <h1 className="bd-hd">{series?.title} <span>{release.getFullYear()}</span></h1>
                                 <div className="social-btn">
                                     <a href="#" className="parent-btn"><i className="ion-heart"></i> Add to Favorite</a>
                                     <div className="hover-bnt">
@@ -91,17 +91,17 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                 <div className="movie-rate">
                                     <div className="rate">
                                         <i className="ion-android-star"></i>
-                                        <p><span>{movie?.vote_average.toFixed(0)}</span> /5<br />
-                                            <span className="rv">{movie?.vote_count} Reviews</span>
+                                        <p><span>{series?.vote_average.toFixed(0)}</span> /5<br />
+                                            <span className="rv">{series?.vote_count} Reviews</span>
                                         </p>
                                     </div>
                                     <div className="rate-star">
                                         <p>Rate This Movie: </p>
-                                        <i className={`${movie?.vote_average >= 1 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
-                                        <i className={`${movie?.vote_average >= 2 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
-                                        <i className={`${movie?.vote_average >= 3 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
-                                        <i className={`${movie?.vote_average >= 4 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
-                                        <i className={`${movie?.vote_average >= 5 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
+                                        <i className={`${series?.vote_average >= 1 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
+                                        <i className={`${series?.vote_average >= 2 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
+                                        <i className={`${series?.vote_average >= 3 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
+                                        <i className={`${series?.vote_average >= 4 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
+                                        <i className={`${series?.vote_average >= 5 ? "ion-ios-star" : "ion-ios-star-outline"} `}></i>
                                     </div>
                                 </div>
                                 <div className="movie-tabs">
@@ -117,7 +117,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                             <div id="overview" className="tab active">
                                                 <div className="row">
                                                     <div className="col-md-8 col-sm-12 col-xs-12">
-                                                        <p>{movie?.overview}</p>
+                                                        <p>{series?.overview}</p>
                                                         <div className="title-hd-sm">
                                                             <h4>Videos & Photos</h4>
                                                             <a href="#" className="time">All 5 Videos & 245 Photos <i
@@ -168,7 +168,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                                         </div>
                                                         <div className="sb-it">
                                                             <h6>Genres:</h6>
-                                                            <p>{movie?.genres}</p>
+                                                            <p>{series?.genres}</p>
                                                         </div>
                                                         <div className="sb-it">
                                                             <h6>Release Date:</h6>
@@ -184,7 +184,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                                     </div>
                                                 </div>
                                             </div>
-                                            <ReviewsComponent review_count={review_count} id={movie._id} title={movie.title} />
+                                            <ReviewsComponent review_count={review_count} id={series._id} title={series.title} />
                                             <div id="cast" className="tab">
                                                 <div className="row">
                                                     <h3>Cast & Crew of</h3>
@@ -471,25 +471,24 @@ export default MoviePage;
 
 export const getServerSideProps = async ({ req, res, resolvedUrl }) => {
     const id = resolvedUrl.split("/")[2]
-    let movie
+    let series
     try {
-        movie = await getStream("movies", id)
+        series = await getStream("series", id)
 
     } catch (e) {
-        movie = ""
+        series = ""
         console.error(e)
     }
 
     return {
         props: {
             id,
-            movie: movie?.data?.data,
-            recommendation: movie?.data?.recommended_movies,
-            cast: movie?.data?.cast,
-            images: movie?.data?.images,
-            last_review: movie?.data?.last_review,
-            review_count: movie?.data?.review_count,
-            trailer: movie?.data?.trailer
+            series: series?.data?.data,
+            recommendation: series?.data?.recommended_movies,
+            cast: series?.data?.cast,
+            images: series?.data?.images,
+            last_review: series?.data?.last_review,
+            review_count: series?.data?.review_count
         }
     }
 }

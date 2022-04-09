@@ -3,6 +3,8 @@ import HeroComponent from "../components/HeroComponent";
 import {ListStream} from "../api/Main";
 import {to_slug} from "../helpers/contenthelper"
 import Pagination from '@mui/material/Pagination';
+import Image from "next/image"
+import ImageComponent from "../helpers/ImageComponent";
 
 const Movies = () => {
     const [movies,setMovies] = useState([])
@@ -17,19 +19,23 @@ const Movies = () => {
     const pageHandler = (event, value) => {
         setPage(value);
     };
+    const [loading,setLoading] = useState(false)
 
     useEffect(async ()=>{
+        setLoading(true)
         try {
             let movies = await ListStream("movie",page,perPage)
             setMetaData(movies?.data?.metadata)
             setMovies(movies?.data?.data)
         }catch (e) {
             console.error(e)
+        }finally {
+            setLoading(false)
         }
     },[perPage,page])
     return (
         <div>
-            <HeroComponent type={"common-hero"} title={"Movie Listing"} location={["home","movies"]} />
+            <HeroComponent type={"common-hero"} title={"Movie Listing"} bgimg={"slider-bg.jpeg"} location={["home","movies"]} />
             <div className="page-single">
                 <div className="container">
                     <div className="row ipad-width">
@@ -49,9 +55,13 @@ const Movies = () => {
                                 <a href="moviegrid.html" className="grid"><i className="ion-grid active"></i></a>
                             </div>
                             <div className="flex-wrap-movielist">
-                                {movies.length > 0 ? movies.map(item=>(
-                                    <div className="movie-item-style-2 movie-item-style-1">
-                                        <img src={`https://image.tmdb.org/t/p/w342/${item?.poster_path}`} alt="" />
+                                {movies.length > 0 && !loading ? movies.map((item,index)=>(
+                                    <div key={index} className="movie-item-style-2 movie-item-style-1">
+                                        <ImageComponent src={`https://image.tmdb.org/t/p/w342/${item?.poster_path}`} alt="I'm a lazy image"
+                                                        width="600"
+                                                        loading={"eager"}
+                                                        height="800"
+                                                        placeholder="blur" blurDataURL="/images/owl.video.play.png"  />
                                         <div className="hvr-inner">
                                             <a href={`./movie/${item?.tmdb}/${to_slug(item?.title)}`}> Read more <i
                                                 className="ion-android-arrow-dropright"></i> </a>
@@ -75,7 +85,6 @@ const Movies = () => {
                                     <option value="25">25 Movies</option>
                                     <option value="50">50 Movies</option>
                                     <option value="100">100 Movies</option>
-
                                 </select>
 
                                 <div className="pagination2">

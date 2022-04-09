@@ -4281,6 +4281,10 @@ ul {
     margin: 0 auto;
   }
 }
+
+.mv-item-infor{
+  padding-left: 2rem;
+}
 .movie-item-style-2 .mv-item-infor h6 {
   margin-bottom: 10px;
 }
@@ -7139,10 +7143,13 @@ p.ceb-single {
   text-align: right;
 }
 .sliderv2 {
-  background: url('./images/uploads/slider-bg2.jpg') no-repeat;
+  background: url('/slider-bg.jpeg') no-repeat;
   padding-bottom: 0;
   padding-top: 180px;
   overflow: hidden;
+}
+.mv-img-2{
+  padding-bottom: 2rem;
 }
 .sliderv2 .movie-item .title-in {
   text-align: left;
@@ -8149,7 +8156,7 @@ header#headerv3-light {
   }
 }
 footer {
-  background: url('./images/uploads/ft-bg.jpg') no-repeat;
+  background: url('/slider-bg.jpeg') no-repeat;
   background-position: center;
   background-size: cover;
 }

@@ -1,10 +1,36 @@
 const User = require("../Models/User")
 const bcrypt = require("bcryptjs")
-const {InternalServerError, RetrievedData, NoContent, UserExists} = require("../Constants/statusCodes");
+const {InternalServerError, RetrievedData, NoContent, UserExists, DynamicMessage, AnErrorOccured} = require("../Constants/statusCodes");
 const jwt = require("jsonwebtoken")
 
 const StreamUser = require("../Models/StreamUser")
 const {mongo} = require("mongoose");
+
+
+exports.isWatched = async (req,res) => {
+   let {userid,ref} = req.headers
+   try{
+       const user = await User.findById(userid)
+        res.send(user.movies_watched.includes(ref))
+    }catch(e){
+       console.error(e.response)
+       return res.status(500).json(InternalServerError)
+   }
+}
+
+exports.Watched = async (req,res) =>{
+    let {userId,Stream,StreamModel} = req.body
+    try{
+        let result = await User.updateOne({_id:userId},{ $push: { movies_watched: Stream } })
+        if (result.modifiedCount === 1){
+            return res.status(200).json(DynamicMessage(200,"Successfully Added"))
+        }
+        return res.status(400).json(AnErrorOccured)
+    }catch(e){
+        console.error(e)
+        return res.status(500).json(InternalServerError)
+    }
+}
 
 exports.ResetPassword = async (req,res) =>{
     const {oldpassword,newpassword,userId} = req.body

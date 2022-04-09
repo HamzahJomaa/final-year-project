@@ -226,45 +226,7 @@ $(function(){
 	    }
 	  ]
 	});
-	//slider for home v3 and home v2, twitter slider home 1, 2
-	var singleItem = $('.slider-single-item');
-	singleItem.slick({
-		infinite: true,
-		slidesToShow: 1,
-		slidesToScroll: 1,
-		arrows: true,
-		// autoplay: true,
-		// autoplaySpeed: 2000,
-		dots: true,
-		draggable:true,
-		responsive: [
-	    {
-	      breakpoint: 1024,
-	      settings: {
-	        slidesToShow: 1,
-	        slidesToScroll: 1,
-	        infinite: true,
-	        dots: true,
-	        arrows: true
-	      }
-	    },
-	    {
-	      breakpoint: 768,
-	      settings: {
-	        slidesToShow: 1,
-	        slidesToScroll: 1
-	      }
-	    },
-	    {
-	      breakpoint: 480,
-	      settings: {
-	        slidesToShow: 1,
-	        slidesToScroll: 1,
-	        arrows: false,
-	      }
-	    }
-	  ]
-	});
+
 	//slider for tweeter
 	var slickTw = $('.slick-tw');
 	slickTw.slick({

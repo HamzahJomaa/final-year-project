@@ -46,3 +46,8 @@ exports.InternalServerError = {
     statusCode: 500,
     statusMessage: "Internal Server Error"
 }
+
+exports.AnErrorOccured = {
+    statusCode: 400,
+    statusMessage: "An Error Occured"
+}

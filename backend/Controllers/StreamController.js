@@ -1,16 +1,15 @@
 const Movie = require("../Models/Movies")
 const Series = require("../Models/Series")
 const User = require("../Models/User")
+const Review = require("../Models/Review")
 const {InternalServerError, RetrievedData, NoContent, DynamicMessage} = require("../Constants/statusCodes");
 const axios = require("axios");
 const Movies = require("../Models/Movies");
-const {getTMDB} = require("../Helpers/TMDB");
+const {getTMDB, getTrailers} = require("../Helpers/TMDB");
 const StreamUser = require("../Models/StreamUser");
 
 
-exports.Watched = async (req,res) =>{
 
-}
 
 exports.saveUserFlow = async (req,res) =>{
     let {StreamModel,Stream,userId} = req.body
@@ -50,13 +49,20 @@ exports.getStreamById = async (req, res) => {
     }
 
     try {
-        let data = type === "movie" ? await Movie.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project) : await Series.findOne({tmdb: id})
-        let recommendation_movie = await axios.get(`http://127.0.0.1:5000/api/python/movie/${data[0].title}`)
-        let cast = await getTMDB("movie",id,"credits")
-        let images = await getTMDB("movie", id, "images")
-        let movies = await Movies.find({tmdb: recommendation_movie.data})
+        let data = type === "movies" ? await Movie.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project) : await Series.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project)
+        let recommendation_movie = await axios.get(`http://127.0.0.1:5000/api/python/${type}/${data[0].title}`)
+        let cast = type === "movies" ?  await getTMDB("movie",id,"credits") :  await getTMDB("tv",id,"credits")
+        let images = type === "movies" ? await getTMDB("movie", id, "images") : await getTMDB("tv", id, "images")
+        let movies = type === "movies" ? await Movies.find({tmdb: recommendation_movie.data}) : await Series.find({tmdb: recommendation_movie.data})
+        let trailers = type === "movies" ? await getTMDB("movie",id,"videos") : await getTMDB("tv",id,"videos")
+        let youtube = trailers.data.results.filter(e=>e.type === "Trailer")
+        let last_review = await Review.findOne({on:data[0]._id}).sort({_id:-1}).populate({
+            path: 'userId',
+            select: "firstName lastName"
+        })
+        let review_count = await Review.find({on:data[0]._id}).count()
         res.status(200).json({
-            statusMessage: `${type} returned successfully`, data: data[0], recommended_movies: movies, cast: cast.data, images: images.data
+            statusMessage: `${type} returned successfully`, data: data[0], recommended_movies: movies, cast: cast.data, images: images.data, last_review,review_count,trailer:youtube[0].key
         })
     } catch (e) {
         console.error(e)

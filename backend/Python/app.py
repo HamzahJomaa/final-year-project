@@ -27,10 +27,10 @@ def Main():
     JSONP_data = jsonpify(list(user["title"]))
     return JSONP_data
 
-@app.route("/api/python/movie/<string:title>")
-def Get_Movie_Recommendation(title):
+@app.route("/api/python/<type>/<title>")
+def Get_Movie_Recommendation(type,title):
     movies = ""
-    movies = md.read_mongo("finalyearproject","movies",False)
+    movies = md.read_mongo("finalyearproject",type,False)
     movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
 
     movies['overview'] = movies['overview'].fillna("")
@@ -43,7 +43,7 @@ def Get_Movie_Recommendation(title):
     idx = indices[title]
     sim_scores = list(enumerate(cosine_sim[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:31]
+    sim_scores = sim_scores[1:5]
     movie_indices = [i[0] for i in sim_scores]
     JSONP_data = jsonpify(list(movies.iloc[movie_indices]["tmdb"]))
     return JSONP_data

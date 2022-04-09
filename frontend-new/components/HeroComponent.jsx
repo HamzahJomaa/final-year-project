@@ -1,8 +1,9 @@
 import React from 'react';
 
 const HeroComponent = ({type,title,location,bgimg}) => {
+
     return (
-        <div className={`hero ${type}`} style={{background:`url('https://image.tmdb.org/t/p/w1920_and_h800_multi_faces/${bgimg}')`}}>
+        <div className={`hero ${type}`} style={{background:`url('${type == 'common-hero' || type == 'user-hero' ? '' : "https://image.tmdb.org/t/p/w1920_and_h800_multi_faces"}/${bgimg}')`}}>
             <div className="container">
                 <div className="row">
                     <div className="col-md-12">

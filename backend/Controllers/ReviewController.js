@@ -37,12 +37,12 @@ exports.deleteReview = async (req, res) => {
 exports.getRefReview = async (req, res) => {
     const on =
         req.body.token || req.query.token || req.headers["ref"]
-
+    let {perPage, currentPage} = req.params
     try {
-        const reviews = await Review.find({on}).populate({
+        const reviews = await Review.find({on}).skip(parseInt(perPage) * (parseInt(currentPage) - 1)).limit(parseInt(perPage)).populate({
             path: 'userId',
             select: "firstName lastName"
-        }).populate({path: 'on', select: "title lastName"}).exec()
+        }).populate({path: 'on', select: "title lastName"}).sort({_id:-1}).exec()
         if (reviews.length !== 0) {
             return res.status(200).json(DynamicMessage(200, reviews))
         }
@@ -58,13 +58,12 @@ exports.getRefReview = async (req, res) => {
 exports.getUserReviews = async (req, res) => {
     const userId =
         req.body.token || req.query.token || req.headers["user"]
-
     try {
         const reviews = await Review.find({userId}).populate({
             path: 'userId',
             match: {_id: userId},
             select: "firstName lastName"
-        }).populate({path: 'on', select: "title lastName"}).exec()
+        }).populate({path: 'on', select: "title poster_path"}).exec()
         if (reviews.length !== 0) {
             return res.status(200).json(DynamicMessage(200, reviews))
         }

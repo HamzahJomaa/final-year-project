@@ -5,6 +5,8 @@ const {RetrievedData, InternalServerError} = require("../Constants/statusCodes")
 exports.Search = (req,res) =>{
     let {q} = req.body
 
+
+
 }
 
 
@@ -23,7 +25,8 @@ exports.Homepage = async (req,res)=>{
         vote_average: "$vote_average",
         vote_count: "$vote_count",
         overview: "$overview",
-        genres: "$genres.name"
+        genres: "$genres.name",
+        date:"$release_date"
     }
 
 
