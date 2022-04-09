@@ -1,15 +1,6 @@
 {
-  "/Search": "pages/Search.html",
   "/_app": "pages/_app.js",
-  "/api/hello": "pages/api/hello.js",
-  "/": "pages/index.html",
-  "/movie/[id]/[title]": "pages/movie/[id]/[title].js",
-  "/movies": "pages/movies.html",
-  "/profile": "pages/profile.html",
-  "/profile/rate": "pages/profile/rate.html",
-  "/series": "pages/series.html",
-  "/series/[id]/[title]": "pages/series/[id]/[title].js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/404": "pages/404.html"
+  "/movie/[id]/[title]": "pages/movie/[id]/[title].js"
 }

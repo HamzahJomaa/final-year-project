@@ -1,5 +1,10 @@
 import axios from "axios"
 import {baseLink} from "./config";
+import https from "https"
+
+const agent = new https.Agent({
+    rejectUnauthorized: false
+});
 
 
 export const getUserReviews = async ({id,token}) =>{
@@ -47,7 +52,7 @@ export const getStreamReviews = async (id,perPage,currentPage) =>{
 }
 
 export const getStream = async (type,tmdb) =>{
-    return await axios.get(`${baseLink}/stream/${type}/id/${tmdb}`)
+    return await axios.get(`${baseLink}/stream/${type}/id/${tmdb}`,{ httpsAgent: agent })
 }
 
 export const GetHomePage = async () => {
