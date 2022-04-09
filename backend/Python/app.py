@@ -30,7 +30,7 @@ def Main():
 @app.route("/api/python/<type>/<title>")
 def Get_Movie_Recommendation(type,title):
     movies = ""
-    movies = md.read_mongo("finalyearproject",type,False)
+    movies = md.read_mongo("finalyearproject",type,True)
     movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
 
     movies['overview'] = movies['overview'].fillna("")
