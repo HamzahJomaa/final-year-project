@@ -5,7 +5,8 @@ const IndexController = require("../Controllers/IndexController")
 const Nationality = require("../Models/Nationality")
 const {RetrievedData, NoContent, InternalServerError} = require("../Constants/statusCodes");
 
-
+router.get("/genre/:type",IndexController.getGenre)
+router.post("/search",IndexController.Search)
 
 router.get("/nationality",async (req,res)=>{
     try{

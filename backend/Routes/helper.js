@@ -32,13 +32,15 @@ router.get("/tmdb/series",(req,res)=>{
 })
 
 
-router.get("/tmdb/genres",async (req,res)=>{
+router.get("/tmdb/genres/:type",async (req,res)=>{
+    let {type} = req.params
     try{
-        let genres = await axios.get("https://api.themoviedb.org/3/genre/movie/list?api_key=01a1a82396f4e0f7423e9a45bac71390")
+        let genres = await axios.get(`https://api.themoviedb.org/3/genre/${type}/list?api_key=01a1a82396f4e0f7423e9a45bac71390`)
         genres.data.genres.map(async element=>{
             let newGenres = await Genre.create({
                 tmdb: element.id,
-                name: element.name
+                name: element.name,
+                type: type === "tv" ? "series" : "movie"
             })
             console.log(newGenres)
         })
@@ -65,7 +67,7 @@ router.get("/delete/:table", async (req,res) =>{
 
 
 router.get("/movies/votes", async (req,res)=>{
-    let movie = await Series.updateMany({},{vote_count:0,vote_average:0})
+    let movie = await Movie.updateMany({},{vote_count:0,vote_average:0})
     res.json(movie)
 })
 

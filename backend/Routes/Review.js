@@ -4,7 +4,7 @@ const ReviewController = require("../Controllers/ReviewController")
 
 router.delete("/delete/:id",ReviewController.deleteReview)
 router.get("/ref/:perPage/:currentPage",ReviewController.getRefReview)
-router.get("/user",ReviewController.getUserReviews)
+router.get("/user/:perPage/:page",ReviewController.getUserReviews)
 router.get("/all",ReviewController.getReviews)
 router.post("/add",ReviewController.addReview)
 

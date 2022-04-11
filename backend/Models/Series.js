@@ -41,6 +41,7 @@ const SeriesSchema = new Schema({
         type: Number,
     }
 },{timestamps:true})
+SeriesSchema.index({original_title: "text",title:"text"})
 
 
 module.exports = model("Series", SeriesSchema)

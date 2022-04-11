@@ -4283,6 +4283,7 @@ ul {
 }
 
 .mv-item-infor{
+  width: 100%;
   padding-left: 2rem;
 }
 .movie-item-style-2 .mv-item-infor h6 {

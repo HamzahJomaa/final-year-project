@@ -62,7 +62,7 @@ exports.getStreamById = async (req, res) => {
         })
         let review_count = await Review.find({on:data[0]._id}).count()
         res.status(200).json({
-            statusMessage: `${type} returned successfully`, data: data[0], recommended_movies: movies, cast: cast.data, images: images.data, last_review,review_count,trailer:youtube[0].key
+            statusMessage: `${type} returned successfully`, data: data[0], recommended_movies: movies, cast: cast.data, images: images.data, last_review,review_count,trailer:youtube[0]?.key
         })
     } catch (e) {
         console.error(e)

@@ -184,7 +184,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                                     </div>
                                                 </div>
                                             </div>
-                                            <ReviewsComponent review_count={review_count} id={movie._id} title={movie.title} />
+                                            <ReviewsComponent review_count={review_count} type={"Movies"} id={movie._id} title={movie.title} />
                                             <div id="cast" className="tab">
                                                 <div className="row">
                                                     <h3>Cast & Crew of</h3>
@@ -489,7 +489,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }) => {
             images: movie?.data?.images,
             last_review: movie?.data?.last_review,
             review_count: movie?.data?.review_count,
-            trailer: movie?.data?.trailer
+            trailer: movie?.data?.trailer || null
         }
     }
 }

@@ -44,7 +44,7 @@ const SwiperSlider = ({items}) => {
                                                 </div>
                                             </div>
                                             <div className="mv-details">
-                                                <p><i className="ion-android-star"></i><span>7.4</span> /10</p>
+                                                <p><i className="ion-android-star"></i><span>{item.vote_average}</span> /5</p>
                                                 <ul className="mv-infor">
                                                     <li> Run Time: 2h21’</li>
                                                     <li> Rated: PG-13</li>

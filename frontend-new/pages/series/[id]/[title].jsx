@@ -184,7 +184,7 @@ const MoviePage = ({ id, series, recommendation, cast, images, last_review,revie
                                                     </div>
                                                 </div>
                                             </div>
-                                            <ReviewsComponent review_count={review_count} id={series._id} title={series.title} />
+                                            <ReviewsComponent review_count={review_count} type={"Series"} id={series._id} title={series.title} />
                                             <div id="cast" className="tab">
                                                 <div className="row">
                                                     <h3>Cast & Crew of</h3>

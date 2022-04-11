@@ -45,5 +45,6 @@ const MovieSchema = new Schema({
     }
 },{timestamps:true})
 
+MovieSchema.index({original_title: "text",title:"text"})
 
 module.exports = model("Movies", MovieSchema)

@@ -1,10 +1,11 @@
 import React, {useEffect, useState} from 'react';
 import HeroComponent from "../components/HeroComponent";
-import {ListStream} from "../api/Main";
+import {ListStream,Search} from "../api/Main";
 import {to_slug} from "../helpers/contenthelper"
 import Pagination from '@mui/material/Pagination';
 import Image from "next/image"
 import ImageComponent from "../helpers/ImageComponent";
+import SearchComponent from "./Search";
 
 const Movies = () => {
     const [movies,setMovies] = useState([])
@@ -20,6 +21,15 @@ const Movies = () => {
         setPage(value);
     };
     const [loading,setLoading] = useState(false)
+
+    const handleSearch = async (data)=>{
+        try{
+            const searchResult = await Search(data)
+            setMovies(searchResult?.data?.data)
+        }catch (e) {
+            console.error(e.responseText)
+        }
+    }
 
     useEffect(async ()=>{
         setLoading(true)
@@ -95,58 +105,7 @@ const Movies = () => {
                         </div>
                         <div className="col-md-4 col-sm-12 col-xs-12">
                             <div className="sidebar">
-                                <div className="searh-form">
-                                    <h4 className="sb-title">Search for movie</h4>
-                                    <form className="form-style-1" action="#">
-                                        <div className="row">
-                                            <div className="col-md-12 form-it">
-                                                <label>Movie name</label>
-                                                <input type="text" placeholder="Enter keywords" />
-                                            </div>
-                                            <div className="col-md-12 form-it">
-                                                <label>Genres & Subgenres</label>
-                                                <div className="group-ip">
-                                                    <select
-                                                        name="skills" multiple="" className="ui fluid dropdown">
-                                                        <option value="">Enter to filter genres</option>
-                                                        <option value="Action1">Action 1</option>
-                                                        <option value="Action2">Action 2</option>
-                                                        <option value="Action3">Action 3</option>
-                                                        <option value="Action4">Action 4</option>
-                                                        <option value="Action5">Action 5</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 form-it">
-                                                <label>Rating Range</label>
-                                                <select>
-                                                    <option value="range">-- Select the rating range below --</option>
-                                                    <option value="saab">-- Select the rating range below --</option>
-                                                </select>
-                                            </div>
-                                            <div className="col-md-12 form-it">
-                                                <label>Release Year</label>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <select>
-                                                            <option value="range">From</option>
-                                                            <option value="number">10</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <select>
-                                                            <option value="range">To</option>
-                                                            <option value="number">20</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 ">
-                                                <input className="submit" type="submit" value="submit" />
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                <SearchComponent perPage={perPage} currentPage={page} type={"Movie"} sendSearch={handleSearch} />
                                 <div className="ads">
                                     <img src="images/uploads/ads1.png" alt="" />
                                 </div>

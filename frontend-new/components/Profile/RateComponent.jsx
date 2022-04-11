@@ -1,69 +1,78 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {getUserReviews} from "../../api/Main"
 import ImageComponent from "../../helpers/ImageComponent";
+import {BeautifyShortDate} from "../../helpers/contenthelper";
+import Pagination from "@mui/material/Pagination";
 
 const RateComponent = ({id,t}) => {
 
     const [profileId,setProfileId] = useState(id)
     const [token,setToken] = useState(t)
     const [reviews,setReviews] = useState([])
+    const [reviewCount,setReviewCount] = useState(0)
 
-    useState( async ()=>{
+    const [perPage, setPerPage] = useState(10)
+    const [page, setPage] = useState(1)
+
+    const perPageHandler = (e) => {
+        setPerPage(parseInt(e.target.value))
+    }
+
+    const pageHandler = (event, value) => {
+        setPage(value);
+    };
+
+    useEffect( async ()=>{
         console.log({id: profileId,token})
         try {
-            const reviewsAPI = await getUserReviews({id: profileId,token})
-            setReviews(reviewsAPI.data.statusMessage)
+            const reviewsAPI = await getUserReviews({id: profileId,token,perPage, page})
+            setReviews(reviewsAPI?.data?.statusMessage?.reviews)
+            setReviewCount(reviewsAPI?.data?.statusMessage?.review_count)
         }catch (e) {
             console.error(e)
         }
-    },[])
+    },[perPage,page])
 
     return (
         <div className="col-md-9 col-sm-12 col-xs-12">
             <div className="topbar-filter">
-                <p>Found <span>3 rates</span> in total</p>
+                <p>Found <span>{reviews?.length || 0} rates</span> in total</p>
                 <label>Sort by:</label>
                 <select>
                     <option value="range">-- Choose option --</option>
                     <option value="saab">-- Choose option 2--</option>
                 </select>
             </div>
-            {reviews.length > 0 && reviews.map((item,index)=>(
+            {reviews?.length > 0 && reviews.map((item,index)=>(
                 <div key={index} className="movie-item-style-2 userrate">
                     <ImageComponent src={`https://image.tmdb.org/t/p/w342/${item?.on?.poster_path}`} alt="I'm a lazy image"
-                                    width="500"
+                                    width="250"
                                     loading={"eager"}
-                                    height="800"
+                                    height="400"
                                     placeholder="blur" blurDataURL="/images/owl.video.play.png" />
                     <div className="mv-item-infor">
-                        <h6><a href="#">oblivion <span>(2012)</span></a></h6>
+                        <h6><a href="#">{item?.on?.title}</a></h6>
                         <p className="time sm-text">your rate:</p>
-                        <p className="rate"><i className="ion-android-star"></i><span>9.0</span> /10</p>
+                        <p className="rate"><i className="ion-android-star"></i><span>{item.rate}</span> /5</p>
                         <p className="time sm-text">your reviews:</p>
                         <h6>Best Marvel movie in my opinion</h6>
-                        <p className="time sm">02 April 2017</p>
-                        <p>“This is by far one of my favorite movies from the MCU. The introduction of new Characters
-                            both good and bad also makes the movie more exciting. giving the characters more of a back
-                            story can also help audiences relate more to different characters better, and it connects a
-                            bond between the audience and actors or characters. Having seen the movie three times does
-                            not bother me here as it is as thrilling and exciting every time I am watching it. In other
-                            words, the movie is by far better than previous movies (and I do love everything Marvel),
-                            the plotting is splendid (they really do out do themselves in each film, there are no
-                            problems watching it more than once.”</p>
+                        <p className="time sm">{BeautifyShortDate(item.createdAt)}</p>
+                        <p>{item.body}</p>
                     </div>
                 </div>
             ))}
 
             <div className="topbar-filter">
                 <label>Movies per page:</label>
-                <select>
-                    <option value="range">20 Movies</option>
-                    <option value="saab">10 Movies</option>
+                <select onChange={perPageHandler} value={perPage}>
+                    <option value="1">1 Movies</option>
+                    <option value="5">5 Movies</option>
+                    <option value="10">10 Movies</option>
+                    <option value="20">20 Movies</option>
                 </select>
                 <div className="pagination2">
-                    <span>Page 1 of 1:</span>
-                    <a className="active" href="#">1</a>
-                    <a href="#"><i className="ion-arrow-right-b"></i></a>
+                    <span>Page {page} of {(reviewCount / perPage) < 1 ? 1 : (reviewCount / perPage).toFixed(0)}:</span>
+                    <Pagination size={"small"} style={{ color: "red" }} count={(reviewCount / perPage).toFixed(0) || 1} page={page} onChange={pageHandler} />
                 </div>
             </div>
         </div>

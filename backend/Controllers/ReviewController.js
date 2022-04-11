@@ -14,7 +14,6 @@ exports.deleteReview = async (req, res) => {
                 average: {$avg: "$rate"}
             })
             const count_review = await Review.aggregate().match({on: Mongoose.Types.ObjectId(deletedReview.on)}).count("rate")
-            console.log(count_review)
             let vote_count = count_review.length === 0 ? 0 : count_review[0].rate
             let vote_average = avg_review.length === 0 ?  0 : avg_review[0].average
 
@@ -46,7 +45,6 @@ exports.getRefReview = async (req, res) => {
         if (reviews.length !== 0) {
             return res.status(200).json(DynamicMessage(200, reviews))
         }
-        console.log(reviews)
         return res.status(204).json(NoContent)
     } catch (e) {
         console.error(e)
@@ -58,16 +56,18 @@ exports.getRefReview = async (req, res) => {
 exports.getUserReviews = async (req, res) => {
     const userId =
         req.body.token || req.query.token || req.headers["user"]
+
+    let {perPage,page} = req.params
     try {
-        const reviews = await Review.find({userId}).populate({
+        const reviews = await Review.find({userId}).skip(parseInt(perPage) * (parseInt(page) - 1)).limit(parseInt(perPage)).populate({
             path: 'userId',
             match: {_id: userId},
             select: "firstName lastName"
         }).populate({path: 'on', select: "title poster_path"}).exec()
+        const review_count = await Review.find({userId}).count()
         if (reviews.length !== 0) {
-            return res.status(200).json(DynamicMessage(200, reviews))
+            return res.status(200).json(DynamicMessage(200, {reviews,review_count}))
         }
-        console.log(reviews)
         return res.status(204).json(NoContent)
     } catch (e) {
         console.error(e)
@@ -84,7 +84,6 @@ exports.getReviews = async (req, res) => {
         if (reviews.length !== 0) {
             return res.status(200).json(DynamicMessage(200, reviews))
         }
-        console.log(reviews)
         return res.status(204).json(NoContent)
     } catch (e) {
         console.error(e)

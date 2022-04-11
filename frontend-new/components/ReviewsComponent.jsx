@@ -5,7 +5,7 @@ import Pagination from "@mui/material/Pagination";
 import WriteReviewComponent from './WriteReview';
 
 
-const ReviewsComponent = ({ id, title,review_count }) => {
+const ReviewsComponent = ({ id, title,review_count,type }) => {
     const [reviews, setReviews] = useState([])
     
 
@@ -40,7 +40,7 @@ const ReviewsComponent = ({ id, title,review_count }) => {
                         <h3>Related Movies To</h3>
                         <h2>{title}</h2>
                     </div>
-                    <WriteReviewComponent on={id} onModel={"Movies"} reviewAdded={reviewAdded} />
+                    <WriteReviewComponent on={id} onModel={type} reviewAdded={reviewAdded} />
                 </div>
                 <div className="topbar-filter">
                     <p>Found <span>{reviews?.length} reviews</span> in total</p>

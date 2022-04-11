@@ -6,6 +6,9 @@ const GenreSchema = new Schema({
     },
     name:{
         type:String
+    },
+    type:{
+        type:String
     }
 },{timestamps:true})
 
