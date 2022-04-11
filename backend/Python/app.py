@@ -27,10 +27,13 @@ def Main():
     JSONP_data = jsonpify(list(user["title"]))
     return JSONP_data
 
-@app.route("/api/python/<type>/<title>")
-def Get_Movie_Recommendation(type,title):
+@app.route("/api/python/<type>/<title>/<db>")
+def Get_Movie_Recommendation(type,title,db):
     movies = ""
-    movies = md.read_mongo("finalyearproject",type,False)
+    if (db == "online"):
+         movies = md.read_mongo("finalyearproject",type,True)
+    else:
+         movies = md.read_mongo("finalyearproject",type,False)
     movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
 
     movies['overview'] = movies['overview'].fillna("")
