@@ -27,7 +27,7 @@ def Main():
     JSONP_data = jsonpify(list(user["title"]))
     return JSONP_data
 
-@app.route("/api/python/<type>/<title>/<db>")
+@app.route("/api/python/<type>/<string:title>/<db>")
 def Get_Movie_Recommendation(type,title,db):
     movies = ""
     if (db == "online"):

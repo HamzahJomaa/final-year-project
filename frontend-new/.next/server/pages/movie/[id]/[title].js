@@ -29,7 +29,7 @@ eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpac
   \***********************/
 /***/ ((__unused_webpack_module, __webpack_exports__, __webpack_require__) => {
 
-eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"baseLink\": () => (/* binding */ baseLink)\n/* harmony export */ });\nconst baseLink = \"http://localhost:3000/api\";\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9hcGkvY29uZmlnLmpzLmpzIiwibWFwcGluZ3MiOiI7Ozs7QUFBTyxLQUFLLENBQUNBLFFBQVEsR0FBRyxDQUEyQiIsInNvdXJjZXMiOlsid2VicGFjazovL2Zyb250ZW5kLW5ldy8uL2FwaS9jb25maWcuanM/NjVjZCJdLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY29uc3QgYmFzZUxpbmsgPSBcImh0dHA6Ly9sb2NhbGhvc3Q6MzAwMC9hcGlcIiJdLCJuYW1lcyI6WyJiYXNlTGluayJdLCJzb3VyY2VSb290IjoiIn0=\n//# sourceURL=webpack-internal:///./api/config.js\n");
+eval("__webpack_require__.r(__webpack_exports__);\n/* harmony export */ __webpack_require__.d(__webpack_exports__, {\n/* harmony export */   \"baseLink\": () => (/* binding */ baseLink)\n/* harmony export */ });\nconst baseLink = \"https://rhu-computerscience.tech/api\";\n//# sourceURL=[module]\n//# sourceMappingURL=data:application/json;charset=utf-8;base64,eyJ2ZXJzaW9uIjozLCJmaWxlIjoiLi9hcGkvY29uZmlnLmpzLmpzIiwibWFwcGluZ3MiOiI7Ozs7QUFBTyxLQUFLLENBQUNBLFFBQVEsR0FBRyxDQUFzQyIsInNvdXJjZXMiOlsid2VicGFjazovL2Zyb250ZW5kLW5ldy8uL2FwaS9jb25maWcuanM/NjVjZCJdLCJzb3VyY2VzQ29udGVudCI6WyJleHBvcnQgY29uc3QgYmFzZUxpbmsgPSBcImh0dHBzOi8vcmh1LWNvbXB1dGVyc2NpZW5jZS50ZWNoL2FwaVwiIl0sIm5hbWVzIjpbImJhc2VMaW5rIl0sInNvdXJjZVJvb3QiOiIifQ==\n//# sourceURL=webpack-internal:///./api/config.js\n");
 
 /***/ }),
 

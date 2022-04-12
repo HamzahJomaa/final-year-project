@@ -80,7 +80,7 @@ const Movies = () => {
                                                 className="ion-android-arrow-dropright"></i> </a>
                                         </div>
                                         <div className="mv-item-infor">
-                                            <h6><a href="./movie/${item?.tmdb}/${to_slug(item?.title)}">{item?.title}</a></h6>
+                                            <h6><a href={`./movie/${item?.tmdb}/${to_slug(item?.title)}`}>{item?.title}</a></h6>
                                             <p className="rate"><i className="ion-android-star"></i><span>{item?.vote_average.toFixed(1)}</span> /5
                                             </p>
                                         </div>
