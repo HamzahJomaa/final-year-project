@@ -4296,6 +4296,9 @@ ul {
   font-weight: bold;
   text-transform: uppercase;
 }
+.response{
+  margin-bottom: 1rem;
+}
 .movie-item-style-2 .mv-item-infor h6 a span {
   color: #abb7c4;
 }

@@ -23,11 +23,14 @@ const Movies = () => {
     const [loading,setLoading] = useState(false)
 
     const handleSearch = async (data)=>{
+        setLoading(true)
         try{
             const searchResult = await Search(data)
             setMovies(searchResult?.data?.data)
         }catch (e) {
             console.error(e.responseText)
+        }finally {
+            setLoading(false)
         }
     }
 
@@ -77,7 +80,7 @@ const Movies = () => {
                                                 className="ion-android-arrow-dropright"></i> </a>
                                         </div>
                                         <div className="mv-item-infor">
-                                            <h6><a href="#">{item?.title}</a></h6>
+                                            <h6><a href="./movie/${item?.tmdb}/${to_slug(item?.title)}">{item?.title}</a></h6>
                                             <p className="rate"><i className="ion-android-star"></i><span>{item?.vote_average.toFixed(1)}</span> /5
                                             </p>
                                         </div>

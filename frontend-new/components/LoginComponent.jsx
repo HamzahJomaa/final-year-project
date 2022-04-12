@@ -33,7 +33,7 @@ const LoginComponent = () => {
                     <label htmlFor="username">
                         Username:
                         <input type="text" name="username" id="username" placeholder="Username"
-                               onChange={(e)=>{setUsername(e.target.value)}} required="required"/>
+                               onChange={(e)=>{setUsername(e.target.value.toLowerCase())}} required="required"/>
                     </label>
                 </div>
 

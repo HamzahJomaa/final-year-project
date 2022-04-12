@@ -74,8 +74,9 @@ def Get_Genre(Genre):
     qualified['vote_average'] = qualified['vote_average'].astype('int')
 
     qualified['wr'] = qualified.apply(lambda x: (x['vote_count']/(x['vote_count']+m) * x['vote_average']) + (m/(m+x['vote_count']) * C), axis=1)
-    qualified = qualified.sort_values('wr', ascending=False).head(20)
-
+    qualified = qualified.sort_values('wr', ascending=False).head(10)
+    qualified = qualified.drop_duplicates(['tmdb'])
+    print(qualified)
     JSONP_data = jsonpify(list(qualified["tmdb"]))
     return JSONP_data
 

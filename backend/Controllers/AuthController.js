@@ -51,7 +51,7 @@ exports.requestReset = async (req,res) => {
 exports.SignIn = async (req,res) =>{
     let {username,password} = req.body
     try{
-        let user = await  User.findOne({username})
+        let user = await  User.findOne({username:username.toLowerCase()})
 
         if (!user)
             return res.status(200).json(DynamicMessage(404,"User Not Found"))
@@ -60,9 +60,8 @@ exports.SignIn = async (req,res) =>{
 
         if (!passCheck)
             return res.status(200).json(DynamicMessage(401,"Wrong Password"))
-
         const token = generateNewToken({username}, "24h")
-        await User.updateOne({id:user.id},{token,lastSignIn:new Date()})
+        await User.updateOne({username},{token,lastSignIn:new Date()})
 
         return res.status(200).json({statusCode: 200, statusMessage:"Logged In", user:{
                 id:user.id,

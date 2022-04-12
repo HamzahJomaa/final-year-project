@@ -39,8 +39,7 @@ const SignUpComponent = () => {
                 <div className="row">
                         <label htmlFor="username-2">
                             Username:
-                            <input type="text" name="username" id="username-2" onChange={(e)=>{setUsername(e.target.value)}} placeholder="Hugh Jackman"
-                                   pattern="^[a-zA-Z][a-zA-Z0-9-_\.]{8,20}$" required="required"/>
+                            <input type="text" name="username" id="username-2" onChange={(e)=>{setUsername(e.target.value.toLowerCase())}} placeholder="Hugh Jackman" required="required"/>
                         </label>
                     </div>
 

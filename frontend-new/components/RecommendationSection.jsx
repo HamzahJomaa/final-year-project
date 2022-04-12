@@ -1,5 +1,5 @@
 import React from "react"
-import {SpliceByWord,BeautifyShortDate} from "../helpers/contenthelper";
+import {SpliceByWord, BeautifyShortDate, to_slug} from "../helpers/contenthelper";
 
 
 const RecommendationComponent = ({ recommendation }) => {
@@ -24,10 +24,8 @@ const RecommendationComponent = ({ recommendation }) => {
                     <div key={index} className="movie-item-style-2">
                         <img src={`https://image.tmdb.org/t/p/w342/${item.poster_path}`} alt="" />
                         <div className="mv-item-infor">
-                            <h6><a href="#">{item.title}</a></h6>
-                            <p className="rate"><i
-                                className="ion-android-star"></i><span>{item.vote_count}</span> /5
-                            </p>
+                            <h6><a href={`/movie/${item?.tmdb}/${to_slug(item?.title)}`} > {item.title}</a></h6>
+                            <p className="rate"><i className="ion-android-star"></i><span>{item.vote_count}</span> /5</p>
                             <p className="describe">{SpliceByWord(item.overview, 30)}</p>
                             <p className="run-time"> Run Time: 2h21’
                                 . <span>MMPA: PG-13 </span> . <span>Release: {BeautifyShortDate(new Date(item.release_date))}</span>

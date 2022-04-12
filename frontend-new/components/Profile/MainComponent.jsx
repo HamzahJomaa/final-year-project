@@ -1,7 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ResetPassword, UpdateProfile} from "../../api/Auth";
 import {getNationality, getProfile} from "../../api/Main";
-import {LinearProgress} from "@mui/material";
+import {LinearProgress,Alert} from "@mui/material";
 
 const MainComponent = ({id , t}) => {
     const [profileId,setProfileId] = useState(id)
@@ -22,6 +22,8 @@ const MainComponent = ({id , t}) => {
     const [oldpassword,setOldPassword] = useState("")
     const [newpassword,setNewPassword] = useState("")
     const [newcpassword,setNewCPassword] = useState("")
+    const [response,setResponse] = useState("")
+    const [status,setStatus] = useState("")
 
     const handlePasswordChange = async (e) =>{
         e.preventDefault()
@@ -48,9 +50,16 @@ const MainComponent = ({id , t}) => {
         }
         try{
             const update = await UpdateProfile({profile:newProfile,token})
-            console.log(update)
+            if (update.status === 200){
+                setStatus("success")
+                return setResponse("Data Updated Successfully")
+            }
+            setStatus("error")
+            setResponse("Unknown Error Occurred")
         }catch(e){
             console.error(e.response)
+            setStatus("error")
+            return setResponse(e.response)
         }finally{
             setLoading(false)
         }
@@ -139,6 +148,9 @@ const MainComponent = ({id , t}) => {
                 </div>
                 <div className='progressbar'>
                     {loading? <LinearProgress />  : ""}
+                </div>
+                <div className="response mb-2">
+                    {(response && status) && <Alert severity={status}>{response}</Alert>}
                 </div>
                 <div className="row">
                     <div className="col-md-2">
