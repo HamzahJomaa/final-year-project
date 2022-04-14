@@ -22,4 +22,6 @@ router.get("/nationality",async (req,res)=>{
 })
 router.get("/homepage", IndexController.Homepage)
 
+router.get("/homepage/user", IndexController.getPersonalizedHomepage)
+
 module.exports = router

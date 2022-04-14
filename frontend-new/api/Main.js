@@ -62,6 +62,11 @@ export const getStream = async (type,tmdb) =>{
     return await axios.get(`${baseLink}/stream/${type}/id/${tmdb}`,{ httpsAgent: agent })
 }
 
+
+
+export const GetPersonalizedHomePage = async ({userId}) => {
+    return await axios.get(`${baseLink}/homepage/user`,{headers:{user:userId}})
+}
 export const GetHomePage = async () => {
     return await axios.get(`${baseLink}/homepage`)
 }

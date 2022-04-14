@@ -7,6 +7,7 @@ const axios = require("axios");
 const Movies = require("../Models/Movies");
 const {getTMDB, getTrailers} = require("../Helpers/TMDB");
 const StreamUser = require("../Models/StreamUser");
+const {getRecommendation} = require("../Helpers/Python");
 
 
 
@@ -50,7 +51,7 @@ exports.getStreamById = async (req, res) => {
 
     try {
         let data = type === "movies" ? await Movie.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project) : await Series.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project)
-        let recommendation_movie = await axios.get(`http://127.0.0.1:5000/api/python/${type}/${encodeURIComponent(data[0].title)}/online`)
+        let recommendation_movie = await getRecommendation({type,title:data[0].title,db:"offline"})
         let cast = type === "movies" ?  await getTMDB("movie",id,"credits") :  await getTMDB("tv",id,"credits")
         let images = type === "movies" ? await getTMDB("movie", id, "images") : await getTMDB("tv", id, "images")
         let movies = type === "movies" ? await Movies.find({tmdb: recommendation_movie.data}) : await Series.find({tmdb: recommendation_movie.data})

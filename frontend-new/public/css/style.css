@@ -8332,3 +8332,7 @@ footer.full-width-ft .ft-copyright {
   display: flex;
   justify-content: space-between !important;
 }
+
+.movie_carousel {
+  margin-top: 3rem;
+}

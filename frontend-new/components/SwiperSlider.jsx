@@ -1,7 +1,9 @@
 import React from 'react';
 import {Swiper, SwiperSlide} from "swiper/react";
+import { Autoplay, Pagination, Navigation } from "swiper";
 
 import 'swiper/css';
+import {BeautifyShortDate, to_slug} from "../helpers/contenthelper";
 
 
 const SwiperSlider = ({items}) => {
@@ -10,11 +12,15 @@ const SwiperSlider = ({items}) => {
             <div className="row">
                 <Swiper
                     slidesPerView={1}
+                    autoplay={{
+                        delay: 4000,
+                        disableOnInteraction: false,
+                    }}
+                    modules={[Autoplay, Pagination, Navigation]}
                     className={"slider-single-item"}
-                    autoplay
                 >
-                    {items.length > 0 ?
-                        items.map((item,index)=>(
+                    {items?.length > 0 ?
+                        items?.map((item,index)=>(
                             <SwiperSlide key={index} className={"movie-item"} >
                                 <div className="row">
                                     <div className="col-md-7 col-sm-12 col-xs-12">
@@ -48,19 +54,19 @@ const SwiperSlider = ({items}) => {
                                                 <ul className="mv-infor">
                                                     <li> Run Time: 2h21’</li>
                                                     <li> Rated: PG-13</li>
-                                                    <li> Release: 1 May 2015</li>
+                                                    <li> Release: {BeautifyShortDate(item?.date)}</li>
                                                 </ul>
                                             </div>
                                             <div className="btn-transform transform-vertical">
-                                                <div><a href="#" className="item item-1 redbtn">more detail</a></div>
-                                                <div><a href="#" className="item item-2 redbtn hvrbtn">more detail</a>
+                                                <div><a href={`movie/${item?.tmdb}/${to_slug(item?.title)}`} className="item item-1 redbtn">more detail</a></div>
+                                                <div><a href={`movie/${item?.tmdb}/${to_slug(item?.title)}`} className="item item-2 redbtn hvrbtn">more detail</a>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div className="col-md-4 col-sm-12 col-xs-12">
                                         <div className="mv-img-2">
-                                            <a href="#"><img src="images/uploads/poster1.jpg" alt="" /></a>
+                                            <a href={`movie/${item?.tmdb}/${to_slug(item?.title)}`}><img src={`https://image.tmdb.org/t/p/w342/${item?.poster_path}`} alt="" /></a>
                                         </div>
                                     </div>
                                 </div>
