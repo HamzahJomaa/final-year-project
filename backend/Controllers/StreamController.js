@@ -51,7 +51,7 @@ exports.getStreamById = async (req, res) => {
 
     try {
         let data = type === "movies" ? await Movie.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project) : await Series.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project)
-        let recommendation_movie = await getRecommendation({type,title:data[0].title,db:"offline"})
+        let recommendation_movie = await getRecommendation({type,title:data[0].title,db:"online"})
         let cast = type === "movies" ?  await getTMDB("movie",id,"credits") :  await getTMDB("tv",id,"credits")
         let images = type === "movies" ? await getTMDB("movie", id, "images") : await getTMDB("tv", id, "images")
         let movies = type === "movies" ? await Movies.find({tmdb: recommendation_movie.data}) : await Series.find({tmdb: recommendation_movie.data})
