@@ -12,7 +12,8 @@ const Movies = () => {
     const [metadata,setMetaData] = useState([])
     const [perPage,setPerPage] = useState(20)
     const [page,setPage] = useState(1)
-
+    const [searchData,setSearchData] = useState()
+    const [order,setOrder] = useState("")
     const perPageHandler = (e) =>{
         setPerPage(parseInt(e.target.value))
     }
@@ -23,29 +24,21 @@ const Movies = () => {
     const [loading,setLoading] = useState(false)
 
     const handleSearch = async (data)=>{
-        setLoading(true)
-        try{
-            const searchResult = await Search(data)
-            setMovies(searchResult?.data?.data)
-        }catch (e) {
-            console.error(e.responseText)
-        }finally {
-            setLoading(false)
-        }
+        setSearchData(data)
     }
 
     useEffect(async ()=>{
         setLoading(true)
         try {
-            let movies = await ListStream("movie",page,perPage)
-            setMetaData(movies?.data?.metadata)
-            setMovies(movies?.data?.data)
+            let movies = await Search(searchData,"movies",perPage,page,order)
+            setMovies(movies?.data?.data?.result)
+            setMetaData(movies?.data?.data?.stream_count)
         }catch (e) {
             console.error(e)
         }finally {
             setLoading(false)
         }
-    },[perPage,page])
+    },[perPage,page,searchData,order])
     return (
         <div>
             <HeroComponent type={"common-hero"} title={"Movie Listing"} bgimg={"slider-bg.jpeg"} location={["home","movies"]} />
@@ -54,18 +47,15 @@ const Movies = () => {
                     <div className="row ipad-width">
                         <div className="col-md-8 col-sm-12 col-xs-12">
                             <div className="topbar-filter">
-                                <p>Found <span>{metadata[0]?.total} movies</span> in total</p>
+                                <p>Found <span>{metadata} movies</span> in total</p>
                                 <label>Sort by:</label>
-                                <select>
-                                    <option value="popularity">Popularity Descending</option>
-                                    <option value="popularity">Popularity Ascending</option>
-                                    <option value="rating">Rating Descending</option>
-                                    <option value="rating">Rating Ascending</option>
-                                    <option value="date">Release date Descending</option>
-                                    <option value="date">Release date Ascending</option>
+                                <select onChange={e=>setOrder(e.target.value)}>
+                                    <option value="">Sorting Type</option>
+                                    <option value="vote_average-desc">Rating Descending</option>
+                                    <option value="vote_average-asc">Rating Ascending</option>
+                                    <option value="release_date-desc">Release date Descending</option>
+                                    <option value="release_date-asc">Release date Ascending</option>
                                 </select>
-                                <a href="movielist.html" className="list"><i className="ion-ios-list-outline "></i></a>
-                                <a href="moviegrid.html" className="grid"><i className="ion-grid active"></i></a>
                             </div>
                             <div className="flex-wrap-movielist">
                                 {movies.length > 0 && !loading ? movies.map((item,index)=>(
@@ -101,14 +91,14 @@ const Movies = () => {
                                 </select>
 
                                 <div className="pagination2">
-                                    <span>Page 1 of {(metadata[0]?.total / perPage).toFixed(0)}:</span>
-                                    <Pagination size={"small"} style={{color:"red"}} count={10} page={page} onChange={pageHandler} />
+                                    <span>Page 1 of {(metadata/ perPage).toFixed(0)}:</span>
+                                    <Pagination size={"small"} style={{color:"red"}} count={(metadata/ perPage).toFixed(0)} page={page} onChange={pageHandler} />
                                 </div>
                             </div>
                         </div>
                         <div className="col-md-4 col-sm-12 col-xs-12">
                             <div className="sidebar">
-                                <SearchComponent perPage={perPage} currentPage={page} type={"Movie"} sendSearch={handleSearch} />
+                                <SearchComponent type={"Movies"} sendSearch={handleSearch} />
                                 <div className="ads">
                                     <img src="images/uploads/ads1.png" alt="" />
                                 </div>

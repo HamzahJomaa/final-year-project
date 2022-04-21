@@ -6,11 +6,11 @@ const Series = require("./Series")
 const UserSchema = new Schema({
     firstName: {
         type: String,
-        required: [false, "First Name is Required"]
+        required: [true, "First Name is Required"]
     },
     lastName: {
         type: String,
-        required: [false, "Last Name is Required"]
+        required: [true, "Last Name is Required"]
     },
     username: {
         type: String,

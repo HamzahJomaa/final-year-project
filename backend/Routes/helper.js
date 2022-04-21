@@ -5,7 +5,18 @@ const Genre = require("../Models/Genre")
 const Movie = require("../Models/Movies")
 const Series = require("../Models/Series")
 const Excel = require("../Helpers/Excel")
-const {ImportMovies, ImportCast,ImportSeries, UpdateGenres} = require("../Helpers/TMDB");
+const User = require("../Models/User")
+const Review = require("../Models/Review")
+const StreamUser = require("../Models/StreamUser")
+const RandomTextGenerator=require("random-text-generator");
+
+
+
+const { ImportMovies,ImportCast,ImportSeries, UpdateGenres} = require("../Helpers/TMDB");
+const {InternalServerError} = require("../Constants/statusCodes");
+const Mongoose = require("mongoose");
+
+// const {ImportMovies} = require("../Controllers/recombee/index")
 
 router.get("/excel/:type",(req,res)=>{
     let {type} = req.params
@@ -16,9 +27,10 @@ router.get("/excel/:type",(req,res)=>{
 })
 
 
-router.get("/tmdb/movies",(req,res) => {
-    res.send(ImportMovies())
-})
+// router.get("/tmdb/movies",(req,res) => {
+//     res.send(ImportMovies())
+// })
+
 router.get("/tmdb/movies/genres",(req,res)=>{
     UpdateGenres()
 })
@@ -63,6 +75,158 @@ router.get("/delete/:table", async (req,res) =>{
         res.json(series)
     }
 })
+
+
+// router.post("/clean", async (req,res) =>{
+//     let {type,user,stream} = req.body
+//     let query
+//     switch (type){
+//         case "reviews":
+//             query = user ? {userId:user} : {}
+//             let streamQuery =  stream ? {onModel:stream} : {}
+//             try {
+//                 let deleted_reviews = await Review.deleteMany(query,streamQuery)
+//                 let streamData = stream === "Movies" ? await Movie.find({$and:[{vote_average: {$ne: 0}}]}) : await Series.find({$and:[{vote_average: {$ne: 0}}]})
+//                 streamData = streamData?.map(e=>e._id)
+//                 streamData.map(async (on,index)=>{
+//                     const avg_review = await Review.aggregate().match({on: Mongoose.Types.ObjectId(on)}).group({
+//                         _id: "$on",
+//                         average: {$avg: "$rate"}
+//                     })
+//                     console.log(avg_review)
+//                     const count_review = await Review.aggregate().match({on: Mongoose.Types.ObjectId(on)}).count("rate")
+//                     if (stream === "Movies"){
+//                         await Movie.updateOne({_id: on}, {
+//                             vote_count: count_review[0]?.rate || 0,
+//                             vote_average: avg_review[0]?.average || 0
+//                         })
+//                     }else{
+//                         await Series.updateOne({_id: on}, {
+//                             vote_count: count_review[0]?.rate || 0,
+//                             vote_average: avg_review[0]?.average || 0
+//                         })
+//                     }
+//                 })
+//                 return res.status(200).send("Reviews Deleted")
+//             }catch (e) {
+//                 console.error(e)
+//                 return res.status(409).json({message: "Unknown Error"})
+//             }
+//             break;
+//
+//         case "watched":
+//             query = user ? {_id:user} : {}
+//             try{
+//                 const users = await User.updateMany(query,{movies_watched: []})
+//                 console.log(users)
+//                 return res.status(200).send("Watched Deleted")
+//             }catch (e) {
+//                 console.error(e)
+//                 return res.status(409).json({message: "Unknown Error"})
+//             }
+//             break;
+//         case "visited":
+//             query = user ? {userId:user} : {}
+//             try{
+//                 const users = await StreamUser.deleteMany(query)
+//                 console.log(users)
+//                 return res.status(200).send("Visited Deleted")
+//             }catch (e) {
+//                 console.error(e)
+//                 return res.status(409).json({message: "Unknown Error"})
+//             }
+//             break;
+//
+//
+//         default:
+//
+//             break;
+//     }
+//     // return res.status(409).json({message: "Incorrect Config"})
+//
+// })
+//
+// router.post("/add_reviews",async(req,res)=>{
+//     let {genre,userid,type} = req.body
+//
+//     let randomTextGenerator=new RandomTextGenerator();
+//
+//
+//     try{
+//         let movies = type === "Movies" ? await Movie.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2018-01-01") } }) : await Series.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2018-01-01") } })
+//         let titles = movies.map(e  => e.title)
+//         movies = movies.map(e => e._id)
+//         for (let title of titles) randomTextGenerator.learn(title);
+//
+//         for (let i = 0; i < 10 ; i++) {
+//             const random = Math.floor(Math.random() * movies.length);
+//
+//             let title=randomTextGenerator.generate();
+//
+//             let review = {
+//                 title,
+//                 rate: Math.floor(Math.random() * (5 - 0 + 1)) + 0,
+//                 userId:userid,
+//                 body: title + " " + (new Date()).toISOString() ,
+//                 on:movies[random],
+//                 onModel:type
+//             }
+//             await axios.post("http://localhost:3000/api/review/add",{review})
+//         }
+//
+//         return res.status(200).json({movies})
+//     }catch (e) {
+//         return res.status(500).json(InternalServerError)
+//     }
+// })
+//
+// router.post("/add_visit",async (req,res)=>{
+//     let {genre,userid} = req.body
+//     try{
+//         let movies = await Movie.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2020-01-01") } })
+//         movies = movies.map(e => e._id)
+//
+//         for (let i = 0; i < 150 ; i++) {
+//             const random = Math.floor(Math.random() * movies.length);
+//
+//             const user = await User.findById(userid)
+//             if (!user){
+//                 return res.status(403).json(DynamicMessage(403,"Unauthorized"))
+//             }
+//             let added = await StreamUser.create({StreamModel: "Movies",Stream:movies[random],userId:userid})
+//
+//         }
+//         return res.status(200).json({data:"none"})
+//     }catch(e){
+//         console.error(e)
+//         return res.status(500).json(InternalServerError)
+//     }
+// })
+//
+// router.post("/add_watch",async (req,res) =>{
+//     let {genre,userid} = req.body
+//     try{
+//         let movies = await Movie.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2019-01-01") } })
+//         movies = movies.map(e => e._id)
+//
+//         for (let i = 0; i < 10 ; i++) {
+//             const random = Math.floor(Math.random() * movies.length);
+//
+//             const user = await User.findById(userid)
+//             if (user.movies_watched.length > 0 && user.movies_watched.includes(movies[random])){
+//                 continue;
+//             }else{
+//                 await User.updateOne({_id:userid},{ $push: { movies_watched: movies[random] } })
+//             }
+//
+//
+//         }
+//         return res.status(200).json({data:"none"})
+//     }catch(e){
+//         console.error(e)
+//         return res.status(500).json(InternalServerError)
+//     }
+// })
 
 
 

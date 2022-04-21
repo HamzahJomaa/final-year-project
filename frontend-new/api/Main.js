@@ -6,16 +6,16 @@ const agent = new https.Agent({
     rejectUnauthorized: false
 });
 
-export const Search = async (data) =>{
-    return await axios.post(`${baseLink}/search`,data)
+export const Search = async (data,type,perPage,page,order) =>{
+    return await axios.post(`${baseLink}/${type}/search/${perPage}/${page}`,{data,order})
 }
 
 export const getGenre = async({type})=>{
     return await axios.get(`${baseLink}/genre/${type}`)
 }
 
-export const getUserReviews = async ({id,token,perPage, page}) =>{
-    return await axios.get(`${baseLink}/review/user/${perPage}/${page}`,{headers:{"x-access-token":token,user:id}})
+export const getUserReviews = async ({id,type,token,perPage, page}) =>{
+    return await axios.get(`${baseLink}/review/user/${type}/${perPage}/${page}`,{headers:{"x-access-token":token,user:id}})
 }
 
 export const AddReview = async ({review,token}) =>{

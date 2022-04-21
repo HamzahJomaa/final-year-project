@@ -57,14 +57,15 @@ exports.getUserReviews = async (req, res) => {
     const userId =
         req.body.token || req.query.token || req.headers["user"]
 
-    let {perPage,page} = req.params
+    let {perPage,page,type} = req.params
+    let onModel = type === "movies" ? "Movies" : "Series"
     try {
-        const reviews = await Review.find({userId}).skip(parseInt(perPage) * (parseInt(page) - 1)).limit(parseInt(perPage)).populate({
+        const reviews = await Review.find({userId,onModel}).skip(parseInt(perPage) * (parseInt(page) - 1)).limit(parseInt(perPage)).populate({
             path: 'userId',
             match: {_id: userId},
             select: "firstName lastName"
-        }).populate({path: 'on', select: "title poster_path"}).exec()
-        const review_count = await Review.find({userId}).count()
+        }).populate({path: 'on', select: "title tmdb poster_path"}).exec()
+        const review_count = await Review.find({userId,onModel}).count()
         if (reviews.length !== 0) {
             return res.status(200).json(DynamicMessage(200, {reviews,review_count}))
         }

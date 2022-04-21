@@ -1,20 +1,37 @@
 import React, {useEffect, useState} from 'react';
 import {getGenre} from "../api/Main";
 
-const Search = ({type,perPage,currentPage,sendSearch}) => {
+const Search = ({type,sendSearch}) => {
     const [categories,setCategories] = useState([])
     const [category,setCategory] = useState("")
-    const [q,setQ] = useState("")
-    const handleSearch = async () =>{
+    const [q,setQ] = useState()
+    const [rate,setRate] = useState("")
+    const [from,setFrom] = useState("")
+    const [to,setTo] = useState("")
+
+    const handleSearch =  () =>{
         let query = {
             q,
             genre : category,
-            rate : 0,
+            rate,
+            datefrom : new Date(from),
+            dateto: new Date(to),
+        }
+        sendSearch(query)
+    }
+
+    const clearSearch = () =>{
+        setCategory("")
+        setQ("")
+        setFrom("")
+        setTo("")
+        setRate("")
+        let query = {
+            q : "",
+            genre : "",
+            rate: "",
             datefrom : "",
             dateto: "",
-            perPage,
-            currentPage,
-            type : "movies"
         }
         sendSearch(query)
     }
@@ -33,46 +50,47 @@ const Search = ({type,perPage,currentPage,sendSearch}) => {
                 <div className="row">
                     <div className="col-md-12 form-it">
                         <label>{type} Keywords</label>
-                        <input type="text" placeholder="Enter keywords" onKeyUp={(e)=>{setQ(e.target.value)}} />
+                        <input type="text" placeholder="Enter keywords" value={q} onChange={(e)=>{setQ(e.target.value)}} />
                     </div>
                     <div className="col-md-12 form-it">
                         <label>Genres & Subgenres</label>
                         <div className="group-ip">
                             <select
                                 name="skills" multiple="" className="ui fluid dropdown" onChange={(e)=>{setCategory(e.target.value)}}>
-                                <option value="">Enter to filter genres</option>
-                                {categories?.length > 0 ? categories.map((category,index)=>(
-                                    <option key={index} value={category.tmdb}>{category.name}</option>
+                                <option  value="">Enter to filter genres</option>
+                                {categories?.length > 0 ? categories.map((categoryitem,index)=>(
+                                    <option  key={index} value={categoryitem.tmdb}>{categoryitem.name}</option>
                                 )) : "" }
                             </select>
                         </div>
                     </div>
                     <div className="col-md-12 form-it">
-                        <label>Rating Range</label>
-                        <select>
-                            <option value="range">-- Select the rating range below --</option>
-                            <option value="saab">-- Select the rating range below --</option>
+                        <label>Rating</label>
+                        <select value={rate} onChange={(e)=>setRate(e.target.value)}>
+                            <option value="">Select Rate</option>
+                            <option value="1">1</option>
+                            <option value="2">2</option>
+                            <option value="3">3</option>
+                            <option value="4">4</option>
+                            <option value="5">5</option>
                         </select>
                     </div>
                     <div className="col-md-12 form-it">
                         <label>Release Year</label>
                         <div className="row">
                             <div className="col-md-6">
-                                <select>
-                                    <option value="range">From</option>
-                                    <option value="number">10</option>
-                                </select>
+                                <input type="date" value={from} name="" onChange={(e) => setFrom(e.target.value)} id="" />
                             </div>
                             <div className="col-md-6">
-                                <select>
-                                    <option value="range">To</option>
-                                    <option value="number">20</option>
-                                </select>
+                                <input type="date" value={to} name="" onChange={(e) => setTo(e.target.value)} id="" />
                             </div>
                         </div>
                     </div>
                     <div className="col-md-12 ">
-                        <input className="submit" type="button" onClick={handleSearch} value="submit" />
+                        <input className="submit" type="button" onClick={handleSearch} value="Submit" />
+                    </div>
+                    <div className="col-md-12" style={{marginTop:"1rem"}}>
+                        <input className="submit" type="button" onClick={clearSearch} value="Clear" />
                     </div>
                 </div>
             </div>

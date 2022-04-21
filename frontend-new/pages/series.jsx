@@ -1,16 +1,18 @@
 import React, {useEffect, useState} from 'react';
 import HeroComponent from "../components/HeroComponent";
-import {ListStream} from "../api/Main";
+import {ListStream, Search} from "../api/Main";
 import Pagination from '@mui/material/Pagination';
 import {to_slug} from "../helpers/contenthelper"
 import ImageComponent from "../helpers/ImageComponent";
+import SearchComponent from "./Search";
 
 const Series = () => {
     const [series,setSeries] = useState([])
     const [metadata,setMetaData] = useState([])
     const [perPage,setPerPage] = useState(20)
     const [page,setPage] = useState(1)
-
+    const [searchData,setSearchData] = useState()
+    const [order,setOrder] = useState("")
     const perPageHandler = (e) =>{
         setPerPage(parseInt(e.target.value))
     }
@@ -18,41 +20,42 @@ const Series = () => {
     const pageHandler = (event, value) => {
         setPage(value);
     };
-
     const [loading,setLoading] = useState(false)
+
+    const handleSearch = async (data)=>{
+        setSearchData(data)
+    }
+
 
     useEffect(async ()=>{
         setLoading(true)
         try {
-            let series = await ListStream("series",page,perPage)
-            setMetaData(series?.data?.metadata)
-            setSeries(series?.data?.data)
+            let seriesAPI = await Search(searchData,"series",perPage,page,order)
+            setSeries(seriesAPI?.data?.data?.result)
+            setMetaData(seriesAPI?.data?.data?.stream_count)
         }catch (e) {
             console.error(e)
         }finally {
             setLoading(false)
         }
-    },[perPage,page])
+    },[perPage,page,searchData,order])
     return (
         <div>
-            <HeroComponent type={"common-hero"} title={"Tv Shows Listing"} location={["home","tv show"]} />
+            <HeroComponent type={"common-hero"} bgimg={"slider-bg.jpeg"} title={"Tv Shows Listing"} location={["home","tv show"]} />
             <div className="page-single">
                 <div className="container">
                     <div className="row ipad-width">
                         <div className="col-md-8 col-sm-12 col-xs-12">
                             <div className="topbar-filter">
-                                <p>Found <span>{metadata[0]?.total} series</span> in total</p>
+                                <p>Found <span>{metadata} series</span> in total</p>
                                 <label>Sort by:</label>
-                                <select>
-                                    <option value="popularity">Popularity Descending</option>
-                                    <option value="popularity">Popularity Ascending</option>
-                                    <option value="rating">Rating Descending</option>
-                                    <option value="rating">Rating Ascending</option>
-                                    <option value="date">Release date Descending</option>
-                                    <option value="date">Release date Ascending</option>
+                                <select onChange={e=>setOrder(e.target.value)}>
+                                    <option value="">Sorting Type</option>
+                                    <option value="vote_average-desc">Rating Descending</option>
+                                    <option value="vote_average-asc">Rating Ascending</option>
+                                    <option value="release_date-desc">Release date Descending</option>
+                                    <option value="release_date-asc">Release date Ascending</option>
                                 </select>
-                                <a href="movielist.html" className="list"><i className="ion-ios-list-outline "></i></a>
-                                <a href="moviegrid.html" className="grid"><i className="ion-grid active"></i></a>
                             </div>
                             <div className="flex-wrap-movielist">
                                 {series.length > 0 && !loading ? series.map((item,index)=>(
@@ -89,65 +92,14 @@ const Series = () => {
                                 </select>
 
                                 <div className="pagination2">
-                                    <span>Page 1 of {(metadata[0]?.total / perPage).toFixed(0)}:</span>
-                                    <Pagination size={"small"} style={{color:"red"}} count={10} page={page} onChange={pageHandler} />
+                                    <span>Page 1 of {(metadata / perPage).toFixed(0)}:</span>
+                                    <Pagination size={"small"} style={{color:"red"}} count={(metadata/ perPage).toFixed(0)} page={page} onChange={pageHandler} />
                                 </div>
                             </div>
                         </div>
                         <div className="col-md-4 col-sm-12 col-xs-12">
                             <div className="sidebar">
-                                <div className="searh-form">
-                                    <h4 className="sb-title">Search for movie</h4>
-                                    <form className="form-style-1" action="#">
-                                        <div className="row">
-                                            <div className="col-md-12 form-it">
-                                                <label>Movie name</label>
-                                                <input type="text" placeholder="Enter keywords" />
-                                            </div>
-                                            <div className="col-md-12 form-it">
-                                                <label>Genres & Subgenres</label>
-                                                <div className="group-ip">
-                                                    <select
-                                                        name="skills" multiple="" className="ui fluid dropdown">
-                                                        <option value="">Enter to filter genres</option>
-                                                        <option value="Action1">Action 1</option>
-                                                        <option value="Action2">Action 2</option>
-                                                        <option value="Action3">Action 3</option>
-                                                        <option value="Action4">Action 4</option>
-                                                        <option value="Action5">Action 5</option>
-                                                    </select>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 form-it">
-                                                <label>Rating Range</label>
-                                                <select>
-                                                    <option value="range">-- Select the rating range below --</option>
-                                                    <option value="saab">-- Select the rating range below --</option>
-                                                </select>
-                                            </div>
-                                            <div className="col-md-12 form-it">
-                                                <label>Release Year</label>
-                                                <div className="row">
-                                                    <div className="col-md-6">
-                                                        <select>
-                                                            <option value="range">From</option>
-                                                            <option value="number">10</option>
-                                                        </select>
-                                                    </div>
-                                                    <div className="col-md-6">
-                                                        <select>
-                                                            <option value="range">To</option>
-                                                            <option value="number">20</option>
-                                                        </select>
-                                                    </div>
-                                                </div>
-                                            </div>
-                                            <div className="col-md-12 ">
-                                                <input className="submit" type="submit" value="submit" />
-                                            </div>
-                                        </div>
-                                    </form>
-                                </div>
+                                <SearchComponent perPage={perPage} currentPage={page} type={"series"} sendSearch={handleSearch} />
                                 <div className="ads">
                                     <img src="images/uploads/ads1.png" alt="" />
                                 </div>

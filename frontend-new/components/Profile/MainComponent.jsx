@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useCallback, useEffect, useState} from 'react';
 import {ResetPassword, UpdateProfile} from "../../api/Auth";
 import {getNationality, getProfile} from "../../api/Main";
 import {LinearProgress,Alert} from "@mui/material";
@@ -25,13 +25,27 @@ const MainComponent = ({id , t}) => {
     const [response,setResponse] = useState("")
     const [status,setStatus] = useState("")
 
+    const [passStatus, setPassStatus] = useState()
+    const [passResponse, setPassResponse] = useState()
+    const [loadingPass, setLoadingPass] = useState(false)
     const handlePasswordChange = async (e) =>{
         e.preventDefault()
-        try{
-            const result = await ResetPassword({oldpassword,newpassword,userId: profileId,token})
-        }catch(e){
-            console.error(e)
+        setLoadingPass(true)
+        if (newpassword === newcpassword){
+            try{
+                const result = await ResetPassword({oldpassword,newpassword,userId: profileId,token})
+                setPassStatus(result?.data?.statusCode === 200 && "success")
+                setPassResponse(result?.data?.statusMessage)
+            }catch(e){
+                console.error(e.response)
+                setPassStatus("error")
+                setPassResponse(e?.response?.data?.statusMessage)
+            }
+        }else{
+            setPassStatus("error")
+            setPassResponse("Please Confirm Your Password")
         }
+        setLoadingPass(false)
     }
 
     const handleUpdate = async (e) =>{
@@ -64,6 +78,7 @@ const MainComponent = ({id , t}) => {
             setLoading(false)
         }
     }
+
 
     useEffect(async ()=>{
         if (!profileId){
@@ -161,20 +176,26 @@ const MainComponent = ({id , t}) => {
                 <div className="row">
                     <div className="col-md-6 form-it">
                         <label>Old Password</label>
-                        <input type="text" placeholder="**********" onChange={(e)=>{setOldPassword(e.target.value)}} />
+                        <input type="password" placeholder="**********" onChange={(e)=>{setOldPassword(e.target.value)}} />
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-6 form-it">
                         <label>New Password</label>
-                        <input type="text" placeholder="***************" onChange={(e)=>{setNewPassword(e.target.value)}}/>
+                        <input type="password" placeholder="***************" onChange={(e)=>{setNewPassword(e.target.value)}}/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-6 form-it">
                         <label>Confirm New Password</label>
-                        <input type="text" placeholder="*************** " onChange={(e)=>{setNewCPassword(e.target.value)}}/>
+                        <input type="password" placeholder="*************** " onChange={(e)=>{setNewCPassword(e.target.value)}}/>
                     </div>
+                </div>
+                <div className='progressbar'>
+                    {loadingPass? <LinearProgress />  : ""}
+                </div>
+                <div className="response mb-2">
+                    {(passResponse && passStatus) && <Alert severity={passStatus}>{passResponse}</Alert>}
                 </div>
                 <div className="row">
                     <div className="col-md-2">

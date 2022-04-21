@@ -4283,8 +4283,8 @@ ul {
 }
 
 .mv-item-infor{
+  padding-top: 1rem;
   width: 100%;
-  padding-left: 2rem;
 }
 .movie-item-style-2 .mv-item-infor h6 {
   margin-bottom: 10px;
@@ -4308,7 +4308,6 @@ ul {
   margin-bottom: 25px;
 }
 .movie-item-style-2 .mv-item-infor .run-time span {
-  margin-left: 15px;
   margin-right: 15px;
 }
 .movie-item-style-2 .mv-item-infor .rate {
@@ -4664,7 +4663,6 @@ ul {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 25px;
 }
 .title-hd h2 {
   font-family: 'Dosis', sans-serif;
@@ -6881,7 +6879,7 @@ p.ceb-single {
   -o-transition: all 0.35s ease-out;
   transition: all 0.35s ease-out;
 }
-.overlay.openform {
+.openform {
   -moz-opacity: 1;
   -khtml-opacity: 1;
   -webkit-opacity: 1;
@@ -6908,12 +6906,16 @@ p.ceb-single {
     display: block;
   }
 }
-.overlay .login-content {
+.login-content {
   width: 430px;
-  padding: 50px;
+  padding: 4rem;
   border: 1px solid #e1e1e1;
   height: auto;
   background-color: #ffffff;
+}
+
+.login-content.padding{
+  padding: 2rem 2rem 4rem;
 }
 
 
@@ -6924,7 +6926,7 @@ p.ceb-single {
     padding: 30px;
   }
 }
-.overlay .login-content h3 {
+.login-content h3 {
   font-family: 'Dosis', sans-serif;
   font-size: 36px;
   color: #222222;
@@ -6938,7 +6940,7 @@ p.ceb-single {
     margin-bottom: 15px;
   }
 }
-.overlay .login-content .remember {
+.login-content .remember {
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
@@ -6957,18 +6959,18 @@ p.ceb-single {
     margin-bottom: 15px;
   }
 }
-.overlay .login-content .remember input[type="checkbox"] {
+.login-content .remember input[type="checkbox"] {
   width: 20px;
   height: 20px;
   border: 1px solid #e1e1e1;
   margin-right: 5px;
   position: relative;
 }
-.overlay .login-content .remember span {
+.login-content .remember span {
   margin-top: 3px;
   position: absolute;
 }
-.overlay .login-content label {
+.login-content label {
   font-family: 'Dosis', sans-serif;
   font-size: 14px;
   color: #222222;
@@ -6982,7 +6984,7 @@ p.ceb-single {
     margin-bottom: 15px;
   }
 }
-.overlay .login-content label input {
+.login-content label input {
   font-family: 'Dosis', sans-serif;
   font-size: 14px;
   color: #222222;
@@ -6992,14 +6994,14 @@ p.ceb-single {
   height: 42px;
   border: 1px solid #e1e1e1;
 }
-.overlay .login-content label input::-webkit-input-placeholder {
+.login-content label input::-webkit-input-placeholder {
   font-family: 'Dosis', sans-serif;
   font-size: 14px;
   color: #222222;
   font-weight: bold;
   text-transform: capitalize;
 }
-.overlay .login-content button {
+.login-content button {
   font-family: 'Dosis', sans-serif;
   font-size: 14px;
   color: #ffffff;
@@ -7011,7 +7013,7 @@ p.ceb-single {
   width: 100%;
   cursor: pointer;
 }
-.overlay .login-content p {
+.login-content p {
   color: #222222;
   margin-top: 35px;
   margin-bottom: 20px;
@@ -7022,7 +7024,7 @@ p.ceb-single {
     margin-top: 15px;
   }
 }
-.overlay .login-content .social-btn-2 {
+.login-content .social-btn-2 {
   display: -webkit-flex;
   display: -moz-box;
   display: -ms-flexbox;
@@ -7030,7 +7032,7 @@ p.ceb-single {
   align-items: center;
   justify-content: space-between;
 }
-.overlay .login-content .social-btn-2 a {
+.login-content .social-btn-2 a {
   width: 50%;
   height: 42px;
   display: -webkit-flex;
@@ -7049,14 +7051,14 @@ p.ceb-single {
   -moz-border-radius: 3px;
   border-radius: 3px;
 }
-.overlay .login-content .social-btn-2 a i {
+.login-content .social-btn-2 a i {
   margin-right: 10px;
 }
-.overlay .login-content .social-btn-2 .fb {
+.login-content .social-btn-2 .fb {
   background-color: #3a5a9a;
   margin-right: 15px;
 }
-.overlay .login-content .social-btn-2 .tw {
+.login-content .social-btn-2 .tw {
   background-color: #00b9ef;
 }
 .slider {
@@ -8333,6 +8335,50 @@ footer.full-width-ft .ft-copyright {
   justify-content: space-between !important;
 }
 
-.movie_carousel {
-  margin-top: 3rem;
+
+.loginbtn{
+  font-family: 'Dosis', sans-serif;
+  font-size: 14px;
+  color: #abb7c4;
+  font-weight: bold;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.loginbtn:hover{
+  background-color: transparent !important;
+}
+
+.signupbtn{
+  background-color: #dd003f;
+  color: #ffffff;
+  padding: 11px 25px;
+  -webkit-border-radius: 20px;
+  -moz-border-radius: 20px;
+  border-radius: 20px;
+}
+
+
+
+.providers {
+  display: flex;
+  /* grid-template-columns: auto auto auto auto auto; */
+  /* grid-gap: 1rem; */
+  margin-left: 2rem;
+  width: 50% !important;
+}
+
+.providers img {
+  width: 10%;
+  margin: 0 0.6rem;
+  border-radius: 11px;
+}
+
+.tabs_title{
+  font-size: 1.1rem;
+}
+
+@media (max-width: 768px) {
+  .tabs_title{
+    font-size: .9rem;
+  }
 }

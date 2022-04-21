@@ -10,9 +10,11 @@ const ProfileComponent = ({ Component , location }) => {
     const handleLogout = () =>{
         if (typeof window !== "undefined") {
             localStorage.clear()
-            router.replace("/")
+            router.push("/")
         }
     }
+
+
     return (
         <>
             <HeroComponent type={"user-hero"} bgimg={"slider-bg.jpeg"} location={["Home","Profile"]} />
@@ -33,7 +35,8 @@ const ProfileComponent = ({ Component , location }) => {
                                     <ul>
                                         <li className={location === "index" && "active"}><a href="/profile">Profile</a></li>
                                         <li className={location === "favorite" && "active"} ><a href="userfavoritelist.html">Favorite movies</a></li>
-                                        <li className={location === "rate" && "active"}><a href="profile/rate">Rated movies</a></li>
+                                        <li className={location === "ratemovies" && "active"}><a href="../profile/ratemovies">Rated Movies</a></li>
+                                        <li className={location === "rateseries" && "active"}><a href="../profile/rateseries">Rated Series</a></li>
                                     </ul>
                                 </div>
                                 <div className="user-fav">

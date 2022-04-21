@@ -6,6 +6,7 @@ const {RetrievedData, InternalServerError, DynamicMessage, NoContent} = require(
 const Genre = require("../Models/Genre");
 const {mongo} = require("mongoose");
 const {getGenreByLimit} = require("../Helpers/Python");
+const axios = require("axios");
 
 
 
@@ -30,10 +31,11 @@ let project = {
 }
 
 
+
 exports.getGenre = async (req, res) => {
     let {type} = req.params
     try {
-        let genres = await Genre.find({type})
+        let genres = await Genre.find({type: type === "movies" ? "movie" : "series"})
         if (genres?.length > 0) {
             return res.status(200).json(DynamicMessage(200, genres))
         }
@@ -45,15 +47,33 @@ exports.getGenre = async (req, res) => {
 }
 
 exports.Search = async (req, res) => {
-    let {q, perPage, currentPage, type, rate, genre, datefrom, dateto} = req.body
+    let {order, data} = req.body
+    let {type,perPage, currentPage} = req.params
+    const sort = order && order.split("-")
+    const sort_algo = sort && sort[1] === "asc" ? 1 : -1
 
-    let query = q ? {title: {'$regex': q, '$options': 'i'}} : {}
-    let rating = rate ? {vote_average: {$gte: rate}} : {}
-    let genreQuery = genre ? {genre_ids: {$in: genre}} : {}
+    let query = data?.q ? {title: {'$regex': data.q, '$options': 'i'}} : {}
+    let rating = data?.rate ? {vote_average: {$gte: data.rate}} : {}
+    let genreQuery = data?.genre ? {genre_ids: {$in: data.genre}} : {}
+    let fromQuery = data?.datefrom ? {release_date : {$gte : data.datefrom}} : {}
+    let toQuery = data?.dateto ? {release_date : {$lte : data.dateto}} : {}
+    let sortQuery
+    switch (sort[0]) {
+        case "release_date":
+            sortQuery = {release_date:sort_algo}
+            break;
+        case "vote_average":
+            sortQuery = {vote_average:sort_algo}
+            break;
+        default:
+            sortQuery = {}
+            break;
+    }
 
     try {
-        let result = type === "movies" ? await Movies.find({$and:[query,rating,genreQuery]}) : await Series.find()
-        return res.status(200).json(RetrievedData(200, result))
+        let result = type === "movies" ? await Movies.find({$and:[query,rating,genreQuery,fromQuery,toQuery]}).skip(parseInt(perPage) * (parseInt(currentPage) - 1)).limit(parseInt(perPage)).sort(sortQuery) : await Series.find({$and:[query,rating,genreQuery,fromQuery,toQuery]}).skip(parseInt(perPage) * (parseInt(currentPage) - 1)).limit(parseInt(perPage)).sort(sortQuery)
+        let stream_count = type === "movies" ?  await Movies.find({$and:[query,rating,genreQuery,fromQuery,toQuery]}).count() :  await Series.find({$and:[query,rating,genreQuery,fromQuery,toQuery]}).count()
+        return res.status(200).json(RetrievedData(200, {result,stream_count}))
     } catch (e) {
         console.log(e)
         return res.status(500).json(InternalServerError)
@@ -73,15 +93,18 @@ exports.getPersonalizedHomepage = async (req,res) =>{
             return genreWatched.indexOf(n) !== -1;
         });
         let finalGenres = combinedGenres.length > 0 ? combinedGenres : genreWatched.length > 0 ? genreWatched : genresProfile
+        if (finalGenres.length > 0){
+            let recommended_ids = await getGenreByLimit({genre:finalGenres,limit:5})
+            let recommendedMovies = await Movies.aggregate().match({tmdb:{$in:[...new Set(recommended_ids.data)].map(e => e)}}).lookup(lookup).sample(10).project(project)
 
-        let recommended_ids = await getGenreByLimit({genre:finalGenres,limit:5})
-        let recommendedMovies = await Movies.aggregate().match({tmdb:{$in:[...new Set(recommended_ids.data)].map(e => e)}}).lookup(lookup).sample(10).project(project)
+            recommendedMovies.map(movie=>{
+                movie.genres = [...new Set(movie.genres)]
+            })
 
-        recommendedMovies.map(movie=>{
-            movie.genres = [...new Set(movie.genres)]
-        })
+            return res.status(200).json(DynamicMessage(200,{recommended:recommendedMovies}))
+        }
+        return res.status(204).json(DynamicMessage(NoContent))
 
-        return res.status(200).json(DynamicMessage(200,{recommended:recommendedMovies}))
     }catch (e) {
         console.error(e)
         return res.status(500).json(InternalServerError)
@@ -90,11 +113,13 @@ exports.getPersonalizedHomepage = async (req,res) =>{
 
 exports.Homepage = async (req, res) => {
     try {
-        let top_rated_movies = await Movies.aggregate().sort({vote_average: -1}).limit(10).lookup(lookup).project(project)
-        let top_review_movies = await Movies.aggregate().sort({vote_count: -1}).limit(10).lookup(lookup).project(project)
-        let latest_movies = await Movies.aggregate().sort({release_date: -1}).limit(10).lookup(lookup).project(project)
-        let series = await Series.find().limit(10);
-
+        let top_rated_movies = await Movies.aggregate().sort({vote_average: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
+        let top_review_movies = await Movies.aggregate().sort({vote_count: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
+        let tmdb_latest = await axios.get("https://api.themoviedb.org/3/movie/now_playing?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page=1")
+        let id = tmdb_latest.data.results.map(e=>e.id)
+        let latest_movies = await Movies.aggregate().match({tmdb:{$in:id}}).sort({release_date: -1}).limit(10).lookup(lookup).project(project)
+        let top_rated_series = await Series.aggregate().sort({vote_average: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
+        let top_reviewed_series = await Series.aggregate().sort({vote_count: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
         latest_movies.map(movie=>{
             movie.genres = [...new Set(movie.genres)]
         })
@@ -102,7 +127,12 @@ exports.Homepage = async (req, res) => {
         let movies = {
             top_rated_movies,
             top_review_movies,
-            latest_movies
+            latest_movies,
+        }
+
+        let series = {
+            top_rated_series,
+            top_reviewed_series
         }
 
 

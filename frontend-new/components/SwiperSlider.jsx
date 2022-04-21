@@ -26,7 +26,7 @@ const SwiperSlider = ({items}) => {
                                     <div className="col-md-7 col-sm-12 col-xs-12">
                                         <div className="title-in">
                                             <div className="cate">
-                                                {item.genres.map((genre,index)=> (<span key={`genre${index}`} className="blue"><a href="#">{genre}</a></span>) )}
+                                                {item?.genres?.map((genre,index)=> (<span key={`genre${index}`} className="blue"><a href="#">{genre}</a></span>) )}
                                             </div>
                                             <h1><a href="#">{item.title}<span>{(new Date(item.date)).getFullYear()}</span></a></h1>
                                             <div className="social-btn">

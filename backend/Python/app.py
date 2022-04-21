@@ -46,7 +46,7 @@ def Get_Movie_Recommendation(type,title,db):
     idx = indices[title]
     sim_scores = list(enumerate(cosine_sim[idx]))
     sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:5]
+    sim_scores = sim_scores[1:10]
     movie_indices = [i[0] for i in sim_scores]
     JSONP_data = jsonpify(list(movies.iloc[movie_indices]["tmdb"]))
     return JSONP_data

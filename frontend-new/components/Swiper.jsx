@@ -7,8 +7,22 @@ import {to_slug} from "../helpers/contenthelper";
 const SwiperComponent = ({slidePerView,spaceBetween,items}) => {
     return (
         <Swiper
-            spaceBetween={spaceBetween}
-            slidesPerView={slidePerView}
+            spaceBetween={10}
+            slidesPerView={1}
+            breakpoints={{
+                640: {
+                    slidesPerView: 2,
+                    spaceBetween: 20,
+                },
+                768: {
+                    slidesPerView: 2,
+                    spaceBetween: 40,
+                },
+                1024: {
+                    slidesPerView: 4,
+                    spaceBetween: 5,
+                },
+            }}
             className="movie_carousel"
         >
             {items?.length > 0 ?
@@ -18,9 +32,9 @@ const SwiperComponent = ({slidePerView,spaceBetween,items}) => {
                             <div className="mv-img">
                                 <a href={`movie/${item?.tmdb}/${to_slug(item?.title)}`}>
                                     <ImageComponent src={`https://image.tmdb.org/t/p/w342/${item?.poster_path}`} alt="I'm a lazy image"
-                                                    width="600"
+                                                    width="500"
                                                     loading={"eager"}
-                                                    height="850"
+                                                    height="700"
                                                     placeholder="blur" blurDataURL="/images/owl.video.play.png"  />
                                 </a>
                             </div>

@@ -1,10 +1,10 @@
 import React, {useEffect, useState} from 'react';
 import {getUserReviews} from "../../api/Main"
 import ImageComponent from "../../helpers/ImageComponent";
-import {BeautifyShortDate} from "../../helpers/contenthelper";
+import {BeautifyShortDate,to_slug} from "../../helpers/contenthelper";
 import Pagination from "@mui/material/Pagination";
 
-const RateComponent = ({id,t}) => {
+const RateComponent = ({id,t,type}) => {
 
     const [profileId,setProfileId] = useState(id)
     const [token,setToken] = useState(t)
@@ -25,7 +25,7 @@ const RateComponent = ({id,t}) => {
     useEffect( async ()=>{
         console.log({id: profileId,token})
         try {
-            const reviewsAPI = await getUserReviews({id: profileId,token,perPage, page})
+            const reviewsAPI = await getUserReviews({id: profileId, type ,token,perPage, page})
             setReviews(reviewsAPI?.data?.statusMessage?.reviews)
             setReviewCount(reviewsAPI?.data?.statusMessage?.review_count)
         }catch (e) {
@@ -37,11 +37,6 @@ const RateComponent = ({id,t}) => {
         <div className="col-md-9 col-sm-12 col-xs-12">
             <div className="topbar-filter">
                 <p>Found <span>{reviews?.length || 0} rates</span> in total</p>
-                <label>Sort by:</label>
-                <select>
-                    <option value="range">-- Choose option --</option>
-                    <option value="saab">-- Choose option 2--</option>
-                </select>
             </div>
             {reviews?.length > 0 && reviews.map((item,index)=>(
                 <div key={index} className="movie-item-style-2 userrate">
@@ -51,11 +46,11 @@ const RateComponent = ({id,t}) => {
                                     height="400"
                                     placeholder="blur" blurDataURL="/images/owl.video.play.png" />
                     <div className="mv-item-infor">
-                        <h6><a href="#">{item?.on?.title}</a></h6>
+                        <h6><a href={`/${type === "movies" ? "movie" : "series"}/${item?.on?.tmdb}/${to_slug(item?.title)}`}>{item?.on?.title}</a></h6>
                         <p className="time sm-text">your rate:</p>
                         <p className="rate"><i className="ion-android-star"></i><span>{item.rate}</span> /5</p>
                         <p className="time sm-text">your reviews:</p>
-                        <h6>Best Marvel movie in my opinion</h6>
+                        <h6>{item?.title}</h6>
                         <p className="time sm">{BeautifyShortDate(item.createdAt)}</p>
                         <p>{item.body}</p>
                     </div>

@@ -16,8 +16,8 @@ export const UpdateProfile = async ({profile,token}) =>{
     },{headers:{"x-access-token":token}})
 }
 
-export const SignUp = async ({username,password,email}) => {
-    return await axios.post(`${baseLink}/auth/signup`,{user:{username,password,email}})
+export const SignUp = async ({user}) => {
+    return await axios.post(`${baseLink}/auth/signup`,{user})
 }
 
 export const LoginApi = async ({username,password}) => {

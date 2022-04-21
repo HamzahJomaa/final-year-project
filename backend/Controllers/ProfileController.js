@@ -41,8 +41,10 @@ exports.ResetPassword = async (req,res) =>{
             let hashedPassword = await bcrypt.hash(newpassword,12)
             user.password = hashedPassword
             await user.save()
+            return res.status(200).json(DynamicMessage(200,"Password Successfully Changed"))
+        }else{
+            return res.status(409).json(DynamicMessage(409,"Old Password is Wrong"))
         }
-        console.log(checkPassword)
     }catch(e){
         console.error(e)
         return res.status(500).json(InternalServerError)
@@ -75,6 +77,7 @@ exports.getProfileStream = async (req,res) =>{
             })
             .unwind("$StreamData")
             .group({_id: "$StreamData.title","visited" : { $sum : 1}})
+            .sort({visited: -1})
 
         if (Stream.length !== 0){
             return res.status(200).json(RetrievedData(200,Stream))

@@ -25,6 +25,11 @@ const theme = createTheme({
     typography: {
         fontFamily: 'Dosis,sans-serif',
     },
+    palette:{
+        secondary:{
+            main:"#dcf836"
+        },
+    },
     components: {
         // Name of the component
         MuiPaginationItem: {
@@ -50,11 +55,19 @@ const theme = createTheme({
             styleOverrides:{
                 root:{
                     "&:hover":{
-                        backgroundColor: "#020d18 !important" 
+                        backgroundColor: "#020d18 !important"
+                    },
+                    "&.MuiTab-textColorPrimary":{
+                        color:"white",
+                        fontWeight: "bolder",
+                    },
+                    "&.MuiTab-textColorPrimary.Mui-selected":{
+                        color:"#dcf836"
                     }
                 }
             }
-        }
+        },
+
     },
 })
 
@@ -65,8 +78,6 @@ function MyApp({ Component, pageProps }) {
           <link rel="stylesheet" href='/css/plugins.css'/>
           <Loader />
           <HeaderComponent />
-          <LoginComponent />
-          <SignUpComponent />
           <Component {...pageProps} />
           <Script/>
           <FooterComponent />

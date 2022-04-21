@@ -2,6 +2,8 @@ import React, {useEffect} from 'react';
 import {useSelector} from "react-redux";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
 import { faAngleDown } from '@fortawesome/free-solid-svg-icons'
+import LoginComponent from "./LoginComponent";
+import SignUpComponent from "./SignUpComponent";
 
 
 const HeaderComponent = () => {
@@ -52,8 +54,8 @@ const HeaderComponent = () => {
                                 </a>
                             </li>
                             <li className="dropdown first">
-                                <a className="btn btn-default">
-                                    Reviews
+                                <a className="btn btn-default" href="/recommendation">
+                                    Recommendation
                                 </a>
                             </li>
                             <li className="dropdown first">
@@ -67,8 +69,8 @@ const HeaderComponent = () => {
                         </ul>
                         {!profile?
                             <ul className="nav navbar-nav flex-child-menu menu-right">
-                                <li className="loginLink"><a href="#">LOG In</a></li>
-                                <li className="btn signupLink"><a href="#">sign up</a></li>
+                                <LoginComponent />
+                                <SignUpComponent />
                             </ul>
                             : ""
                         }

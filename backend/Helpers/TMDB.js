@@ -81,7 +81,7 @@ exports.ImportCast = async () =>{
 exports.ImportSeries = async () =>{
     for (let page = 1 ; page <= 30 ; page++) {
         try{
-            let tmdbResult = await axios.get("https://api.themoviedb.org/3/tv/popular?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
+            let tmdbResult = await axios.get("https://api.themoviedb.org/3/tv/top_rated?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page="+page)
             tmdbResult.data.results.map( async element=>{
                 let series = await Series.findOne({tmdb:element.id})
                 if (!series){
@@ -117,4 +117,8 @@ exports.getTMDB = async (stream,id,type) =>{
     //credits
     //images
     return await axios.get(`https://api.themoviedb.org/3/${stream === "movie" ? "movie" : "tv"}/${id}/${type}?api_key=01a1a82396f4e0f7423e9a45bac71390`)
+}
+
+exports.getStreamTMDB = async (stream,id) =>{
+    return await axios.get(`https://api.themoviedb.org/3/${stream === "movie" ? "movie" : "tv"}/${id}?api_key=01a1a82396f4e0f7423e9a45bac71390`)
 }
