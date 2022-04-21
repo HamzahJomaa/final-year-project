@@ -25,11 +25,16 @@ def read_mongo(db, collection,prod=False):
         ]
         cursor = db[collection].aggregate(pipeline)
     else:
-        cursor = db[collection].find({}).limit(500)
+        cursor = db[collection].find({})
 
     # Expand the cursor and construct the DataFrame
     df =  pd.DataFrame(list(cursor))
 
     return df
 
-
+def GetData(Streamtype,online):
+    if (online == "online"):
+        print(Streamtype)
+        return read_mongo("finalyearproject",Streamtype,True)
+    else:
+        return read_mongo("finalyearproject",Streamtype,False)

@@ -1,18 +1,4 @@
-//preloading for page
-$(window).on('load', function() { // makes sure the whole site is loaded 
-	var status = $('#status');
-	var preloader = $('#preloader');
-	var body = $('body');
-	status.fadeOut(); // will first fade out the loading animation 
-	preloader.delay(0).fadeOut('fast'); // will fade out the white DIV that covers the website. 
-	body.delay(0).css({'overflow':'visible'});
-	var vidDefer = document.getElementsByTagName('iframe');
-	for (var i=0; i<vidDefer.length; i++) {
-		if(vidDefer[i].getAttribute('data-src')) {
-			vidDefer[i].setAttribute('src',vidDefer[i].getAttribute('data-src'));
-		} 
-	}
-})
+
 $(function(){
 	'use strict';
 	// js for dropdown menu
@@ -51,7 +37,8 @@ $(function(){
 	var tabsClick = $('.tabs .tab-links a, .tab-links-2 a, .tab-links-3 a');
 	var multiItem = $('.slick-multiItem');
 	var multiItem2 = $('.slick-multiItem2');
-	tabsClick.on('click', function(e)  {
+	$("body").on('click',".tabs .tab-links a, .tab-links-2 a, .tab-links-3 a", function(e)  {
+		console.log(e)
 		var currentAttrValue = $(this).attr('href');
 		var tabsCurrent = $('.tabs ' + currentAttrValue);
 		// Show/Hide Tabs

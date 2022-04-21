@@ -25,11 +25,9 @@ def read_mongo(db, collection,prod=False):
         ]
         cursor = db[collection].aggregate(pipeline)
     else:
-        cursor = db[collection].find({}).limit(500)
+        cursor = db[collection].find({})
 
     # Expand the cursor and construct the DataFrame
     df =  pd.DataFrame(list(cursor))
 
     return df
-
-

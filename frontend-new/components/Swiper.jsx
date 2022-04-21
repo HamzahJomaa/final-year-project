@@ -4,7 +4,7 @@ import 'swiper/css';
 import ImageComponent from "../helpers/ImageComponent";
 import {to_slug} from "../helpers/contenthelper";
 
-const SwiperComponent = ({slidePerView,spaceBetween,items}) => {
+const SwiperComponent = ({slidePerView,spaceBetween,items,type}) => {
     return (
         <Swiper
             spaceBetween={10}
@@ -30,7 +30,7 @@ const SwiperComponent = ({slidePerView,spaceBetween,items}) => {
                     <SwiperSlide>
                         <div className="movie-item">
                             <div className="mv-img">
-                                <a href={`movie/${item?.tmdb}/${to_slug(item?.title)}`}>
+                                <a href={`${type}/${item?.tmdb}/${to_slug(item?.title)}`}>
                                     <ImageComponent src={`https://image.tmdb.org/t/p/w342/${item?.poster_path}`} alt="I'm a lazy image"
                                                     width="500"
                                                     loading={"eager"}
@@ -39,8 +39,8 @@ const SwiperComponent = ({slidePerView,spaceBetween,items}) => {
                                 </a>
                             </div>
                             <div className="title-in">
-                                <h6><a href={`movie/${item?.tmdb}/${to_slug(item?.title)}`}>{item.title}</a></h6>
-                                <p><i className="ion-android-star"></i><span>{item.vote_average}</span> /5</p>
+                                <h6><a href={`${type}/${item?.tmdb}/${to_slug(item?.title)}`}>{item.title}</a></h6>
+                                <p><i className="ion-android-star"></i><span>{item.vote_average.toFixed(0)}</span> /5</p>
                             </div>
                         </div>
                     </SwiperSlide>

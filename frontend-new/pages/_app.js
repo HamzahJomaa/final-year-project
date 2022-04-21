@@ -11,15 +11,6 @@ import SignUpComponent from "../components/SignUpComponent";
 
 const {store, persistor} = loadStore();
 
-const Loader = () => (
-        <div id="preloader">
-        <img className="logo" src="images/logo1.png" alt="" width="119" height="58"/>
-        <div id="status">
-            <span></span>
-            <span></span>
-        </div>
-    </div>
-)
 
 const theme = createTheme({
     typography: {
@@ -76,7 +67,6 @@ function MyApp({ Component, pageProps }) {
       <ThemeProvider theme={theme}>
           <link rel="stylesheet" href='/css/style.css'/>
           <link rel="stylesheet" href='/css/plugins.css'/>
-          <Loader />
           <HeaderComponent />
           <Component {...pageProps} />
           <Script/>

@@ -59,7 +59,7 @@ export default function BasicTabs({title,titles,data}) {
       </Box>
         {data?.map((carousel,index) => (
             <TabPanel value={value} index={index}>
-                <SwiperComponent items={carousel} spaceBetween={10} slidePerView={4} />
+                <SwiperComponent type={carousel?.type} items={carousel?.data} spaceBetween={10} slidePerView={4} />
             </TabPanel>
         ))}
 

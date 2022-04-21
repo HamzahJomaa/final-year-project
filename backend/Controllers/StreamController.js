@@ -52,7 +52,7 @@ exports.getStreamById = async (req, res) => {
         let data = type === "movies" ? await Movie.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project) : await Series.aggregate().match({tmdb: parseInt(id)}).lookup(lookup).project(project)
         let tmdb = type === "movies" ? await getStreamTMDB("movie",parseInt(id)) : await getStreamTMDB("tv",parseInt(id))
 
-        data[0]["backdrop_path"] = tmdb.data.backdrop_path
+        data[0]["backdrop_path"] = tmdb?.data.backdrop_path
         data[0]["runtime"] = type === "movies" ? tmdb?.data?.run_time : tmdb?.data?.episode_run_time
         data[0].genres = [...new Set(data[0].genres)]
         let recommendation_movie = await getRecommendation({type,title:data[0].title,db:"online"})

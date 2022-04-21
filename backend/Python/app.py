@@ -15,10 +15,20 @@ from surprise import Reader, Dataset, SVD
 import mongodb as md
 from flask_jsonpify import jsonpify
 
+from scipy.sparse import csr_matrix
+from sklearn.decomposition import TruncatedSVD
+from sklearn.neighbors import NearestNeighbors
 
 # Flask constructor takes the name of
 # current module (__name__) as argument
 app = Flask(__name__)
+
+
+def GetData(StreamType,hosting):
+    if (hosting == "online"):
+        return md.read_mongo("finalyearproject",StreamType,True)
+    else:
+        return md.read_mongo("finalyearproject",StreamType,False)
 
 
 @app.route("/api/python/")
@@ -27,15 +37,10 @@ def Main():
     JSONP_data = jsonpify(list(user["title"]))
     return JSONP_data
 
-@app.route("/api/python/<type>/<string:title>/<db>")
-def Get_Movie_Recommendation(type,title,db):
-    movies = ""
-    if (db == "online"):
-         movies = md.read_mongo("finalyearproject",type,True)
-    else:
-         movies = md.read_mongo("finalyearproject",type,False)
+@app.route("/api/python/<StreamType>/<string:title>/<db>")
+def Get_Movie_Recommendation(StreamType,title,db):
+    movies = GetData(StreamType,db)
     movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
-
     movies['overview'] = movies['overview'].fillna("")
     tf = TfidfVectorizer(analyzer='word',ngram_range=(1, 2),min_df=0, stop_words='english')
     tfidf_matrix = tf.fit_transform(movies['overview'])
@@ -51,26 +56,18 @@ def Get_Movie_Recommendation(type,title,db):
     JSONP_data = jsonpify(list(movies.iloc[movie_indices]["tmdb"]))
     return JSONP_data
 
-@app.route("/api/python/movie/genre/<Genre>/<int:limit>/<string:db>")
-def Get_Genre(Genre,db,limit):
+@app.route("/api/python/genre/<StreamType>/<Genre>/<int:limit>/<string:db>")
+def Get_Genre(StreamType,Genre,db,limit):
     genres = Genre.split(",")
-    movies = ""
-    if (db == "online"):
-         movies = md.read_mongo("finalyearproject","movies",True)
-    else:
-         movies = md.read_mongo("finalyearproject","movies",False)
+    movies = GetData(StreamType,db)
     movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
-
     s = movies.apply(lambda x: pd.Series(x['genres']),axis=1).stack().reset_index(level=1, drop=True)
     s.name = 'genre'
     genre_movies = movies.drop('genres', axis=1).join(s)
-
     result = []
     for genre in genres:
         result += list(build_chart(genre=genre,genre_movies=genre_movies,limit=5))
     JSONP_data = jsonpify(result)
-
-
     return JSONP_data
 
 
@@ -93,7 +90,80 @@ def build_chart(genre,genre_movies, percentile=0.85,limit=5):
 
     return qualified["tmdb"]
 
+@app.route("/api/python/correlation/<StreamType>/<stream>/<int:limit>/<string:db>")
+def getCorrelation(StreamType,stream,limit,db):
+    movies = GetData(StreamType,db)
+    movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
+    ratings = GetData("reviews",db)
+    users = GetData("users",db)
+    movies = movies.rename(columns={"_id":"on"})
+    movie_ratings = pd.merge(movies,ratings,on="on")
+    movies_ratings = movie_ratings.rename(columns={"title_x":"movieTitle","title_y":"rateTitle"})
+    user_movie_rating = movies_ratings.pivot_table(index='userId', columns='tmdb', values='rate')
+    ratings_mean_count = pd.DataFrame(movies_ratings.groupby('tmdb')['rate'].mean())
+    ratings_mean_count['rating_counts'] = pd.DataFrame(movies_ratings.groupby('tmdb')['rate'].count())
+    movieSelected = user_movie_rating[int(stream)]
+    movieCorrelation = user_movie_rating.corrwith(movieSelected,method="pearson")
+    df_movieCorrelation = pd.DataFrame(movieCorrelation, columns=['Correlation'])
+    df_movieCorrelation.dropna(inplace=True)
+    df_movieCorrelation = df_movieCorrelation.join(ratings_mean_count['rating_counts'])
+    df_movieCorrelation = df_movieCorrelation[df_movieCorrelation ['rating_counts']>10].sort_values('Correlation', ascending=False)
+    df_movieCorrelation = df_movieCorrelation.reset_index()
+    return_recommendation = list(df_movieCorrelation["tmdb"])
+    JSONP_data = jsonpify(return_recommendation)
+    return JSONP_data
 
+
+@app.route("/api/python/knn/<StreamType>/<stream>/<int:limit>/<string:db>")
+def getNN(StreamType,stream,limit,db):
+    movies = GetData(StreamType,db)
+    movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
+    ratings = GetData("reviews",db)
+    users = GetData("users",db)
+    movies = movies.rename(columns={"_id":"on"})
+    movie_ratings = pd.merge(movies,ratings,on="on")
+    
+    knn_ratings = ratings[["userId","on","rate"]]
+    knn_movies = movies[["on","tmdb"]]
+    knn_movie_ratings = pd.merge(knn_movies,knn_ratings,on="on")
+    movie_rating_count = (knn_movie_ratings.
+                      groupby(by=["tmdb"])["rate"].
+                      count().reset_index().
+                      rename(columns={'rate':'totalRating'})
+                      [["tmdb","totalRating"]]
+                     )
+    rating_with_totalRatingCount=knn_movie_ratings.merge(movie_rating_count,left_on='tmdb',right_on='tmdb',how="inner")
+    popularity_threshold=3
+    #rating_popular_book=rating_with_totalRatingCount.query('totalRatingCount>=@popularity_threshold')
+    rating_popular_movie=rating_with_totalRatingCount[rating_with_totalRatingCount['totalRating']>popularity_threshold]
+    combined = rating_popular_movie.merge(users,left_on='userId',right_on='_id',how="inner")
+    combined = combined.drop_duplicates(['userId','tmdb'])
+    knn_users = combined.pivot(index="tmdb",columns="_id",values="rate").fillna(0)
+    knn_rating_user_csr = csr_matrix(knn_users.values)
+    model_knn=NearestNeighbors(metric="cosine",algorithm="brute")
+    model_knn.fit(knn_rating_user_csr)
+    new_shape = knn_users.reset_index()
+
+    recommendation = []
+    streams = stream.split(",")
+    for stream_id in streams:
+        recommendation += list(getSingleKNN(new_shape,int(stream_id),knn_users,model_knn,limit))
+
+    JSONP_data = jsonpify(list(recommendation))
+    return JSONP_data
+
+
+def getSingleKNN(new_shape,stream_id,knn_users,model_knn,limit):
+    values = new_shape[new_shape["tmdb"] == stream_id].drop(columns=['tmdb']).values.reshape(1,-1)
+    try:
+        distances,indices=model_knn.kneighbors(values,n_neighbors=int(limit + 1))
+        recommendation = []
+        for i in range(0,len(distances.flatten())):
+            if i!=0:
+                recommendation.append(int(knn_users.index[indices.flatten()[i]]))
+        return recommendation
+    except ValueError:
+        return ""
 # main driver function
 if __name__ == '__main__':
     # run() method of Flask class runs the application
