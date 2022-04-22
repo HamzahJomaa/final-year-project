@@ -9,10 +9,10 @@ exports.getGenre = ({genre}) =>{
 
 }
 
-exports.getGenreByLimit = async ({genre,limit}) =>{
-    return await axios.get(`http://127.0.0.1:5000/api/python/movie/genre/${genre}/${limit}/online`)
+exports.getGenreByLimit = async ({onModel,genre,limit}) =>{
+    return await axios.get(`http://127.0.0.1:5000/api/python/genre/${onModel}/${genre}/${limit}/online`)
 }
 
-exports.getKNNByLimit = async ({stream,list,limit}) =>{
-    return await axios.get(`http://127.0.0.1:5000/api/python/knn/${stream}/${list}/${limit}/online`)
+exports.getKNNByLimit = async ({onModel,list,limit}) =>{
+    return await axios.get(`http://127.0.0.1:5000/api/python/knn/${onModel}/${list}/${limit}/online`)
 }

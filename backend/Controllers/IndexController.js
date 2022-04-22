@@ -97,19 +97,19 @@ exports.getPersonalizedHomepage = async (req,res) =>{
         let recent_reviews_movies = await Reviews.find({userId,onModel:"Movies"}).sort({createdAt: -1}).limit(5).populate({path: 'on', select: "tmdb"}).exec()
         let tmdb_reviews_movies = recent_reviews_movies.map(e => e.on.tmdb)
         tmdb_reviews_movies = [...new Set(tmdb_reviews_movies)]
-        let based_on_recent_reviews_movies = tmdb_reviews_movies && await getKNNByLimit({stream: "movies",list:tmdb_reviews_movies,limit:4})
+        let based_on_recent_reviews_movies = tmdb_reviews_movies && await getKNNByLimit({onModel: "movies",list:tmdb_reviews_movies,limit:4})
         let movies_on_recent_reviews = tmdb_reviews_movies && await Movies.find({tmdb:based_on_recent_reviews_movies.data})
 
         let recent_reviews_series = await Reviews.find({userId,onModel:"Series"}).sort({createdAt: -1}).limit(5).populate({path: 'on', select: "tmdb"}).exec()
         let tmdb_reviews_series = recent_reviews_series.map(e => e.on.tmdb)
         tmdb_reviews_series = [...new Set(tmdb_reviews_series)]
-        let based_on_recent_reviews_series = recent_reviews_series && await getKNNByLimit({stream: "series",list:tmdb_reviews_series,limit:4})
+        let based_on_recent_reviews_series = recent_reviews_series && await getKNNByLimit({onModel: "series",list:tmdb_reviews_series,limit:4})
         let series_on_recent_reviews = recent_reviews_series && await Series.find({tmdb:based_on_recent_reviews_series.data})
 
 
         let finalGenres = combinedGenres.length > 0 ? combinedGenres : genreWatched.length > 0 ? genreWatched : genresProfile
 
-        let recommended_ids = finalGenres.length > 0 ? await getGenreByLimit({genre:finalGenres,limit:5}) : ""
+        let recommended_ids = finalGenres.length > 0 ? await getGenreByLimit({onModel:"movies",genre:finalGenres,limit:5}) : ""
         let genre_movies = recommended_ids ? await Movies.aggregate().match({tmdb:{$in:[...new Set(recommended_ids.data)].map(e => e)}}).lookup(lookup).sample(10).project(project) : ""
 
         genre_movies && genre_movies.map(movie=>{
