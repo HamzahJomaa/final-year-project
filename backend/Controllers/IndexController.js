@@ -6,9 +6,9 @@ const StreamUser = require("../Models/StreamUser")
 const {RetrievedData, InternalServerError, DynamicMessage, NoContent} = require("../Constants/statusCodes");
 const Genre = require("../Models/Genre");
 const {mongo} = require("mongoose");
-const {getGenreByLimit, getKNNByLimit} = require("../Helpers/Python");
+const {getGenreByLimit, getKNNByLimit, getQualfied, getTopGenres} = require("../Helpers/Python");
 const axios = require("axios");
-
+const { getQuantile, getMean, getWeightedRate } = require("../Helpers/recommendation");
 
 
 let lookup = {
@@ -103,8 +103,9 @@ exports.getPersonalizedHomepage = async (req,res) =>{
         let recent_reviews_series = await Reviews.find({userId,onModel:"Series"}).sort({createdAt: -1}).limit(5).populate({path: 'on', select: "tmdb"}).exec()
         let tmdb_reviews_series = recent_reviews_series.map(e => e.on.tmdb)
         tmdb_reviews_series = [...new Set(tmdb_reviews_series)]
-        let based_on_recent_reviews_series = recent_reviews_series && await getKNNByLimit({onModel: "series",list:tmdb_reviews_series,limit:4})
-        let series_on_recent_reviews = recent_reviews_series && await Series.find({tmdb:based_on_recent_reviews_series.data})
+        console.log(tmdb_reviews_series)
+        let based_on_recent_reviews_series = tmdb_reviews_series.length > 0 && await getKNNByLimit({onModel: "series",list:tmdb_reviews_series,limit:4})
+        let series_on_recent_reviews = tmdb_reviews_series.length > 0  && await Series.find({tmdb:based_on_recent_reviews_series.data})
 
 
         let finalGenres = combinedGenres.length > 0 ? combinedGenres : genreWatched.length > 0 ? genreWatched : genresProfile
@@ -127,34 +128,90 @@ exports.getPersonalizedHomepage = async (req,res) =>{
 exports.Homepage = async (req, res) => {
     try {
         let top_rated_movies = await Movies.aggregate().sort({vote_average: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
+        
+        let qualified_movies_python = await getQualfied({onModel:"movies",limit: 10})
+        
+        let popularity_movies = await Movies.find({tmdb:qualified_movies_python.data})
+        
         let top_review_movies = await Movies.aggregate().sort({vote_count: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
+        
         let tmdb_latest = await axios.get("https://api.themoviedb.org/3/movie/now_playing?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page=1")
+        
         let id = tmdb_latest.data.results.map(e=>e.id)
+        
         let latest_movies = await Movies.aggregate().match({tmdb:{$in:id}}).sort({release_date: -1}).limit(10).lookup(lookup).project(project)
+        
         let top_rated_series = await Series.aggregate().sort({vote_average: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
+        
         let top_reviewed_series = await Series.aggregate().sort({vote_count: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
 
-        // let top_genres_movies = await getGenreByLimit(top_genres,5)
+        let qualified_series_python = await getQualfied({onModel:"series",limit: 10})
+        
+        let popularity_series = await Series.find({tmdb:qualified_series_python.data})
+
+        let top_genres_movies_python = await getTopGenres({onModel:"movies",limit:4})
+
+        let genre01_python_movies = await getGenreByLimit({onModel:"movies",genre:top_genres_movies_python.data[0],limit:5})
+        let genre01_movies = await Movies.aggregate().match({tmdb:{$in:[...new Set(genre01_python_movies.data)].map(e => e)}}).lookup(lookup).project(project)
+
+        let genre02_python_movies = await getGenreByLimit({onModel:"movies",genre:top_genres_movies_python.data[1],limit:5})
+        let genre02_movies = await Movies.aggregate().match({tmdb:{$in:[...new Set(genre02_python_movies.data)].map(e => e)}}).lookup(lookup).project(project)
+
+        let genre03_python_movies = await getGenreByLimit({onModel:"movies",genre:top_genres_movies_python.data[2],limit:5})
+        let genre03_movies = await Movies.aggregate().match({tmdb:{$in:[...new Set(genre03_python_movies.data)].map(e => e)}}).lookup(lookup).project(project)
+
+        let genre04_python_movies = await getGenreByLimit({onModel:"movies",genre:top_genres_movies_python.data[3],limit:5})
+        let genre04_movies = await Movies.aggregate().match({tmdb:{$in:[...new Set(genre04_python_movies.data)].map(e => e)}}).lookup(lookup).project(project)
+        
+
+
+        let top_genres_series_python = await getTopGenres({onModel:"series",limit:4})
+
+        let genre01_python_series = await getGenreByLimit({onModel:"series",genre:top_genres_series_python.data[0],limit:5})
+        let genre01_series = await Series.aggregate().match({tmdb:{$in:[...new Set(genre01_python_series.data)].map(e => e)}}).lookup(lookup).project(project)
+
+        let genre02_python_series = await getGenreByLimit({onModel:"series",genre:top_genres_series_python.data[1],limit:5})
+        let genre02_series = await Series.aggregate().match({tmdb:{$in:[...new Set(genre02_python_series.data)].map(e => e)}}).lookup(lookup).project(project)
+
+        let genre03_python_series = await getGenreByLimit({onModel:"series",genre:top_genres_series_python.data[2],limit:5})
+        let genre03_series = await Series.aggregate().match({tmdb:{$in:[...new Set(genre03_python_series.data)].map(e => e)}}).lookup(lookup).project(project)
+
+        let genre04_python_series = await getGenreByLimit({onModel:"series",genre:top_genres_series_python.data[3],limit:5})
+        let genre04_series = await Series.aggregate().match({tmdb:{$in:[...new Set(genre04_python_series.data)].map(e => e)}}).lookup(lookup).project(project)
+        
 
 
         latest_movies.map(movie=>{
             movie.genres = [...new Set(movie.genres)]
         })
 
+
         let movies = {
             top_rated_movies,
             top_review_movies,
             latest_movies,
+            popularity_movies,
+            top_genres_movies: [
+                {genre:top_genres_movies_python.data[0],data:genre01_movies},
+                {genre:top_genres_movies_python.data[1],data:genre02_movies},
+                {genre:top_genres_movies_python.data[2],data:genre03_movies},
+                {genre:top_genres_movies_python.data[3],data:genre04_movies}
+            ]
         }
 
         let series = {
             top_rated_series,
-            top_reviewed_series
+            top_reviewed_series,
+            popularity_series,
+            top_genres_series: [
+                {genre:top_genres_series_python.data[0],data:genre01_series},
+                {genre:top_genres_series_python.data[1],data:genre02_series},
+                {genre:top_genres_series_python.data[2],data:genre03_series},
+                {genre:top_genres_series_python.data[3],data:genre04_series}
+            ]
         }
-
-
-
-        return res.status(200).json(RetrievedData(200, {movies,series}))
+        
+        return res.status(200).json(RetrievedData(200, { movies, series}))
     } catch (e) {
         console.log(e)
         return res.status(500).json(InternalServerError)

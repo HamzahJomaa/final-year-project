@@ -16,3 +16,11 @@ exports.getGenreByLimit = async ({onModel,genre,limit}) =>{
 exports.getKNNByLimit = async ({onModel,list,limit}) =>{
     return await axios.get(`http://127.0.0.1:5000/api/python/knn/${onModel}/${list}/${limit}/online`)
 }
+
+exports.getQualfied = async ({onModel,limit}) =>{
+    return await axios.get(`http://127.0.0.1:5000/api/python/qualified/${onModel}/${limit}/online`)
+}
+
+exports.getTopGenres = async ({onModel,limit}) =>{
+    return await axios.get(`http://127.0.0.1:5000/api/python/qualified/genre/${onModel}/${limit}/online`)
+}

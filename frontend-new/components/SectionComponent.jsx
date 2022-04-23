@@ -54,14 +54,22 @@ export default function BasicTabs({title,titles,data}) {
         </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} indicatorColor={"secondary"} aria-label="basic tabs example">
-            {titles.map((single_title,index)=>(<Tab className={"tabs_title"} label={single_title} {...a11yProps(index)} />))}
+            {titles.map((single_title,index)=>{
+              if (data[index].data.length > 0 ){
+                return (<Tab className={"tabs_title"} label={single_title} {...a11yProps(index)} />)
+              }
+            })}
         </Tabs>
       </Box>
-        {data?.map((carousel,index) => (
-            <TabPanel value={value} index={index}>
+        {data?.map((carousel,index) => {
+          if (carousel.data.length > 0){
+            return(
+              <TabPanel value={value} index={index}>
                 <SwiperComponent type={carousel?.type} items={carousel?.data} spaceBetween={10} slidePerView={4} />
-            </TabPanel>
-        ))}
+              </TabPanel>
+            )
+          }
+        })}
 
     </Box>
   );

@@ -9,6 +9,7 @@ import SwiperSlider from "../components/SwiperSlider";
 
 import React, {useState,useEffect} from "react";
 
+import GenreComponent from "../components/GenreComponent"
 
 
 export default function Home() {
@@ -19,6 +20,10 @@ export default function Home() {
         token = localStorage.getItem("token")
 
     }
+
+
+    const [popularity_movies,setPopularityMovies] = useState([])
+    const [popularity_series,setPopularitySeries] = useState([])
 
 
     const [top_rated,setTopRated] = useState([])
@@ -32,6 +37,10 @@ export default function Home() {
     const [previous_reviews_movies,setPreviousReviewsMovies] = useState([])
     const [previous_reviews_series,setPreviousReviewSeries] = useState([])
 
+    const [top_rated_genre_movies,setTopRatedGenreMovies] = useState([])
+    const [top_rated_genre_series,setTopRatedGenreSeries] = useState([])
+
+
     const [loading,setLoading] = useState(false)
 
     useEffect(async ()=>{
@@ -42,8 +51,14 @@ export default function Home() {
             setLatest(data?.data?.data?.movies?.latest_movies)
             setTopRated(data?.data?.data?.movies?.top_rated_movies)
             setTopReviews(data?.data?.data?.movies?.top_review_movies)
+            setPopularityMovies(data?.data?.data?.movies?.popularity_movies)
+
             setTopRatedSeries(data?.data?.data?.series?.top_rated_series)
             setTopReviewedSeries(data?.data?.data?.series?.top_reviewed_series)
+            setPopularitySeries(data?.data?.data?.series?.popularity_series)
+
+            setTopRatedGenreMovies(data?.data?.data?.movies?.top_genres_movies)
+            setTopRatedGenreSeries(data?.data?.data?.series?.top_genres_series)
             if (userId){
                 console.log(personalized)
                 setPersonalizedGenre(personalized?.data?.statusMessage?.genre_movies)
@@ -67,10 +82,10 @@ export default function Home() {
                     <div className="container">
                         <div className="row ipad-width">
                             <div className="col-md-8">
-                                <SectionComponent title={"Movies"} titles={["Top Rated","Top Reviewed"]} data={[{type:"movie",data:top_rated}, {type:"movie", data:top_reviewed}]} />
-                                <SectionComponent title={"Series"} titles={["Top Rated","Top Reviewed"]} data={[{type:"series",data:top_rated_series},{type:"series",data:top_reviewed_series}]} />
-                                {personalizedGenre && <SectionComponent title={"Genres"} titles={["Genres"]} data={[{type:"movie",data:personalizedGenre}]} />}
-                                {previous_reviews_movies && <SectionComponent title={"Base on Previous Reviews"} titles={["Movies","Series"]} data={[{type:"movie",data:previous_reviews_movies},{type:"series",data:previous_reviews_series}]} />}
+                                <SectionComponent title={"Movies"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"movie",data:top_rated}, {type:"movie", data:top_reviewed}, {type:"movies",data:popularity_movies}]} />
+                                <SectionComponent title={"Series"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"series",data:top_rated_series},{type:"series",data:top_reviewed_series},{type:"series",data:popularity_series}]} />
+                                {personalizedGenre.length > 0  && <SectionComponent title={"Genres"} titles={["Genres"]} data={[{type:"movie",data:personalizedGenre}]} />}
+                                {(previous_reviews_movies.length > 0 ) && <SectionComponent title={"Base on Previous Reviews"} titles={["Movies","Series"]} data={[{type:"movie",data:previous_reviews_movies},{type:"series",data:previous_reviews_series}]} />}
                             </div>
                             <div className="col-md-4">
                                 <div className="sidebar">
@@ -119,104 +134,26 @@ export default function Home() {
                 <div className="trailers">
                     <div className="container">
                         <div className="row ipad-width">
-                            <div className="col-md-12">
-                                <div className="title-hd">
-                                    <h2>in theater</h2>
-                                    <a href="#" className="viewall">View all <i className="ion-ios-arrow-right"></i></a>
-                                </div>
-                                <div className="videos">
-                                    <div className="slider-for-2 video-ft">
-                                        <div>
-                                            <iframe className="item-video" src=""
-                                                    data-src="https://www.youtube.com/embed/1Q8fG0TtVAY"></iframe>
-                                        </div>
-                                        <div>
-                                            <iframe className="item-video" src=""
-                                                    data-src="https://www.youtube.com/embed/w0qQkSuWOS8"></iframe>
-                                        </div>
-                                        <div>
-                                            <iframe className="item-video" src=""
-                                                    data-src="https://www.youtube.com/embed/44LdLqgOpjo"></iframe>
-                                        </div>
-                                        <div>
-                                            <iframe className="item-video" src=""
-                                                    data-src="https://www.youtube.com/embed/gbug3zTm3Ws"></iframe>
-                                        </div>
-                                        <div>
-                                            <iframe className="item-video" src=""
-                                                    data-src="https://www.youtube.com/embed/e3Nl_TCQXuw"></iframe>
-                                        </div>
-                                        <div>
-                                            <iframe className="item-video" src=""
-                                                    data-src="https://www.youtube.com/embed/NxhEZG0k9_w"></iframe>
-                                        </div>
-
-
-                                    </div>
-                                    <div className="slider-nav-2 thumb-ft">
-                                        <div className="item">
-                                            <div className="trailer-img">
-                                                <img src="images/uploads/trailer7.jpg" alt="photo by Barn Images" width="4096"
-                                                     height="2737"/>
-                                            </div>
-                                            <div className="trailer-infor">
-                                                <h4 className="desc">Wonder Woman</h4>
-                                                <p>2:30</p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="trailer-img">
-                                                <img src="images/uploads/trailer2.jpg" alt="photo by Barn Images" width="350"
-                                                     height="200"/>
-                                            </div>
-                                            <div className="trailer-infor">
-                                                <h4 className="desc">Oblivion: Official Teaser Trailer</h4>
-                                                <p>2:37</p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="trailer-img">
-                                                <img src="images/uploads/trailer6.jpg" alt="photo by Joshua Earle"/>
-                                            </div>
-                                            <div className="trailer-infor">
-                                                <h4 className="desc">Exclusive Interview: Skull Island</h4>
-                                                <p>2:44</p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="trailer-img">
-                                                <img src="images/uploads/trailer3.png" alt="photo by Alexander Dimitrov"
-                                                     width="100" height="56"/>
-                                            </div>
-                                            <div className="trailer-infor">
-                                                <h4 className="desc">Logan: Director James Mangold Interview</h4>
-                                                <p>2:43</p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="trailer-img">
-                                                <img src="images/uploads/trailer4.png" alt="photo by Wojciech Szaturski"
-                                                     width="100" height="56"/>
-                                            </div>
-                                            <div className="trailer-infor">
-                                                <h4 className="desc">Beauty and the Beast: Official Teaser Trailer 2</h4>
-                                                <p>2: 32</p>
-                                            </div>
-                                        </div>
-                                        <div className="item">
-                                            <div className="trailer-img">
-                                                <img src="images/uploads/trailer5.jpg" alt="photo by Wojciech Szaturski"
-                                                     width="360" height="189"/>
-                                            </div>
-                                            <div className="trailer-infor">
-                                                <h4 className="desc">Fast&Furious 8</h4>
-                                                <p>3:11</p>
-                                            </div>
-                                        </div>
-
-                                    </div>
-                                </div>
+                            <div className="title-hd">
+                                <h2>in theater</h2>
+                                <a href="#" className="viewall">View all <i className="ion-ios-arrow-right"></i></a>
                             </div>
+                            {top_rated_genre_movies.map(element=>
+                                (<div className="col-md-3">
+                                    <GenreComponent title={element?.genre} items={element?.data} />
+                                </div>)
+                            )}
+                        </div>
+                        <div className="row ipad-width">
+                            <div className="title-hd">
+                                <h2>in theater</h2>
+                                <a href="#" className="viewall">View all <i className="ion-ios-arrow-right"></i></a>
+                            </div>
+                            {top_rated_genre_series.map(element=>
+                                (<div className="col-md-3">
+                                    <GenreComponent title={element?.genre} items={element?.data} />
+                                </div>)
+                            )}
                         </div>
                     </div>
                 </div>

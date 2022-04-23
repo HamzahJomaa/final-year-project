@@ -37,6 +37,20 @@ def Main():
     JSONP_data = jsonpify(list(user["title"]))
     return JSONP_data
 
+
+@app.route("/api/python/qualified/genre/<StreamType>/<limit>/<db>")
+def getTopGenres(StreamType,limit,db):
+    movies = GetData(StreamType,db)
+    movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
+    s = movies.apply(lambda x: pd.Series(x['genres']),axis=1).stack().reset_index(level=1, drop=True)
+    s.name = 'genre'
+    genre_movies = movies.drop('genres', axis=1).join(s)
+    qualified = genre_movies.groupby(by="genre").sum("vote_average").sort_values(by=['vote_average'],ascending=False).head(int(limit))
+    print(genre_movies.groupby(by="genre").sum("vote_average").sort_values(by=['vote_average'],ascending=False))
+    qualified_genres = list(qualified.index)
+    JSONP_data = jsonpify(qualified_genres)
+    return JSONP_data
+
 @app.route("/api/python/<StreamType>/<string:title>/<db>")
 def Get_Movie_Recommendation(StreamType,title,db):
     movies = GetData(StreamType,db)
@@ -113,6 +127,31 @@ def getCorrelation(StreamType,stream,limit,db):
     JSONP_data = jsonpify(return_recommendation)
     return JSONP_data
 
+
+@app.route("/api/python/qualified/<StreamType>/<limit>/<string:db>")
+def getQualified(StreamType,limit,db):
+    movies = GetData(StreamType,db)
+    movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
+    vote_counts = movies[movies['vote_count'].notnull()]['vote_count'].astype('int')
+    vote_averages = movies[movies['vote_average'].notnull()]['vote_average'].astype('int')
+    C = vote_averages.mean()
+
+    m = vote_counts.quantile(0.95)
+
+
+    qualified = movies[(movies['vote_count'] >= m) & (movies['vote_count'].notnull()) & (movies['vote_average'].notnull())][['tmdb','title', 'year', 'vote_count', 'vote_average', 'popularity', 'genres']]
+    qualified['vote_count'] = qualified['vote_count'].astype('int')
+    qualified['vote_average'] = qualified['vote_average'].astype('int')
+
+    def weighted_rating(x):
+        v = x['vote_count']
+        R = x['vote_average']
+        return (v/(v+m) * R) + (m/(m+v) * C)
+
+    qualified['wr'] = qualified.apply(weighted_rating, axis=1)
+    qualified = qualified.sort_values('wr', ascending=False)
+    JSONP_data = jsonpify(list(qualified["tmdb"].head(int(limit))))
+    return JSONP_data
 
 @app.route("/api/python/knn/<StreamType>/<stream>/<int:limit>/<string:db>")
 def getNN(StreamType,stream,limit,db):

@@ -19,9 +19,14 @@ def read_mongo(db, collection,prod=False):
 
     # Make a query to the specific DB and Collection
     if (collection == "movies" or collection == "series"):
+        if collection == "movies":
+            stream = "movie"
+        else:
+            stream = "series"
         pipeline = [
             {"$lookup":{"from": 'genres',"localField": 'genre_ids',"foreignField": 'tmdb',"as": 'genres'}},
-            {"$project":{"_id":"$_id","tmdb":"$tmdb","title": "$title","overview": "$overview","genres":"$genres.name","vote_count":"$vote_count","vote_average":"$vote_average","popularity": "$popularity","release_date": "$release_date",}},
+            {"$addFields":{"genres":{"$filter": {"input": "$genres","as": "genre","cond": {"$eq": [ "$$genre.type", stream ]}}}}},
+            {"$project":{"_id":"$_id","tmdb":"$tmdb","title": "$title","overview": "$overview","genres":"$genres.name","genres_ids":"$genres.tmdb","vote_count":"$vote_count","vote_average":"$vote_average","popularity": "$popularity","release_date": "$release_date"}},
         ]
         cursor = db[collection].aggregate(pipeline)
     else:
