@@ -2,7 +2,8 @@ const Review = require("../Models/Review")
 const Movie = require("../Models/Movies")
 const Series = require("../Models/Series")
 const {InternalServerError, DynamicMessage, NoContent} = require("../Constants/statusCodes");
-const Mongoose = require("mongoose")
+const Mongoose = require("mongoose");
+const { AddReview } = require("../Helpers/recommendation");
 
 exports.deleteReview = async (req, res) => {
     let {id} = req.params
@@ -95,20 +96,8 @@ exports.getReviews = async (req, res) => {
 exports.addReview = async (req, res) => {
     let {review} = req.body
     try {
-        await Review.create(review)
-        const avg_review = await Review.aggregate().match({on: Mongoose.Types.ObjectId(review.on)}).group({
-            _id: "$on",
-            average: {$avg: "$rate"}
-        })
-        const count_review = await Review.aggregate().match({on: Mongoose.Types.ObjectId(review.on)}).count("rate")
-        review.onModel === "Series" ? await Series.updateOne({_id: review.on}, {
-            vote_count: count_review[0].rate,
-            vote_average: avg_review[0].average
-        }) : await Movie.updateOne({_id: review.on}, {
-            vote_count: count_review[0].rate,
-            vote_average: avg_review[0].average
-        })
-        res.status(200).json(review)
+        const review_result = await AddReview({review})
+        res.status(200).json(review_result)
     } catch (e) {
         console.error(e)
         res.status(500).json(InternalServerError)

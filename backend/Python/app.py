@@ -33,8 +33,8 @@ def GetData(StreamType,hosting):
 
 @app.route("/api/python/")
 def Main():
-    user = md.read_mongo("finalyearproject","movies",True)
-    JSONP_data = jsonpify(list(user["title"]))
+    user = {"movies":{"data":"This is for moveis"} ,"series":{"data":"This is for series"} , }
+    JSONP_data = jsonpify(user)
     return JSONP_data
 
 
@@ -46,7 +46,6 @@ def getTopGenres(StreamType,limit,db):
     s.name = 'genre'
     genre_movies = movies.drop('genres', axis=1).join(s)
     qualified = genre_movies.groupby(by="genre").sum("vote_average").sort_values(by=['vote_average'],ascending=False).head(int(limit))
-    print(genre_movies.groupby(by="genre").sum("vote_average").sort_values(by=['vote_average'],ascending=False))
     qualified_genres = list(qualified.index)
     JSONP_data = jsonpify(qualified_genres)
     return JSONP_data
@@ -78,10 +77,11 @@ def Get_Genre(StreamType,Genre,db,limit):
     s = movies.apply(lambda x: pd.Series(x['genres']),axis=1).stack().reset_index(level=1, drop=True)
     s.name = 'genre'
     genre_movies = movies.drop('genres', axis=1).join(s)
-    result = []
+    results = []
     for genre in genres:
-        result += list(build_chart(genre=genre,genre_movies=genre_movies,limit=5))
-    JSONP_data = jsonpify(result)
+        result = { "genre": str(genre) ,  "data" : list(build_chart(genre=genre,genre_movies=genre_movies,limit=5))}
+        results.append(result)
+    JSONP_data = jsonpify(results)
     return JSONP_data
 
 
@@ -116,15 +116,18 @@ def getCorrelation(StreamType,stream,limit,db):
     user_movie_rating = movies_ratings.pivot_table(index='userId', columns='tmdb', values='rate')
     ratings_mean_count = pd.DataFrame(movies_ratings.groupby('tmdb')['rate'].mean())
     ratings_mean_count['rating_counts'] = pd.DataFrame(movies_ratings.groupby('tmdb')['rate'].count())
-    movieSelected = user_movie_rating[int(stream)]
-    movieCorrelation = user_movie_rating.corrwith(movieSelected,method="pearson")
-    df_movieCorrelation = pd.DataFrame(movieCorrelation, columns=['Correlation'])
-    df_movieCorrelation.dropna(inplace=True)
-    df_movieCorrelation = df_movieCorrelation.join(ratings_mean_count['rating_counts'])
-    df_movieCorrelation = df_movieCorrelation[df_movieCorrelation ['rating_counts']>10].sort_values('Correlation', ascending=False)
-    df_movieCorrelation = df_movieCorrelation.reset_index()
-    return_recommendation = list(df_movieCorrelation["tmdb"])
-    JSONP_data = jsonpify(return_recommendation)
+    recommendation = []
+    streams = stream.split(",")
+    for stream_id in streams:
+        movieSelected = user_movie_rating[int(stream_id)]
+        movieCorrelation = user_movie_rating.corrwith(movieSelected,method="pearson")
+        df_movieCorrelation = pd.DataFrame(movieCorrelation, columns=['Correlation'])
+        df_movieCorrelation.dropna(inplace=True)
+        df_movieCorrelation = df_movieCorrelation.join(ratings_mean_count['rating_counts'])
+        df_movieCorrelation = df_movieCorrelation[df_movieCorrelation ['rating_counts']>10].sort_values('Correlation', ascending=False)
+        df_movieCorrelation = df_movieCorrelation.reset_index()
+        recommendation += list(df_movieCorrelation["tmdb"])
+    JSONP_data = jsonpify(recommendation)
     return JSONP_data
 
 

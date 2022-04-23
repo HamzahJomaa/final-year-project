@@ -24,3 +24,7 @@ exports.getQualfied = async ({onModel,limit}) =>{
 exports.getTopGenres = async ({onModel,limit}) =>{
     return await axios.get(`http://127.0.0.1:5000/api/python/qualified/genre/${onModel}/${limit}/online`)
 }
+
+exports.getCorrelation = async ({onModel,list,limit}) =>{
+    return await axios.get(`http://127.0.0.1:5000/api/python/correlation/${onModel}/${list}/${limit}/online`)
+}

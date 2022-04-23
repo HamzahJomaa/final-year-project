@@ -48,6 +48,7 @@ export default function Home() {
         try {
             let personalized = userId && await GetPersonalizedHomePage({userId})
             let data = await GetHomePage()
+            console.log(data)
             setLatest(data?.data?.data?.movies?.latest_movies)
             setTopRated(data?.data?.data?.movies?.top_rated_movies)
             setTopReviews(data?.data?.data?.movies?.top_review_movies)
@@ -60,7 +61,6 @@ export default function Home() {
             setTopRatedGenreMovies(data?.data?.data?.movies?.top_genres_movies)
             setTopRatedGenreSeries(data?.data?.data?.series?.top_genres_series)
             if (userId){
-                console.log(personalized)
                 setPersonalizedGenre(personalized?.data?.statusMessage?.genre_movies)
                 setPreviousReviewsMovies(personalized?.data?.statusMessage?.movies_on_recent_reviews)
                 setPreviousReviewSeries(personalized?.data?.statusMessage?.series_on_recent_reviews)
@@ -85,7 +85,7 @@ export default function Home() {
                                 <SectionComponent title={"Movies"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"movie",data:top_rated}, {type:"movie", data:top_reviewed}, {type:"movies",data:popularity_movies}]} />
                                 <SectionComponent title={"Series"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"series",data:top_rated_series},{type:"series",data:top_reviewed_series},{type:"series",data:popularity_series}]} />
                                 {personalizedGenre.length > 0  && <SectionComponent title={"Genres"} titles={["Genres"]} data={[{type:"movie",data:personalizedGenre}]} />}
-                                {(previous_reviews_movies.length > 0 ) && <SectionComponent title={"Base on Previous Reviews"} titles={["Movies","Series"]} data={[{type:"movie",data:previous_reviews_movies},{type:"series",data:previous_reviews_series}]} />}
+                                {(previous_reviews_movies.length > 0 || previous_reviews_movies.length > 0 ) && <SectionComponent title={"Base on Previous Reviews"} titles={["Movies","Series"]} data={[{type:"movie",data:previous_reviews_movies},{type:"series",data:previous_reviews_series}]} />}
                             </div>
                             <div className="col-md-4">
                                 <div className="sidebar">
@@ -138,7 +138,7 @@ export default function Home() {
                                 <h2>in theater</h2>
                                 <a href="#" className="viewall">View all <i className="ion-ios-arrow-right"></i></a>
                             </div>
-                            {top_rated_genre_movies.map(element=>
+                            {top_rated_genre_movies?.map(element=>
                                 (<div className="col-md-3">
                                     <GenreComponent title={element?.genre} items={element?.data} />
                                 </div>)
@@ -149,7 +149,7 @@ export default function Home() {
                                 <h2>in theater</h2>
                                 <a href="#" className="viewall">View all <i className="ion-ios-arrow-right"></i></a>
                             </div>
-                            {top_rated_genre_series.map(element=>
+                            {top_rated_genre_series?.map(element=>
                                 (<div className="col-md-3">
                                     <GenreComponent title={element?.genre} items={element?.data} />
                                 </div>)
