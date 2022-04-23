@@ -2,7 +2,7 @@ import axios from "axios"
 import {baseLink} from "./config";
 
 
-export const ResetPassword = async ({oldpassword,newpassword,userId,token}) =>{
+export const ChangePassword = async ({oldpassword,newpassword,userId,token}) =>{
     return await axios.patch(`${baseLink}/profile/resetpassword`,{
         newpassword,
         oldpassword,
@@ -18,6 +18,19 @@ export const UpdateProfile = async ({profile,token}) =>{
 
 export const SignUp = async ({user}) => {
     return await axios.post(`${baseLink}/auth/signup`,{user})
+}
+
+export const ResetPasswordApi = async ({username}) =>{
+    return await axios.patch(`${baseLink}/auth/request/reset`,{username})
+}
+
+export const ConfirmAccount = async ({token}) => {
+    return await axios.patch(`${baseLink}/auth/confirmation`,{token},{headers:{"x-access-token":token}})
+}
+
+export const ResetPassword = async ({password,token}) =>{
+    return await axios.patch(`${baseLink}/auth/reset`,{password
+    },{headers:{"x-access-token":token}})
 }
 
 export const LoginApi = async ({username,password}) => {

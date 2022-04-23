@@ -2,6 +2,17 @@ const WatchList = require("../Models/Watclist")
 const {InternalServerError, DynamicMessage, AddedMessage, RetrievedData, NoContent} = require("../Constants/statusCodes");
 
 
+exports.checkWatchlist = async (req,res) =>{
+    let {on,userId} = req.params
+    try{
+        let result = await WatchList.find({userId,on}).populate({path:"on"}).exec()
+        return res.send(result.length > 0)
+    }catch (e) {
+        console.error(e)
+        return res.status(500).json(InternalServerError)
+    }
+}
+
 exports.getWatchListByUser = async (req,res) =>{
     let {userId} = req.params
 
@@ -42,6 +53,7 @@ exports.addWatchList = async (req, res) => {
         }
         return res.status(400).json(DynamicMessage(400, "An Unknown Error Occurred"))
     } catch (e) {
+        console.log(e)
         return res.status(500).json(InternalServerError)
     }
 }

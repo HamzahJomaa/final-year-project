@@ -1,6 +1,14 @@
 import React, { useEffect, useState } from 'react';
 import { useRouter } from "next/router";
-import { BuyTicket, getStream, VisitedStream, getStreamReviews,CheckWatched } from "../../../api/Main";
+import {
+    BuyTicket,
+    getStream,
+    VisitedStream,
+    getStreamReviews,
+    CheckWatched,
+    AddWatchList,
+    checkWatchList
+} from "../../../api/Main";
 import HeroComponent from "../../../components/HeroComponent";
 import { SpliceByWord, BeautifyShortDate } from "../../../helpers/contenthelper";
 import ReviewsComponent from "../../../components/ReviewsComponent";
@@ -17,6 +25,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
     const [director, setDirector] = useState(...cast.crew.filter(e => e.job === "Director"))
     const [writer, setWriter] = useState(...cast.crew.filter(e => e.job === "Writer"))
     const [reviews, setReviews] = useState([])
+    const [watchlist,setWatchlist] = useState(false)
     const [isWatched,setIsWatched] = useState(false)
     const [loading,setLoading] = useState(false)
 
@@ -27,11 +36,25 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
         token = localStorage.getItem("token")
     }
 
+    const handleWatchlist = async (e) => {
+        e.preventDefault()
+        setLoading(true)
+        try {
+            await AddWatchList({ onModel: "Movies", on: movie._id, userId: profile, token })
+            let watchlist = await checkWatchList({userId:profile,on:movie._id,token,streamModel:"Movies"})
+            setWatchlist(watchlist?.data)
+        } catch (e) {
+            console.error(e.response)
+        }finally {
+            setLoading(false)
+        }
+    }
+
     const handleTicket = async () => {
         setLoading(true)
         try {
             await BuyTicket({ StreamModel: "Movies", Stream: movie._id, userId: profile, token })
-            let watched = await CheckWatched({profile,ref:movie._id,token})
+            let watched = await CheckWatched({profile,ref:movie._id,token,streamModel:"Movies"})
             setIsWatched(watched.data)
         } catch (e) {
             console.error(e)
@@ -46,7 +69,9 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
             if (profile) {
                 await VisitedStream({ StreamModel: "Movies", Stream: movie._id, userId: profile, token })
                 let watched = await CheckWatched({profile,ref:movie._id,token})
-                setIsWatched(watched.data)
+                setIsWatched(watched?.data)
+                let watchlist = await checkWatchList({userId:profile,on:movie._id,token})
+                setWatchlist(watchlist?.data)
             }
         } catch (error) {
             console.log(error)
@@ -91,7 +116,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                 <div className="movie-single-ct main-content">
                                     <h1 className="bd-hd">{movie?.title} <span>{release.getFullYear()}</span></h1>
                                     <div className="social-btn">
-                                        <a href="#" className="parent-btn"><i className="ion-heart"></i> Add to Favorite</a>
+                                        {!watchlist && <a href="#" onClick={handleWatchlist} className="parent-btn"><i className="ion-heart"></i> Add to Watchlist</a>}
                                         <div className="hover-bnt">
                                             <a href="#" className="parent-btn"><i className="ion-android-share-alt"></i>share</a>
                                             <div className="hvr-item">
@@ -235,7 +260,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }) => {
         props: {
             id,
             movie: movie?.data?.data,
-            recommendation: movie?.data?.recommended_movies,
+            recommendation: movie?.data?.recommended_movies || null,
             cast: movie?.data?.cast,
             images: movie?.data?.images,
             last_review: movie?.data?.last_review,

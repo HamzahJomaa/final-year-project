@@ -1,5 +1,5 @@
 import React, {useCallback, useEffect, useState} from 'react';
-import {ResetPassword, UpdateProfile} from "../../api/Auth";
+import {ChangePassword, UpdateProfile} from "../../api/Auth";
 import {getNationality, getProfile} from "../../api/Main";
 import {LinearProgress,Alert} from "@mui/material";
 
@@ -33,7 +33,7 @@ const MainComponent = ({id , t}) => {
         setLoadingPass(true)
         if (newpassword === newcpassword){
             try{
-                const result = await ResetPassword({oldpassword,newpassword,userId: profileId,token})
+                const result = await ChangePassword({oldpassword,newpassword,userId: profileId,token})
                 setPassStatus(result?.data?.statusCode === 200 && "success")
                 setPassResponse(result?.data?.statusMessage)
             }catch(e){
@@ -73,7 +73,7 @@ const MainComponent = ({id , t}) => {
         }catch(e){
             console.error(e.response)
             setStatus("error")
-            return setResponse(e.response)
+            return setResponse(e?.response?.data?.statusMessage)
         }finally{
             setLoading(false)
         }
@@ -138,26 +138,30 @@ const MainComponent = ({id , t}) => {
                 <div className="row">
                     <div className="col-md-12 form-it">
                         <label>Country</label>
-                        <select>
-                            {nationalityDatabase.length > 0 ? nationalityDatabase.map(element=>(
-                                <option value="united">{element.title}</option>
-                            )):<option value="">No Countries</option>}
+                        <select onChange={(e) => setNationality(e.target.value)}>
+                            {nationalityDatabase.length > 0 ? nationalityDatabase.map(element=>{
+                                if (nationality === element._id)
+                                    return (<option selected value={`${element._id}`}>{element.title}</option>)
+                                else
+                                    return (<option value={`${element._id}`}>{element.title}</option>)
+                                }
+                            ):<option value="">No Countries</option>}
                         </select>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-4 form-it">
-                        <label>Country</label>
+                        <label>Country Code</label>
                         <input type="text"  onChange={(e)=>{setCountryCode(e.target.value)}} value={countryCode} placeholder="Country Code"/>
                     </div>
                     <div className="col-md-8 form-it">
-                        <label>Country</label>
+                        <label>Phone Number</label>
                         <input type="text"  onChange={(e)=>{setPhoneNumber(e.target.value)}} value={phoneNumber} placeholder="Phone Number"/>
                     </div>
                 </div>
                 <div className="row">
                     <div className="col-md-12 form-it">
-                        <label>Country</label>
+                        <label>Date of Birth</label>
                         <input type="date"  onChange={(e)=>{setDob(e.target.value)}} value={dob}/>
                     </div>
                 </div>

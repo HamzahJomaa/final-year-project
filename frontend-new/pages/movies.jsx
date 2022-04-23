@@ -6,6 +6,7 @@ import Pagination from '@mui/material/Pagination';
 import Image from "next/image"
 import ImageComponent from "../helpers/ImageComponent";
 import SearchComponent from "./Search";
+import Error from "next/error";
 
 const Movies = () => {
     const [movies,setMovies] = useState([])

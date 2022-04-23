@@ -31,7 +31,7 @@ exports.sendReset = ({user}) =>{
         subject: `FYP Reset Password`,
         template: "resetemail",
         'v:fullname': user.firstName + " " + user.lastName,
-        'v:resetLink': `${process.env.NODE_ENV === "dev" ? process.env.HOST_DEV : process.env.HOST_PROD}/reset?userid=${user.token}`,
+        'v:resetLink': `${process.env.NODE_ENV === "dev" ? process.env.HOST_DEV : process.env.HOST_PROD}/profile/reset?userid=${user.token}`,
     };
     return mg.messages()
         .send(data)

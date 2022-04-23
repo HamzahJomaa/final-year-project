@@ -28,6 +28,12 @@ const ReviewSchema = new Schema({
         type: String,
         required: true,
         enum: ['Movies', 'Series']
+    },
+    scene_start:{
+        type: String,
+    },
+    scene_end:{
+        type: String,
     }
 }, {timestamps: true})
 

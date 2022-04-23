@@ -6,6 +6,14 @@ const agent = new https.Agent({
     rejectUnauthorized: false
 });
 
+export const AddWatchList = async ({onModel,on,userId,token}) =>{
+    return await axios.post(`${baseLink}/watchlist/add`,{data:{onModel,on,userId}},{headers:{"x-access-token":token}})
+}
+
+export const checkWatchList = async ({on,userId}) =>{
+    return await axios.get(`${baseLink}/watchlist/check/${on}/${userId}`)
+}
+
 export const Search = async (data,type,perPage,page,order) =>{
     return await axios.post(`${baseLink}/${type}/search/${perPage}/${page}`,{data,order})
 }
@@ -24,8 +32,8 @@ export const AddReview = async ({review,token}) =>{
     },{headers:{"x-access-token":token}})
 }
 
-export const CheckWatched = async ({profile,ref,token}) =>{
-    return await axios.get(`${baseLink}/profile/ticket`,{headers:{"x-access-token":token,"userid":profile,"ref":ref}})
+export const CheckWatched = async ({profile,ref,token,streamModel}) =>{
+    return await axios.get(`${baseLink}/profile/ticket`,{headers:{"x-access-token":token,"userid":profile,"ref":ref,streamModel}})
 }
 
 export const BuyTicket = async ({StreamModel,Stream,userId,token}) =>{

@@ -6,6 +6,8 @@ const bcrypt = require("bcryptjs")
 var recombee = require('recombee-api-client');
 var rqs = recombee.requests;
 
+const jwt = require("jsonwebtoken")
+
 
 
 
@@ -19,8 +21,13 @@ exports.resetPassword = async (req,res) =>{
 
     try{
         let hashedPassword = await bcrypt.hash(password,12)
-        let resetUser = await User.findOneAndUpdate({resetToken: token},{password:hashedPassword})
-        res.status(200).json(DynamicMessage(200,"Password Reset Successfully"))
+        let jwt_decoded = await jwt.decode(token)
+
+        let resetUser = await User.findOneAndUpdate({username: jwt_decoded.username},{password:hashedPassword})
+        if (resetUser){
+            return res.status(200).json(DynamicMessage(200,"Password Reset Successfully"))
+        }
+        return res.status(409).json(DynamicMessage(409,"Conflict"))
     }catch(e){
         console.error(e)
         if (e.errors){
@@ -33,8 +40,7 @@ exports.resetPassword = async (req,res) =>{
 
 exports.requestReset = async (req,res) => {
     let {username} = req.body
-    const token = generateNewToken({username}, "1h")
-
+    const token = generateNewToken({username}, 60 * 30)
     try{
         let user = await User.findOneAndUpdate({username},{resetToken:token})
         await sendReset({user})
@@ -103,7 +109,7 @@ exports.SignUp = async (req,res) =>{
         let token = generateSignUpToken({username: user.username})
         addedUser.token = token
         await addedUser.save()
-        // sendConfirmation({user:addedUser})
+        sendConfirmation({user:addedUser})
         return res.status(200).json(addedUser)
     }catch(e){
         console.error(e)

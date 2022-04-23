@@ -40,8 +40,8 @@ router.get("/tmdb/movies/genres",(req,res)=>{
 //     ImportCast()
 // })
 
-router.get("/tmdb/series",(req,res)=>{
-    res.send(ImportSeries())
+router.get("/tmdb/movies",(req,res)=>{
+    res.send(ImportMovies())
 })
 
 

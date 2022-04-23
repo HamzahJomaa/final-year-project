@@ -8,10 +8,15 @@ const {mongo} = require("mongoose");
 
 
 exports.isWatched = async (req,res) => {
-   let {userid,ref} = req.headers
+   let {userid,streammodel,ref} = req.headers
    try{
        const user = await User.findById(userid)
-        res.send(user.movies_watched.includes(ref))
+       if (streammodel === "Series"){
+           console.log(user.series_watched.includes(ref))
+           return res.send(user.series_watched.includes(ref))
+       }else{
+           return res.send(user.movies_watched.includes(ref))
+       }
     }catch(e){
        console.error(e.response)
        return res.status(500).json(InternalServerError)
@@ -20,8 +25,9 @@ exports.isWatched = async (req,res) => {
 
 exports.Watched = async (req,res) =>{
     let {userId,Stream,StreamModel} = req.body
+    let push = StreamModel === "Series" ? { series_watched: Stream } : { movies_watched: Stream }
     try{
-        let result = await User.updateOne({_id:userId},{ $push: { movies_watched: Stream } })
+        let result = await User.updateOne({_id:userId},{ $push: push })
         if (result.modifiedCount === 1){
             return res.status(200).json(DynamicMessage(200,"Successfully Added"))
         }
@@ -95,12 +101,15 @@ exports.getProfileStream = async (req,res) =>{
 
 exports.updateProfile = async (req,res) =>{
     let {profile} = req.body
+    if (!Date.parse(profile.dob)){
+        delete profile.dob
+    }
+
     try{
         let checkUser = await User.find({$or:[{username:profile.username},{email:profile.email}],_id:{$ne:profile.id}})
         if (checkUser.length !== 0){
             return res.status(UserExists.statusCode).json(UserExists)
         }
-        console.log(req.body)
         let updatedUser = await User.updateOne({_id:profile.id},{...profile})
         if (updatedUser.modifiedCount === 1 &&  updatedUser.matchedCount === 1){
             return res.status(200).json(RetrievedData(200,profile))

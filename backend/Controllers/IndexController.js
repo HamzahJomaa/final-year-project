@@ -98,8 +98,8 @@ exports.getPersonalizedHomepage = async (req,res) =>{
         let recent_reviews_movies = await Reviews.find({userId,onModel:"Movies"}).sort({createdAt: -1}).limit(5).populate({path: 'on', select: "tmdb"}).exec()
         let tmdb_reviews_movies = recent_reviews_movies.map(e => e.on.tmdb)
         tmdb_reviews_movies = [...new Set(tmdb_reviews_movies)]
-        let knn_based_on_recent_reviews_movies = tmdb_reviews_movies.length > 0 ? await getKNNByLimit({onModel: "movies",list:tmdb_reviews_movies,limit:4}) : []
-        let correlation_based_on_recent_reviews_movies = knn_based_on_recent_reviews_movies.data.length == 0 && await getCorrelation({onModel: "movies",list:tmdb_reviews_movies,limit:4})
+        let knn_based_on_recent_reviews_movies = tmdb_reviews_movies.length > 0 ? await getKNNByLimit({onModel: "movies",list:tmdb_reviews_movies,limit:4}) : {data: []}
+        let correlation_based_on_recent_reviews_movies = (knn_based_on_recent_reviews_movies?.data?.length == 0 && tmdb_reviews_movies.length > 0 ) ? await getCorrelation({onModel: "movies",list:tmdb_reviews_movies,limit:4}) : {data:[]}
         let based_on_recent_reviews_movies = []
 
         if (knn_based_on_recent_reviews_movies?.data.length > 0 )
@@ -119,12 +119,12 @@ exports.getPersonalizedHomepage = async (req,res) =>{
 
         let based_on_recent_reviews_series = []
 
-            if (knn_based_on_recent_reviews_series?.data?.length > 0 )
-            based_on_recent_reviews_series = knn_based_on_recent_reviews_series?.data
-            else if (correlation_based_on_recent_reviews_series?.data?.length > 0)
-                based_on_recent_revbased_on_recent_reviews_seriesiews_movies = correlation_based_on_recent_reviews_series?.data
-            else
-            based_on_recent_reviews_series = []
+        if (knn_based_on_recent_reviews_series?.data?.length > 0 )
+        based_on_recent_reviews_series = knn_based_on_recent_reviews_series?.data
+        else if (correlation_based_on_recent_reviews_series?.data?.length > 0)
+            based_on_recent_revbased_on_recent_reviews_seriesiews_movies = correlation_based_on_recent_reviews_series?.data
+        else
+        based_on_recent_reviews_series = []
 
         let series_on_recent_reviews = based_on_recent_reviews_movies.length > 0 && await Series.find({tmdb:based_on_recent_reviews_series})
 

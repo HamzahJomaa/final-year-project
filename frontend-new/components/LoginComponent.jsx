@@ -1,8 +1,9 @@
 import React, {useState} from 'react';
-import {LoginApi} from "../api/Auth";
+import {LoginApi,ResetPasswordApi} from "../api/Auth";
 
 import {Box, Button, Modal,Grid} from "@mui/material";
 import {useRouter} from "next/router"
+
 
 const style = {
     position: 'absolute',
@@ -20,6 +21,14 @@ const LoginComponent = () => {
     const router = useRouter()
     const [username,setUsername] = useState("")
     const [password,setPassword] = useState("")
+    const handleReset = async (e) =>{
+        e.preventDefault()
+        if (!username){
+            alert("Username is Required")
+        }else{
+            await ResetPasswordApi({username})
+        }
+    }
     const handleSubmit = async () =>{
         try {
             let user = await LoginApi({username,password})
@@ -72,7 +81,7 @@ const LoginComponent = () => {
                                     <div>
                                         <input type="checkbox" name="remember" value="Remember me"/><span>Remember me</span>
                                     </div>
-                                    <a href="#">Forget password ?</a>
+                                    <a href="#" onClick={handleReset}>Forget password ?</a>
                                 </Box>
                             </Grid>
                             <Grid item xs={12}>

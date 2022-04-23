@@ -8444,3 +8444,16 @@ footer.full-width-ft .ft-copyright {
 .cards-swiper .swiper-slide:nth-child(10n) {
   background-color: rgb(54, 94, 77);
 }
+
+.w-50{
+  width: 50% !important;
+}
+.mx-auto{
+  margin-right: auto !important;
+  margin-left: auto !important;
+}
+
+.response.w-50.mx-auto > div{
+  margin-right: 15px !important;
+  margin-left: 15px !important;
+}
