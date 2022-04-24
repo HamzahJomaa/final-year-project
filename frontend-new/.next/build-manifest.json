@@ -15,11 +15,6 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/index.js"
-    ],
     "/404": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
@@ -40,10 +35,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/movie/[id]/[title].js"
     ],
-    "/recommendation": [
+    "/series/[id]/[title]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/recommendation.js"
+      "static/chunks/pages/series/[id]/[title].js"
     ]
   },
   "ampFirstPages": []

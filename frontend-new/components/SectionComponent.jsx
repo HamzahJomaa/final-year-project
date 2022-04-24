@@ -62,7 +62,8 @@ export default function BasicTabs({title,titles,data}) {
         </Tabs>
       </Box>
         {data?.map((carousel,index) => {
-          if (carousel.data.length > 0){
+            console.log(carousel.data)
+          if (carousel?.data?.length > 0){
             return(
               <TabPanel value={value} index={index}>
                 <SwiperComponent type={carousel?.type} items={carousel?.data} spaceBetween={10} slidePerView={4} />
@@ -70,7 +71,6 @@ export default function BasicTabs({title,titles,data}) {
             )
           }
         })}
-
     </Box>
   );
 }

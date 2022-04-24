@@ -19,7 +19,7 @@ import CastComponent from "../../../components/CastComponent";
 import ImageComponent from "../../../helpers/ImageComponent";
 import Loader from "../../../components/Loader";
 
-const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review_count,trailer,providers}) => {
+const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review_count,trailer,providers,provider_link}) => {
     const router = useRouter()
     const [release, setRelease] = useState(new Date(movie.date))
     const [director, setDirector] = useState(...cast.crew.filter(e => e.job === "Director"))
@@ -137,7 +137,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                         </div>
                                         <div className="providers">
                                             {providers?.length > 0 && providers?.map(item=>(
-                                                <img width={20} src={`https://image.tmdb.org/t/p/w342${item.logo_path}`} alt=""/>
+                                                <a href={provider_link}> <img width={20} src={`https://image.tmdb.org/t/p/w342${item.logo_path}`} alt=""/></a>
                                             ))}
                                         </div>
                                     </div>
@@ -186,7 +186,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                                                             <div key={index} className="cast-it">
                                                                                 <div className="cast-left">
                                                                                     <img width={40} src={`https://www.themoviedb.org/t/p/w92${element.profile_path}`} alt="" />
-                                                                                    <a href="#">{element.name}</a>
+                                                                                    <a href={`https://www.themoviedb.org/person/${element.id}`}>{element.name}</a>
                                                                                 </div>
                                                                                 <p>{element.character}</p>
                                                                             </div>
@@ -267,7 +267,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }) => {
             review_count: movie?.data?.review_count,
             trailer: movie?.data?.trailer || null,
             providers: movie?.data?.providers || null,
-
+            provider_link: movie?.data?.provider_link || null
         }
     }
 }

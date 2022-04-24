@@ -25,8 +25,8 @@ export default function Home() {
     const [popularity_movies,setPopularityMovies] = useState([])
     const [popularity_series,setPopularitySeries] = useState([])
 
-    const [pending_watchlist_series,setPendingWatchlistSeries] = useState([])
-    const [pending_watchlist_movies,setPendingWatchlistMovies] = useState([])
+    const [pending_watchlist_series_data,setPendingWatchlistSeries] = useState([])
+    const [pending_watchlist_movies_data,setPendingWatchlistMovies] = useState([])
 
     const [top_rated,setTopRated] = useState([])
     const [top_reviewed,setTopReviews] = useState([])
@@ -49,8 +49,8 @@ export default function Home() {
         setLoading(true)
         try {
             let personalized = userId && await GetPersonalizedHomePage({userId})
+            console.log(personalized.data.statusMessage)
             let data = await GetHomePage()
-            console.log(data)
             setLatest(data?.data?.data?.movies?.latest_movies)
             setTopRated(data?.data?.data?.movies?.top_rated_movies)
             setTopReviews(data?.data?.data?.movies?.top_review_movies)
@@ -89,8 +89,8 @@ export default function Home() {
                                 <SectionComponent title={"Movies"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"movie",data:top_rated}, {type:"movie", data:top_reviewed}, {type:"movies",data:popularity_movies}]} />
                                 <SectionComponent title={"Series"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"series",data:top_rated_series},{type:"series",data:top_reviewed_series},{type:"series",data:popularity_series}]} />
                                 {personalizedGenre.length > 0  && <SectionComponent title={"Genres"} titles={["Genres"]} data={[{type:"movie",data:personalizedGenre}]} />}
-                                {(previous_reviews_movies.length > 0 || previous_reviews_movies.length > 0 ) && <SectionComponent title={"Base on Previous Reviews"} titles={["Movies","Series"]} data={[{type:"movie",data:previous_reviews_movies},{type:"series",data:previous_reviews_series}]} />}
-                                {(pending_watchlist_movies.length > 0 || pending_watchlist_series.length > 0 ) && <SectionComponent title={"Watchlist not watched"} titles={["Movies","Series"]} data={[{type:"movie",data:pending_watchlist_movies},{type:"series",data:pending_watchlist_series}]} />}
+                                {(previous_reviews_movies.length > 0 || previous_reviews_movies.length > 0 ) && <SectionComponent title={"Based on Previous Reviews"} titles={["Movies","Series"]} data={[{type:"movie",data:previous_reviews_movies},{type:"series",data:previous_reviews_series}]} />}
+                                {(pending_watchlist_movies_data.length > 0 || pending_watchlist_series_data.length > 0 ) && <SectionComponent title={"Watchlist not watched"} titles={["Movies","Series"]} data={[{type:"movie",data:pending_watchlist_movies_data},{type:"series",data:pending_watchlist_series_data}]} />}
                             </div>
                             <div className="col-md-4">
                                 <div className="sidebar">

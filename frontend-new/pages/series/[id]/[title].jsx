@@ -19,7 +19,7 @@ import MediaComponent from "../../../components/MediaComponent";
 import ImageComponent from "../../../helpers/ImageComponent";
 import Loader from "../../../components/Loader";
 
-const MoviePage = ({ id, series, recommendation, cast, images, last_review,review_count,trailer, providers}) => {
+const MoviePage = ({ id, series, recommendation, cast, images, last_review,review_count,trailer, providers,provider_link}) => {
     console.log(series)
     const router = useRouter()
     const [release, setRelease] = useState(new Date(series.date))
@@ -135,7 +135,7 @@ const MoviePage = ({ id, series, recommendation, cast, images, last_review,revie
                                         </div>
                                         <div className="providers">
                                             {providers?.length > 0 && providers?.map(item=>(
-                                                <img width={20} src={`https://image.tmdb.org/t/p/w342${item.logo_path}`} alt=""/>
+                                                <a href={provider_link}> <img width={20} src={`https://image.tmdb.org/t/p/w342${item.logo_path}`} alt=""/></a>
                                             ))}
                                         </div>
                                     </div>
@@ -184,7 +184,7 @@ const MoviePage = ({ id, series, recommendation, cast, images, last_review,revie
                                                                         return (<div key={index} className="cast-it">
                                                                             <div className="cast-left">
                                                                                 <img src="images/uploads/cast1.jpg" alt="" />
-                                                                                <a href="#">{element.name}</a>
+                                                                                <a href={`https://www.themoviedb.org/person/${element.id}`}>{element.name}</a>
                                                                             </div>
                                                                             <p>{element.character}</p>
                                                                         </div>)
@@ -263,7 +263,7 @@ export const getServerSideProps = async ({ req, res, resolvedUrl }) => {
             review_count: series?.data?.review_count,
             trailer: series?.data?.trailer || null,
             providers: series?.data?.providers || null,
-
+            provider_link: series?.data?.provider_link || null
         }
     }
 }

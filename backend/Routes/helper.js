@@ -144,8 +144,9 @@ router.post("/clean", async (req,res) =>{
 
         case "watched":
             query = user ? {_id:user} : {}
+            let update = stream === "Series" ? {series_watched: []} : {movies_watched: []}
             try{
-                const users = await User.updateMany(query,{movies_watched: []})
+                const users = await User.updateMany(query,update)
                 console.log(users)
                 return res.status(200).send("Watched Deleted")
             }catch (e) {

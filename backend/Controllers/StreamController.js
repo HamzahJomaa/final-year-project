@@ -61,6 +61,7 @@ exports.getStreamById = async (req, res) => {
         let movies = type === "movies" ? await Movies.find({tmdb: recommendation_movie.data}) : await Series.find({tmdb: recommendation_movie.data})
         let trailers = type === "movies" ? await getTMDB("movie",id,"videos") : await getTMDB("tv",id,"videos")
         let providers = type === "movies" ? await getTMDB("movie",id,"/watch/providers") : await getTMDB("tv",id,"/watch/providers")
+        let provider_link = providers?.data?.results?.US?.link
         let youtube = trailers.data.results.filter(e=>e.type === "Trailer")
         let last_review = await Review.findOne({on:data[0]._id}).sort({_id:-1}).populate({
             path: 'userId',
@@ -75,7 +76,8 @@ exports.getStreamById = async (req, res) => {
             images: images.data,
             last_review,review_count,
             trailer:youtube[0]?.key,
-            providers: type === "movies" ? providers?.data?.results?.US?.rent : providers?.data?.results?.US?.flatrate
+            providers: type === "movies" ? providers?.data?.results?.US?.rent : providers?.data?.results?.US?.flatrate,
+            provider_link
         })
     } catch (e) {
         console.error(e)

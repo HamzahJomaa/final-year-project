@@ -27,7 +27,7 @@ const CastComponent = ({cast,director,title}) => {
                         (<div className="cast-it" key={index}>
                             <div className="cast-left">
                                 <img width={40} src={`https://www.themoviedb.org/t/p/w92${element.profile_path}`} alt="" />
-                                <a href="#">{element.name}</a>
+                                <a href={`https://www.themoviedb.org/person/${element.id}`}>{element.name}</a>
                             </div>
                             <p>{element.character}</p>
                         </div>)

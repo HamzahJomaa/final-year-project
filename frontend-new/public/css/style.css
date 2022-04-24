@@ -8364,11 +8364,11 @@ footer.full-width-ft .ft-copyright {
   /* grid-template-columns: auto auto auto auto auto; */
   /* grid-gap: 1rem; */
   margin-left: 2rem;
-  width: 50% !important;
+  width: 75% !important;
 }
 
 .providers img {
-  width: 10%;
+  width: 40px;
   margin: 0 0.6rem;
   border-radius: 11px;
 }
@@ -8380,6 +8380,10 @@ footer.full-width-ft .ft-copyright {
 @media (max-width: 768px) {
   .tabs_title{
     font-size: .9rem;
+  }
+  .providers{
+    flex-wrap: wrap;
+    width: 100% !important;
   }
 }
 

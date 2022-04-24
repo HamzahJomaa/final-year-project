@@ -5,6 +5,7 @@ import ImageComponent from "../helpers/ImageComponent";
 import {to_slug} from "../helpers/contenthelper";
 
 const SwiperComponent = ({slidePerView,spaceBetween,items,type}) => {
+    console.log(items)
     return (
         <Swiper
             spaceBetween={10}
