@@ -35,7 +35,7 @@ const Reset = ({token}) => {
                 <div className="page-single">
                     <div className="container">
                         <div className="row ipad-width w-50 mx-auto">
-                            {!confirmation ? <lottie-player src="/lottie.json" background="transparent" speed="1" loop autoplay></lottie-player> : <lottie-player src="/error.json" background="transparent" speed="1" loop autoplay></lottie-player> }
+                            {confirmation ? <lottie-player src="/lottie.json" background="transparent" speed="1" loop autoplay></lottie-player> : <lottie-player src="/error.json" background="transparent" speed="1" loop autoplay></lottie-player> }
                         </div>
                     </div>
                 </div>

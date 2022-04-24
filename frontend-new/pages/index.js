@@ -51,8 +51,8 @@ export default function Home() {
         setLoading(true)
         try {
             let personalized = userId && await GetPersonalizedHomePage({userId})
-            console.log(personalized.data.statusMessage)
             let data = await GetHomePage()
+            console.log(data)
             setLatest(data?.data?.data?.movies?.latest_movies)
             setTopRated(data?.data?.data?.movies?.top_rated_movies)
             setTopReviews(data?.data?.data?.movies?.top_review_movies)
