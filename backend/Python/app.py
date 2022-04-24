@@ -208,7 +208,8 @@ def getSingleKNN(new_shape,stream_id,knn_users,model_knn,limit):
             if i!=0:
                 recommendation.append(int(knn_users.index[indices.flatten()[i]]))
         return recommendation
-    except ValueError:
+    except ValueError as e:
+        print(e)
         return ""
 # main driver function
 if __name__ == '__main__':

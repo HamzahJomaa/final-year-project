@@ -49,7 +49,7 @@ exports.addWatchList = async (req, res) => {
 
     try {
         let result = await WatchList.create(data)
-        console.log(result)
+
         if (result) {
             return res.status(200).json(AddedMessage(200, result))
         }

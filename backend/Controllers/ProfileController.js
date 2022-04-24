@@ -1,7 +1,7 @@
 const User = require("../Models/User")
 const bcrypt = require("bcryptjs")
 const {InternalServerError, RetrievedData, NoContent, UserExists, DynamicMessage, AnErrorOccured} = require("../Constants/statusCodes");
-const jwt = require("jsonwebtoken")
+const Watchlist = require("../Models/Watclist")
 
 const StreamUser = require("../Models/StreamUser")
 const {mongo} = require("mongoose");
@@ -27,6 +27,7 @@ exports.Watched = async (req,res) =>{
     let push = StreamModel === "Series" ? { series_watched: Stream } : { movies_watched: Stream }
     try{
         let result = await User.updateOne({_id:userId},{ $push: push })
+        let watchlist = await Watchlist.findOneAndUpdate({$and:[{userId},{onModel:StreamModel},{on:Stream}]} , {watched:true})
         if (result.modifiedCount === 1){
             return res.status(200).json(DynamicMessage(200,"Successfully Added"))
         }

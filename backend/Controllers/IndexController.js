@@ -11,6 +11,8 @@ const axios = require("axios");
 const { getQuantile, getMean, getWeightedRate } = require("../Helpers/recommendation");
 const { getStream } = require("./Recommendation");
 
+const Watchlist = require("../Models/Watclist")
+
 
 let lookup = {
     from: "genres",
@@ -89,6 +91,12 @@ exports.getPersonalizedHomepage = async (req,res) =>{
         req.body.token || req.query.token || req.headers["user"]
 
     try{
+        let pending_watchlist_movies = await Watchlist.find({userId,onModel:"Movies",watched:false}).populate({path:"on"}).exec()
+        pending_watchlist_movies = pending_watchlist_movies.map(e=>e.on)
+
+        let pending_watchlist_series = await Watchlist.find({userId,onModel:"Series",watched:false}).populate({path:"on"}).exec()
+        pending_watchlist_series = pending_watchlist_series.map(e=>e.on)
+
         let genresProfile = await getProfileGenre({userId,StreamModel:"Movies"})
         let genreWatched = await getWatchedGenres({userId,StreamModel: "movies"})
         let combinedGenres = genresProfile.filter(function(n) {
@@ -120,11 +128,11 @@ exports.getPersonalizedHomepage = async (req,res) =>{
         let based_on_recent_reviews_series = []
 
         if (knn_based_on_recent_reviews_series?.data?.length > 0 )
-        based_on_recent_reviews_series = knn_based_on_recent_reviews_series?.data
+            based_on_recent_reviews_series = knn_based_on_recent_reviews_series?.data
         else if (correlation_based_on_recent_reviews_series?.data?.length > 0)
-            based_on_recent_revbased_on_recent_reviews_seriesiews_movies = correlation_based_on_recent_reviews_series?.data
+            based_on_recent_reviews_series = correlation_based_on_recent_reviews_series?.data
         else
-        based_on_recent_reviews_series = []
+            based_on_recent_reviews_series = []
 
         let series_on_recent_reviews = based_on_recent_reviews_movies.length > 0 && await Series.find({tmdb:based_on_recent_reviews_series})
 
@@ -139,7 +147,13 @@ exports.getPersonalizedHomepage = async (req,res) =>{
             movie.genres = [...new Set(movie.genres)]
         })
 
-        return res.status(200).json(DynamicMessage(200,{genre_movies,movies_on_recent_reviews,series_on_recent_reviews}))
+        return res.status(200).json(DynamicMessage(200,{
+            genre_movies,
+            movies_on_recent_reviews,
+            series_on_recent_reviews,
+            pending_watchlist_movies,
+            pending_watchlist_series
+        }))
 
     }catch (e) {
         console.error(e)

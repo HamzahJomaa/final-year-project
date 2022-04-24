@@ -35,15 +35,10 @@
       "static/chunks/main.js",
       "static/chunks/pages/_error.js"
     ],
-    "/movies": [
+    "/movie/[id]/[title]": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/movies.js"
-    ],
-    "/profile/watchlistmovie": [
-      "static/chunks/webpack.js",
-      "static/chunks/main.js",
-      "static/chunks/pages/profile/watchlistmovie.js"
+      "static/chunks/pages/movie/[id]/[title].js"
     ],
     "/recommendation": [
       "static/chunks/webpack.js",

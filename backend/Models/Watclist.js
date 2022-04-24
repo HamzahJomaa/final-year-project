@@ -16,6 +16,10 @@ const watchListSchema = Schema({
         type: String,
         required: true,
         enum: ['Movies', 'Series']
+    },
+    watched:{
+        type: Boolean,
+        default: false
     }
 },{timestamps:true})
 module.exports = model("watchlists", watchListSchema)
