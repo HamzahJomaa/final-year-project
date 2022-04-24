@@ -62,7 +62,6 @@ export default function BasicTabs({title,titles,data}) {
         </Tabs>
       </Box>
         {data?.map((carousel,index) => {
-            console.log(carousel.data)
           if (carousel?.data?.length > 0){
             return(
               <TabPanel value={value} index={index}>
