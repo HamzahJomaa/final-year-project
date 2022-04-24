@@ -8457,3 +8457,12 @@ footer.full-width-ft .ft-copyright {
   margin-right: 15px !important;
   margin-left: 15px !important;
 }
+
+
+.userrate .mv-item-infor{
+  padding-left: 2rem;
+}
+
+.topbar-filter.review {
+  width: 98%;
+}

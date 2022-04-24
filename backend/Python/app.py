@@ -62,11 +62,15 @@ def Get_Movie_Recommendation(StreamType,title,db):
     titles = moviesSIM['title']
     indices = pd.Series(moviesSIM.index, index=moviesSIM['title'])
     idx = indices[title]
-    sim_scores = list(enumerate(cosine_sim[idx]))
-    sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
-    sim_scores = sim_scores[1:10]
-    movie_indices = [i[0] for i in sim_scores]
-    JSONP_data = jsonpify(list(movies.iloc[movie_indices]["tmdb"]))
+    try:
+        sim_scores = list(enumerate(cosine_sim[idx]))
+        sim_scores = sorted(sim_scores, key=lambda x: x[1], reverse=True)
+        sim_scores = sim_scores[1:10]
+        movie_indices = [i[0] for i in sim_scores]
+        JSONP_data = jsonpify(list(movies.iloc[movie_indices]["tmdb"]))
+    except Exception as e:
+        print(e)
+        JSONP_data = jsonpify([])
     return JSONP_data
 
 @app.route("/api/python/genre/<StreamType>/<Genre>/<int:limit>/<string:db>")

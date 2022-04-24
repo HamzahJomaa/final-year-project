@@ -6,6 +6,11 @@ const agent = new https.Agent({
     rejectUnauthorized: false
 });
 
+
+export const getWatchlistUser = async ({onModel,userId,token,perPage,page}) =>{
+    return await axios.get(`${baseLink}/watchlist/${onModel}/${userId}`,{headers:{"x-access-token":token,perPage,page}})
+}
+
 export const AddWatchList = async ({onModel,on,userId,token}) =>{
     return await axios.post(`${baseLink}/watchlist/add`,{data:{onModel,on,userId}},{headers:{"x-access-token":token}})
 }

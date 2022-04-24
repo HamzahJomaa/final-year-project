@@ -8,6 +8,8 @@ import TextField from '@mui/material/TextField';
 import { Grid } from '@mui/material';
 import { AddReview } from '../api/Main';
 import { useRouter } from 'next/router';
+import {useState} from "react";
+import Loader from "./Loader";
 
 const style = {
     position: 'absolute',
@@ -31,6 +33,7 @@ const WriteReviewComponent = ({ on, onModel,reviewAdded }) => {
     const [body, setBody] = React.useState("")
     const [title, setTitle] = React.useState("")
 
+    const [loading,setLoading] = useState(false)
 
     let userId, token
 
@@ -40,70 +43,75 @@ const WriteReviewComponent = ({ on, onModel,reviewAdded }) => {
     }
 
     const handleSubmit = async () => {
+        setLoading(true)
         let review = { userId, title, on, onModel, rate, body }
         try{
             let review_added = await AddReview({review,token})
             if (review_added.status === 200){
                 setOpen(false)
                 router.reload("#reviews")
-            }else{
-                setStatus("An Error Occured")
             }
         }catch(e){
             console.error(e)
+        }finally {
+            setLoading(false)
         }
     }
 
     return (
         <>
-            {userId && <Button className="redbtn" onClick={handleOpen}>Write Review</Button>}
-            <Modal
-                open={open}
-                onClose={handleClose}
-                aria-labelledby="modal-modal-title"
-                aria-describedby="modal-modal-description"
-            >
-                <Box sx={style}>
-                    <Grid container spacing={3}>
-                        <Grid item xs={12}>
-                            <Typography component="legend">Review Rate</Typography>
-                            <Rating
-                                name="simple-controlled"
-                                value={rate}
-                                onChange={(event, newValue) => {
-                                    setRate(newValue);
-                                }}
-                            />
+            {loading? <Loader/> :
+            <>
+                {userId && <Button className="redbtn" onClick={handleOpen}>Write Review</Button>}
+                <Modal
+                    open={open}
+                    onClose={handleClose}
+                    aria-labelledby="modal-modal-title"
+                    aria-describedby="modal-modal-description"
+                >
+                    <Box sx={style}>
+                        <Grid container spacing={3}>
+                            <Grid item xs={12}>
+                                <Typography component="legend">Review Rate</Typography>
+                                <Rating
+                                    name="simple-controlled"
+                                    value={rate}
+                                    onChange={(event, newValue) => {
+                                        setRate(newValue);
+                                    }}
+                                />
 
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Review Title"
+                                    multiline
+                                    fullWidth
+                                    value={title}
+                                    onChange={(e) => setTitle(e.target.value)}
+                                    variant="standard"
+                                />
+
+                            </Grid>
+                            <Grid item xs={12}>
+                                <TextField
+                                    label="Review Body"
+                                    multiline
+                                    maxRows={10}
+                                    fullWidth
+                                    value={body}
+                                    onChange={(e) => setBody(e.target.value)}
+                                    variant="standard"
+                                />
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Button fullWidth onClick={handleSubmit} className="redbtn">Write Review</Button>
+                            </Grid>
                         </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="Review Title"
-                                multiline
-                                fullWidth
-                                value={title}
-                                onChange={(e) => setTitle(e.target.value)}
-                                variant="standard"
-                            />                        
-                            
-                        </Grid>
-                        <Grid item xs={12}>
-                            <TextField
-                                label="Review Body"
-                                multiline
-                                maxRows={10}
-                                fullWidth
-                                value={body}
-                                onChange={(e) => setBody(e.target.value)}
-                                variant="standard"
-                            />
-                        </Grid>
-                        <Grid item xs={12}>
-                            <Button fullWidth onClick={handleSubmit} className="redbtn">Write Review</Button>
-                        </Grid>
-                    </Grid>
-                </Box>
-            </Modal>
+                    </Box>
+                </Modal>
+            </>
+            }
         </>
     )
 }

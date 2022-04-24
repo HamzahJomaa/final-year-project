@@ -73,7 +73,6 @@ const MoviePage = ({ id, series, recommendation, cast, images, last_review,revie
                 setIsWatched(watched?.data)
                 let watchlist = await checkWatchList({userId:profile,on:series._id,token})
                 setWatchlist(watchlist?.data)
-                console.log(watched?.data)
             }
         } catch (error) {
             console.log(error)

@@ -97,6 +97,7 @@ exports.addReview = async (req, res) => {
     let {review} = req.body
     try {
         const review_result = await AddReview({review})
+        console.log(review_result)
         res.status(200).json(review_result)
     } catch (e) {
         console.error(e)

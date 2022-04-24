@@ -14,12 +14,14 @@ exports.checkWatchlist = async (req,res) =>{
 }
 
 exports.getWatchListByUser = async (req,res) =>{
-    let {userId} = req.params
-
+    let {userId,onModel} = req.params
+    const {perpage,page} = req.headers
     try{
-        let result = await WatchList.find({userId}).populate({path:"on"}).exec()
+        let result = await WatchList.find({userId,onModel}).skip(parseInt(perpage) * (parseInt(page) - 1)).limit(parseInt(perpage)).populate({path:"on"}).exec()
+        let watchlist_count = await WatchList.find({userId,onModel}).count()
+        result = result.map(e=>e.on)
         if (result.length > 0){
-            return res.status(200).json(RetrievedData(200,result))
+            return res.status(200).json(RetrievedData(200,{result,watchlist_count}))
         }
         return res.status(204).json(NoContent)
     }catch(e){

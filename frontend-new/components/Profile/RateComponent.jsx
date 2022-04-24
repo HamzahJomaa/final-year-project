@@ -23,7 +23,6 @@ const RateComponent = ({id,t,type}) => {
     };
 
     useEffect( async ()=>{
-        console.log({id: profileId,token})
         try {
             const reviewsAPI = await getUserReviews({id: profileId, type ,token,perPage, page})
             setReviews(reviewsAPI?.data?.statusMessage?.reviews)

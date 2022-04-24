@@ -12,7 +12,6 @@ exports.isWatched = async (req,res) => {
    try{
        const user = await User.findById(userid)
        if (streammodel === "Series"){
-           console.log(user.series_watched.includes(ref))
            return res.send(user.series_watched.includes(ref))
        }else{
            return res.send(user.movies_watched.includes(ref))

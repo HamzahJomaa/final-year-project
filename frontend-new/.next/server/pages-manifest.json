@@ -2,6 +2,7 @@
   "/_app": "pages/_app.js",
   "/_error": "pages/_error.js",
   "/_document": "pages/_document.js",
-  "/500": "pages/500.js",
-  "/series/[id]/[title]": "pages/series/[id]/[title].js"
+  "/404": "pages/404.js",
+  "/recommendation": "pages/recommendation.js",
+  "/movies": "pages/movies.js"
 }

@@ -15,10 +15,15 @@
     "static/development/_middlewareManifest.js"
   ],
   "pages": {
-    "/500": [
+    "/": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/500.js"
+      "static/chunks/pages/index.js"
+    ],
+    "/404": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/404.js"
     ],
     "/_app": [
       "static/chunks/webpack.js",
@@ -35,10 +40,15 @@
       "static/chunks/main.js",
       "static/chunks/pages/movies.js"
     ],
-    "/series/[id]/[title]": [
+    "/profile/watchlistmovie": [
       "static/chunks/webpack.js",
       "static/chunks/main.js",
-      "static/chunks/pages/series/[id]/[title].js"
+      "static/chunks/pages/profile/watchlistmovie.js"
+    ],
+    "/recommendation": [
+      "static/chunks/webpack.js",
+      "static/chunks/main.js",
+      "static/chunks/pages/recommendation.js"
     ]
   },
   "ampFirstPages": []

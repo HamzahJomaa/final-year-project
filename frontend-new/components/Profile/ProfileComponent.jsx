@@ -34,7 +34,8 @@ const ProfileComponent = ({ Component , location }) => {
                                     <p>Account Details</p>
                                     <ul>
                                         <li className={location === "index" && "active"}><a href="/profile">Profile</a></li>
-                                        <li className={location === "favorite" && "active"} ><a href="userfavoritelist.html">Favorite movies</a></li>
+                                        <li className={location === "watchlistmovie" && "active"} ><a href="../profile/watchlistmovie">Watchlist Movies</a></li>
+                                        <li className={location === "watchlistseries" && "active"} ><a href="../profile/watchlistseries">Watchlist Series</a></li>
                                         <li className={location === "ratemovies" && "active"}><a href="../profile/ratemovies">Rated Movies</a></li>
                                         <li className={location === "rateseries" && "active"}><a href="../profile/rateseries">Rated Series</a></li>
                                     </ul>

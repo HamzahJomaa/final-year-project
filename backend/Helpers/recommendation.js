@@ -17,7 +17,7 @@ exports.AddReview = async ({review}) => {
         return review.onModel === "Series" ? await Series.updateOne({_id: review.on}, {
             vote_count: count_review[0].rate,
             vote_average: avg_review[0].average
-        }) : await Movie.updateOne({_id1: review.on}, {
+        }) : await Movie.updateOne({_id: review.on}, {
             vote_count: count_review[0].rate,
             vote_average: avg_review[0].average
         })
