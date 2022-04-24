@@ -83,7 +83,6 @@ const ReviewsComponent = ({ id, title,review_count,type }) => {
                                     <option value="10">10 Movies</option>
                                     <option value="20">20 Movies</option>
                                 </select>
-                                <h1>{(review_count / perPage)}</h1>
                                 <div className="pagination2">
                                     <span>Page {page} of {(review_count / perPage) < 1 ? 1 : (review_count / perPage).toFixed(0)}:</span>
                                     <Pagination size={"small"} style={{ color: "red" }} count={(review_count / perPage).toFixed(0)} page={page} onChange={pageHandler} />

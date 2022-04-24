@@ -35,7 +35,9 @@ export default function Home() {
     const [top_rated_series,setTopRatedSeries] = useState([])
     const [top_reviewed_series,setTopReviewedSeries] = useState([])
 
-    const [personalizedGenre,setPersonalizedGenre] = useState([])
+    const [personalizedGenreMovies,setPersonalizedGenreMovies] = useState([])
+    const [personalizedGenreSeries,setPersonalizedGenreSeries] = useState([])
+
     const [previous_reviews_movies,setPreviousReviewsMovies] = useState([])
     const [previous_reviews_series,setPreviousReviewSeries] = useState([])
 
@@ -63,7 +65,8 @@ export default function Home() {
             setTopRatedGenreMovies(data?.data?.data?.movies?.top_genres_movies)
             setTopRatedGenreSeries(data?.data?.data?.series?.top_genres_series)
             if (userId){
-                setPersonalizedGenre(personalized?.data?.statusMessage?.genre_movies)
+                setPersonalizedGenreMovies(personalized?.data?.statusMessage?.genre_movies_returned)
+                setPersonalizedGenreSeries(personalized?.data?.statusMessage?.genre_series_returned)
                 setPreviousReviewsMovies(personalized?.data?.statusMessage?.movies_on_recent_reviews)
                 setPreviousReviewSeries(personalized?.data?.statusMessage?.series_on_recent_reviews)
                 setPendingWatchlistSeries(personalized?.data?.statusMessage?.pending_watchlist_series)
@@ -88,7 +91,7 @@ export default function Home() {
                             <div className="col-md-8">
                                 <SectionComponent title={"Movies"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"movie",data:top_rated}, {type:"movie", data:top_reviewed}, {type:"movies",data:popularity_movies}]} />
                                 <SectionComponent title={"Series"} titles={["Top Rated","Top Reviewed","Popularity"]} data={[{type:"series",data:top_rated_series},{type:"series",data:top_reviewed_series},{type:"series",data:popularity_series}]} />
-                                {personalizedGenre.length > 0  && <SectionComponent title={"Genres"} titles={["Genres"]} data={[{type:"movie",data:personalizedGenre}]} />}
+                                {(personalizedGenreMovies.length > 0 || personalizedGenreSeries.length > 0 )  && <SectionComponent title={"Based Previous Visiting"} titles={["Movies","Series"]} data={[{type:"movie",data:personalizedGenreMovies},{type:"series",data:personalizedGenreSeries}]} />}
                                 {(previous_reviews_movies.length > 0 || previous_reviews_movies.length > 0 ) && <SectionComponent title={"Based on Previous Reviews"} titles={["Movies","Series"]} data={[{type:"movie",data:previous_reviews_movies},{type:"series",data:previous_reviews_series}]} />}
                                 {(pending_watchlist_movies_data.length > 0 || pending_watchlist_series_data.length > 0 ) && <SectionComponent title={"Watchlist not watched"} titles={["Movies","Series"]} data={[{type:"movie",data:pending_watchlist_movies_data},{type:"series",data:pending_watchlist_series_data}]} />}
                             </div>

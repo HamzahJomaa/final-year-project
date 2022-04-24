@@ -12,6 +12,7 @@ const { getQuantile, getMean, getWeightedRate } = require("../Helpers/recommenda
 const { getStream } = require("./Recommendation");
 
 const Watchlist = require("../Models/Watclist")
+const Stream = require("stream");
 
 
 let lookup = {
@@ -97,11 +98,44 @@ exports.getPersonalizedHomepage = async (req,res) =>{
         let pending_watchlist_series = await Watchlist.find({userId,onModel:"Series",watched:false}).populate({path:"on"}).exec()
         pending_watchlist_series = pending_watchlist_series.map(e=>e.on)
 
-        let genresProfile = await getProfileGenre({userId,StreamModel:"Movies"})
-        let genreWatched = await getWatchedGenres({userId,StreamModel: "movies"})
-        let combinedGenres = genresProfile.filter(function(n) {
-            return genreWatched.indexOf(n) !== -1;
+
+
+
+        let genres_visited_movies = await getProfileGenre({userId,StreamModel:"Movies"})
+        let genres_watched_movies = await getWatchedGenres({userId,StreamModel: "Movies"})
+        let genres_movies = genres_visited_movies.filter(function(n) {
+            return genres_watched_movies.indexOf(n) !== -1;
         });
+        let genres_movies_final = genres_movies.length > 0 ? genres_movies : genres_watched_movies.length > 0 ? genres_watched_movies : genres_visited_movies
+        let genres_movies_id = genres_movies_final.length > 0 ? await getGenreByLimit({onModel:"movies",genre:genres_movies_final,limit:2}) : ""
+        let genres_movie_final = []
+        genres_movies_id = genres_movies_id?.data?.length > 0 ? genres_movies_id?.data?.map(e => e.data) : []
+        genres_movies_id?.length > 0 &&  genres_movies_id.map(id => {
+            genres_movie_final.push(...new Set(id))
+        })
+        let genre_movies_returned = genres_movie_final.length > 0 ? await Movies.aggregate().match({tmdb:{$in:[...new Set(genres_movie_final)]}}).lookup(lookup).sample(10).project(project) : []
+        genre_movies_returned.length > 0 && genre_movies_returned.map(movie=>{
+            movie.genres = [...new Set(movie.genres)]
+        })
+
+
+        let genres_visited_series = await getProfileGenre({userId,StreamModel:"Series"})
+        let genres_watched_series = await getWatchedGenres({userId,StreamModel: "Series"})
+        let genres_series = genres_visited_series.filter(function(n) {
+            return genres_watched_series.indexOf(n) !== -1;
+        });
+        let genres_series_final_ids = genres_series.length > 0 ? genres_series : genres_watched_series.length > 0 ? genres_watched_series : genres_visited_series
+        let genres_series_id = genres_series_final_ids.length > 0 ? await getGenreByLimit({onModel:"series",genre:genres_series_final_ids,limit:2}) : ""
+        let genres_series_final = []
+        genres_series_id = genres_series_id?.data?.length > 0 ? genres_series_id?.data?.map(e => e.data) : []
+        genres_series_id.length > 0 && genres_series_id.map(id => {
+            genres_series_final.push(...new Set(id))
+        })
+        let genre_series_returned = genres_series_final.length > 0 ? await Series.aggregate().match({tmdb:{$in:[...new Set(genres_series_final)]}}).lookup(lookup).sample(10).project(project) : []
+        genre_series_returned.length > 0 && genre_series_returned.map(series=>{
+            series.genres = [...new Set(series.genres)]
+        })
+
 
         let recent_reviews_movies = await Reviews.find({userId,onModel:"Movies"}).sort({createdAt: -1}).limit(5).populate({path: 'on', select: "tmdb"}).exec()
         let tmdb_reviews_movies = recent_reviews_movies.map(e => e.on.tmdb)
@@ -137,18 +171,12 @@ exports.getPersonalizedHomepage = async (req,res) =>{
         let series_on_recent_reviews = based_on_recent_reviews_movies.length > 0 && await Series.find({tmdb:based_on_recent_reviews_series})
 
 
-        
-        let finalGenres = combinedGenres.length > 0 ? combinedGenres : genreWatched.length > 0 ? genreWatched : genresProfile
 
-        let recommended_ids = finalGenres.length > 0 ? await getGenreByLimit({onModel:"movies",genre:finalGenres,limit:5}) : ""
-        let genre_movies = recommended_ids ? await Movies.aggregate().match({tmdb:{$in:[...new Set(recommended_ids.data)].map(e => e)}}).lookup(lookup).sample(10).project(project) : ""
 
-        genre_movies && genre_movies.map(movie=>{
-            movie.genres = [...new Set(movie.genres)]
-        })
 
         return res.status(200).json(DynamicMessage(200,{
-            genre_movies,
+            genre_movies_returned,
+            genre_series_returned,
             movies_on_recent_reviews,
             series_on_recent_reviews,
             pending_watchlist_movies,
@@ -244,10 +272,15 @@ exports.Homepage = async (req, res) => {
 }
 
 const getWatchedGenres = async ({userId,StreamModel}) =>{
+    let stream = ""
+    if (StreamModel === "Movies")
+        stream = "movie"
+    else
+        stream = "series"
+
     try{
         let userMovies = await User.findById(userId)
-
-        let match = {_id:{$in:userMovies.movies_watched.map(e => e)}}
+        let match = StreamModel === "Movies" ? {_id:{$in:userMovies.movies_watched.map(e => e)}} : {_id:{$in:userMovies.series_watched.map(e => e)}}
         let lookup = {
             from:`genres`,
             localField:"genre_ids",
@@ -257,7 +290,9 @@ const getWatchedGenres = async ({userId,StreamModel}) =>{
         let project = {
             "genres":"$genres.name"
         }
-        let result = await Movies.aggregate().match(match).lookup(lookup).project(project)
+        let addFields =  {"genres":{"$filter": {"input": "$genres","as": "genre","cond": {"$eq": [ "$$genre.type", stream ]}}}}
+
+        let result = StreamModel === "Movies" ?  await Movies.aggregate().match(match).lookup(lookup).addFields(addFields).project(project) : await Series.aggregate().match(match).lookup(lookup).addFields(addFields).project(project)
 
         let FinalGenres = result.map(e => (e.genres))
         FinalGenres = [...new Set(FinalGenres.flat(2))]
@@ -269,7 +304,13 @@ const getWatchedGenres = async ({userId,StreamModel}) =>{
 }
 
 const getProfileGenre = async ({userId,StreamModel}) =>{
+    let stream = ""
+    if (StreamModel === "Movies")
+        stream = "movie"
+    else
+        stream = "series"
     try{
+        console.log(StreamModel.toLowerCase())
         let genresByLoad = await StreamUser
             .aggregate()
             .match({userId:mongo.ObjectId(userId),StreamModel})
@@ -283,7 +324,7 @@ const getProfileGenre = async ({userId,StreamModel}) =>{
             .group({_id: "$StreamData._id","visited" : { $sum : 1}})
             .sort({visited: -1})
         genresByLoad = genresByLoad.filter(e => e.visited > 5)
-        let AllGenre = await Movies
+        let AllGenre = StreamModel === "Movies" ?  await Movies
             .aggregate()
             .match({_id:{$in:genresByLoad.map(e => e._id)}})
             .lookup({
@@ -292,6 +333,19 @@ const getProfileGenre = async ({userId,StreamModel}) =>{
                 foreignField:"tmdb",
                 as:"genres"
             })
+            .addFields({"genres":{"$filter": {"input": "$genres","as": "genre","cond": {"$eq": [ "$$genre.type", stream ]}}}})
+            .project({
+                "genres":"$genres.name"
+            }) : await Series
+            .aggregate()
+            .match({_id:{$in:genresByLoad.map(e => e._id)}})
+            .lookup({
+                from:`genres`,
+                localField:"genre_ids",
+                foreignField:"tmdb",
+                as:"genres"
+            })
+            .addFields({"genres":{"$filter": {"input": "$genres","as": "genre","cond": {"$eq": [ "$$genre.type", stream ]}}}})
             .project({
                 "genres":"$genres.name"
             })

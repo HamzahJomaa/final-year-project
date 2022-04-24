@@ -76,6 +76,7 @@ def Get_Movie_Recommendation(StreamType,title,db):
 @app.route("/api/python/genre/<StreamType>/<Genre>/<int:limit>/<string:db>")
 def Get_Genre(StreamType,Genre,db,limit):
     genres = Genre.split(",")
+    print(Genre)
     movies = GetData(StreamType,db)
     movies['year'] = pd.to_datetime(movies['release_date'], errors='coerce').apply(lambda x: str(x).split('-')[0] if x != np.nan else np.nan)
     s = movies.apply(lambda x: pd.Series(x['genres']),axis=1).stack().reset_index(level=1, drop=True)

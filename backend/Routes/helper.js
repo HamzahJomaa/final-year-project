@@ -97,12 +97,14 @@ router.post("/clean", async (req,res) =>{
                             vote_count: count_review[0]?.rate || 0,
                             vote_average: avg_review[0]?.average || 0
                         })
+                        console.log(count_review[0]?.rate)
                     }else{
                         await Series.updateOne({_id: on}, {
                             vote_count: count_review[0]?.rate || 0,
                             vote_average: avg_review[0]?.average || 0
                         })
                     }
+                    console.log("Stream " + index)
                 })
                 return res.status(200).send("Updated")
             }catch (e) {
@@ -227,51 +229,62 @@ router.post("/add_reviews",async(req,res)=>{
 })
 
 router.post("/add_visit",async (req,res)=>{
-    let {genre,userid} = req.body
-    try{
-        let movies = await Movie.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2020-01-01") } })
-        movies = movies.map(e => e._id)
+    let {users} = req.body
+    return users.map( async (user,user_index)=>{
+        let {id,genre_id,min,min_rate,max_rate,type} = user
+        let genre = genre_id.split(",").map(e=>parseInt(e))
 
-        for (let i = 0; i < 150 ; i++) {
-            const random = Math.floor(Math.random() * movies.length);
+        try{
+            let movies = type === "Movies" ? await Movie.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2019-01-01") } }) : await Series.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2019-01-01") } })
+            movies = movies.map(e => e._id)
 
-            const user = await User.findById(userid)
-            if (!user){
-                return res.status(403).json(DynamicMessage(403,"Unauthorized"))
+            for (let i = 0; i < 150 ; i++) {
+                const random = Math.floor(Math.random() * movies.length);
+
+                const user = await User.findById(id.trim())
+                if (!user){
+                    return res.status(403).json(DynamicMessage(403,"Unauthorized"))
+                }
+                let added = await StreamUser.create({StreamModel: type,Stream:movies[random],userId:id.trim()})
             }
-            let added = await StreamUser.create({StreamModel: "Movies",Stream:movies[random],userId:userid})
-
+            return res.status(200).json({data:"none"})
+        }catch(e){
+            console.error(e)
+            return res.status(500).json(InternalServerError)
         }
-        return res.status(200).json({data:"none"})
-    }catch(e){
-        console.error(e)
-        return res.status(500).json(InternalServerError)
-    }
+    })
+
 })
 
 router.post("/add_watch",async (req,res) =>{
-    let {genre,userid} = req.body
-    try{
-        let movies = await Movie.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2019-01-01") } })
-        movies = movies.map(e => e._id)
+    let {users} = req.body
+    return users.map(async(user,user_index) => {
+        let {id,genre_id,min,min_rate,max_rate,type} = user
+        let genre = genre_id.split(",").map(e=>parseInt(e))
+        try{
+            let movies = type === "Movies" ? await Movie.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2019-01-01") } }) : await Series.find({genre_ids: {$in: genre}, release_date: { $gte : new Date("2019-01-01") } })
+            movies = movies.map(e => e._id)
 
-        for (let i = 0; i < 10 ; i++) {
-            const random = Math.floor(Math.random() * movies.length);
+            for (let i = 0; i < 10 ; i++) {
+                const random = Math.floor(Math.random() * movies.length);
+                let watched = type === "Movies" ? {movies_watched: movies[random] } : {series_watched: movies[random] }
 
-            const user = await User.findById(userid)
-            if (user.movies_watched.length > 0 && user.movies_watched.includes(movies[random])){
-                continue;
-            }else{
-                await User.updateOne({_id:userid},{ $push: { movies_watched: movies[random] } })
+                const user = await User.findById(id.trim())
+                if (user.movies_watched.length > 0 && user.movies_watched.includes(movies[random])){
+                    continue;
+                }else{
+                    await User.updateOne({_id:id.trim()},{ $push: watched  })
+                }
+
+                console.log("Movie " + i)
             }
-
-
+            return res.status(200).json({data:"none"})
+        }catch(e){
+            console.error(e)
+            return res.status(500).json(InternalServerError)
         }
-        return res.status(200).json({data:"none"})
-    }catch(e){
-        console.error(e)
-        return res.status(500).json(InternalServerError)
-    }
+    })
+
 })
 
 
