@@ -10,6 +10,10 @@ const SwiperComponent = ({slidePerView,spaceBetween,items,type}) => {
         <Swiper
             spaceBetween={10}
             slidesPerView={1}
+            autoplay={{
+                delay: 4000,
+                disableOnInteraction: false,
+            }}
             breakpoints={{
                 640: {
                     slidesPerView: 2,

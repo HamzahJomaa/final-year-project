@@ -39,7 +39,7 @@ function a11yProps(index) {
   };
 }
 
-export default function BasicTabs({title,titles,data}) {
+export default function BasicTabs({title,titles,data,href}) {
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -50,7 +50,7 @@ export default function BasicTabs({title,titles,data}) {
     <Box sx={{ width: '100%' }}>
         <Box className="title-hd">
             <h2>{title}</h2>
-            <a href="#" className="viewall">View all <i className="ion-ios-arrow-right"></i></a>
+            {href && <a href={href} className="viewall">View all <i className="ion-ios-arrow-right"></i></a>}
         </Box>
       <Box sx={{ borderBottom: 1, borderColor: 'divider' }}>
         <Tabs value={value} onChange={handleChange} indicatorColor={"secondary"} aria-label="basic tabs example">

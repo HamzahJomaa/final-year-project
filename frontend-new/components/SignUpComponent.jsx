@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {SignUp} from '../api/Auth';
 import {useRouter} from 'next/router'
-import {Box, Button, Modal,Grid} from "@mui/material";
+import {Box, Button, Modal, Grid, LinearProgress, Alert} from "@mui/material";
 
 
 const style = {
@@ -19,6 +19,8 @@ const SignUpComponent = () => {
 
     const router = useRouter()
 
+    const [loading,setLoading] = useState(false)
+
     const [username, setUsername] = useState("")
     const [email, setEmail] = useState("")
     const [password, setPassword] = useState("")
@@ -26,8 +28,14 @@ const SignUpComponent = () => {
     const [lastName,setLastName] = useState("")
     const [cpassword, setCPassword] = useState("")
     const [error, setError] = useState("")
+    const [responsemessage,setResponseMessage] = useState("")
 
     const handleSignup = async () => {
+        if (!username || !password || !email || !firstName || !lastName){
+            setError("error")
+            return setResponseMessage("All Fields are Required")
+        }
+        setLoading(true)
         let user = {username, password, email,firstName,lastName}
         try {
             const signup = await SignUp({user})
@@ -39,12 +47,16 @@ const SignUpComponent = () => {
                     router.push("/profile")
                 }
             } else {
-                setError("An Error Occured")
+                setError("error")
+                setResponseMessage("Unknown Error Occurred")
                 console.error(signup)
             }
         } catch (e) {
-            setError(e?.response?.data?.statusMessage)
+            setError("error")
+            setResponseMessage(e?.response?.data?.statusMessage)
             console.error(e?.response?.data?.statusMessage)
+        }finally {
+            setLoading(false)
         }
     }
     return (
@@ -113,6 +125,12 @@ const SignUpComponent = () => {
                                            pattern="(?=^.{8,}$)((?=.*\d)|(?=.*\W+))(?![.\n])(?=.*[A-Z])(?=.*[a-z]).*$"
                                            required="required"/>
                                 </label>
+                            </Grid>
+                            <Grid item xs={12}>
+                                {loading && <LinearProgress />}
+                            </Grid>
+                            <Grid item xs={12}>
+                                {(responsemessage && !loading) && <Alert severity={error}>{responsemessage}</Alert>}
                             </Grid>
                             <Grid item xs={12}>
                                 <button onClick={handleSignup} type="submit">sign up</button>

@@ -116,7 +116,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                 <div className="movie-single-ct main-content">
                                     <h1 className="bd-hd">{movie?.title} <span>{release.getFullYear()}</span></h1>
                                     <div className="social-btn">
-                                        {!watchlist && <a href="#" onClick={handleWatchlist} className="parent-btn"><i className="ion-heart"></i> Add to Watchlist</a>}
+                                        {(!watchlist && profile) && <a href="#" onClick={handleWatchlist} className="parent-btn"><i className="ion-heart"></i> Add to Watchlist</a>}
                                         <div className="hover-bnt">
                                             <a href="#" className="parent-btn"><i className="ion-android-share-alt"></i>share</a>
                                             <div className="hvr-item">
@@ -131,7 +131,7 @@ const MoviePage = ({ id, movie, recommendation, cast, images, last_review,review
                                     <div className="movie-rate">
                                         <div className="rate">
                                             <i className="ion-android-star"></i>
-                                            <p><span>{movie?.vote_average.toFixed(0)}</span> /5<br />
+                                            <p><span>{movie?.vote_average.toFixed(1)}</span> /5<br />
                                                 <span className="rv">{movie?.vote_count} Reviews</span>
                                             </p>
                                         </div>

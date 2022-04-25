@@ -53,19 +53,9 @@ const HeaderComponent = () => {
                                     Tv Show
                                 </a>
                             </li>
-                            <li className="dropdown first">
-                                <a className="btn btn-default" href="/recommendation">
-                                    Recommendation
-                                </a>
-                            </li>
-                            <li className="dropdown first">
-                                <a className="btn btn-default">
-                                    Contact Us
-                                </a>
-                            </li>
-                            <li className="first">
+                            {profile && (<li className="first">
                                 <a className={"btn btn-default"} href="/profile">Account</a>
-                            </li>
+                            </li>)}
                         </ul>
                         {!profile?
                             <ul className="nav navbar-nav flex-child-menu menu-right">

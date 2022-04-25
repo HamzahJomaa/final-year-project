@@ -200,7 +200,9 @@ exports.Homepage = async (req, res) => {
         let top_review_movies = await Movies.aggregate().sort({vote_count: -1,release_date: -1}).limit(10).lookup(lookup).project(project)
         
         let tmdb_latest = await axios.get("https://api.themoviedb.org/3/movie/now_playing?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page=1")
-        
+
+        let tmdb_cast = await axios.get("https://api.themoviedb.org/3/person/popular?api_key=01a1a82396f4e0f7423e9a45bac71390&language=en-US&page=1")
+
         let id = tmdb_latest.data.results.map(e=>e.id)
         
         let latest_movies = await Movies.aggregate().match({tmdb:{$in:id}}).sort({release_date: -1}).limit(10).lookup(lookup).project(project)
@@ -262,8 +264,7 @@ exports.Homepage = async (req, res) => {
                 {genre:top_series_genres_python.data[3].genre,data:genre04_series}
             ]
         }
-        
-        return res.status(200).json(RetrievedData(200, { movies, series}))
+        return res.status(200).json(RetrievedData(200, { movies, series, tmdb_cast:tmdb_cast?.data?.results}))
     } catch (e) {
         console.log(e)
         return res.status(500).json(InternalServerError)

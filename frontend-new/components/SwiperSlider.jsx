@@ -30,10 +30,6 @@ const SwiperSlider = ({items}) => {
                                             </div>
                                             <h1><a href="#">{item.title}<span>{(new Date(item.date)).getFullYear()}</span></a></h1>
                                             <div className="social-btn">
-                                                <a href="#" className="parent-btn"><i className="ion-play"></i> Watch
-                                                    Trailer</a>
-                                                <a href="#" className="parent-btn"><i className="ion-heart"></i> Add to
-                                                    Favorite</a>
                                                 <div className="hover-bnt">
                                                     <a href="#" className="parent-btn"><i
                                                         className="ion-android-share-alt"></i>share</a>
@@ -50,10 +46,8 @@ const SwiperSlider = ({items}) => {
                                                 </div>
                                             </div>
                                             <div className="mv-details">
-                                                <p><i className="ion-android-star"></i><span>{item.vote_average}</span> /5</p>
+                                                <p><i className="ion-android-star"></i><span>{item.vote_average.toFixed(0)}</span> /5</p>
                                                 <ul className="mv-infor">
-                                                    <li> Run Time: 2h21’</li>
-                                                    <li> Rated: PG-13</li>
                                                     <li> Release: {BeautifyShortDate(item?.date)}</li>
                                                 </ul>
                                             </div>

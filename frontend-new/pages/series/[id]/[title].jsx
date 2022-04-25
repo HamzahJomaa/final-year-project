@@ -129,7 +129,7 @@ const MoviePage = ({ id, series, recommendation, cast, images, last_review,revie
                                     <div className="movie-rate">
                                         <div className="rate">
                                             <i className="ion-android-star"></i>
-                                            <p><span>{series?.vote_average.toFixed(0)}</span> /5<br />
+                                            <p><span>{series?.vote_average.toFixed(1)}</span> /5<br />
                                                 <span className="rv">{series?.vote_count} Reviews</span>
                                             </p>
                                         </div>
